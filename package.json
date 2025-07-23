@@ -1,0 +1,42 @@
+{
+	"name": "hellohaxe",
+	"publisher": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.4.0"
+	},
+	"activationEvents": [
+	],
+	"main": "bin/main.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "hellohaxe.sayHello",
+				"title": "Say Hello"
+			},
+						{
+				"command": "mikolka.setup",
+				"title": "Funk: Configure compiler"
+			},
+						{
+				"command": "mikolka.new",
+				"title": "Funk: Make new project"
+			},
+						{
+				"command": "mikolka.just-run",
+				"title": "Funk: Just run"
+			},						
+			{
+				"command": "mikolka.just-compile",
+				"title": "Funk: Just compile"
+			},			
+			{
+				"command": "mikolka.run",
+				"title": "Funk: Compile and Run"
+			},			{
+				"command": "mikolka.export",
+				"title": "Funk: Export current mod"
+			}
+		]
+	}
+}

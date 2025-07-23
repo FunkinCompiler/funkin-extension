@@ -1,0 +1,19 @@
+package;
+
+import vscode.*;
+import mikolka.vscode.ComandRegistry;
+import mikolka.config.FunkCfg;
+
+class Main {
+	public static var projectConfig:FunkCfg ;
+    @:expose("activate")
+    static function activate(context:vscode.ExtensionContext) {
+        Vscode.window.showInformationMessage("Hello from Haxe!");
+		projectConfig = new FunkCfg();
+		context.subscriptions.push(Vscode.commands.registerCommand("hellohaxe.sayHello", function() {
+			Vscode.window.showInformationMessage("Hello from Haxe!");
+		}));
+		CommandRegistry.registerCommands(context);
+		//context.subscriptions.push(Vscode.commands.registerCommand())
+	}
+}
