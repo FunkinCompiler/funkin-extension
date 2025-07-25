@@ -5,10 +5,11 @@ import mikolka.programs.Hxc;
 import mikolka.programs.Fnfc;
 import mikolka.helpers.Process;
 import mikolka.vscode.Interaction;
-import haxe.io.Path;
-import sys.FileSystem;
 import mikolka.helpers.ZipTools;
 import mikolka.helpers.FileManager;
+
+import haxe.io.Path;
+import sys.FileSystem;
 import sys.io.File;
 
 class CompileTasks {
@@ -49,9 +50,12 @@ class CompileTasks {
 
 				Task_CompileGame(mod_assets, hxc_source, fnfc_assets, export_mod_path);
 
-				// create the output file
-				var out = sys.io.File.write('${userModName}.zip', true);
-				ZipTools.makeZipArchive(export_mod_path, out);
+				var zip_target = FileManager.getProjectPath('${userModName}.zip');
+				if(zip_target != null){
+					// create the output file
+					var out = sys.io.File.write(zip_target, true);
+					ZipTools.makeZipArchive(export_mod_path, out);
+				}
 			}, (out) -> {
 				Interaction.displayError("Action canceled!");
 			});

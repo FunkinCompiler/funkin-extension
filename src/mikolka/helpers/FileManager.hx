@@ -1,5 +1,6 @@
 package mikolka.helpers;
 
+import vscode.Uri;
 import sys.io.File;
 import haxe.zip.Entry;
 import haxe.io.Path;
@@ -55,4 +56,7 @@ class FileManager {
 		var path = getProjectPath(target);
 		return path != null && FileSystem.exists(path);
 	}
+
+
+
 }

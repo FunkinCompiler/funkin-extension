@@ -1,0 +1,14 @@
+{
+	"name": "vscode-debugadapter",
+	"description": "Visual Studio Code Debug Adapter externs",
+	"url": "https://github.com/vshaxe/vscode-debugadapter-extern",
+	"license": "MIT",
+	"version": "1.41.0",
+	"releasenote": "Update to vscode-debugadapter 1.41",
+	"classPath": "src",
+	"contributors": ["Gama11", "nadako"],
+	"dependencies": {
+		"hxnodejs": ""
+	},
+	"tags": ["extern", "js", "vscode"]
+}

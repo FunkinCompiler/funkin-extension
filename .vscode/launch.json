@@ -1,6 +1,7 @@
 {
 	"version": "0.2.0",
 	"configurations": [
+		
 		{
 			"name": "Launch Extension",
 			"type": "extensionHost",
@@ -11,7 +12,12 @@
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
-			"preLaunchTask": "hxml: build.hxml",
+			"debugWebWorkerHost": true,
+			"autoAttachChildProcesses": true,
+			"trace": true,
+			"debugWebviews": true,
+			"preLaunchTask": "hxml: extension.hxml",
+			
 			"outFiles": [
 				"${workspaceFolder}/*.js"
 			]

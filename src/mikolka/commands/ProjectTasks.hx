@@ -3,8 +3,9 @@ package mikolka.commands;
 import mikolka.vscode.Interaction;
 import mikolka.helpers.LangStrings;
 import mikolka.config.FunkCfg;
-import haxe.io.Path;
 import mikolka.helpers.ZipTools;
+
+import haxe.io.Path;
 import haxe.Http;
 import sys.FileSystem;
 import sys.io.File;

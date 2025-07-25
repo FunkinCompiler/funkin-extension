@@ -1,5 +1,8 @@
--cp src
+# This is only for VSCode to let me write code in peace
+# Use the other 2 to compile
+-cp src/mikolka
+-cp src/funkin-runner
 -D analyzer-optimize
 -lib vscode 
--js bin/main.js 
+-lib vscode-debugadapter 
 Main

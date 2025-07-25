@@ -6,6 +6,7 @@
 		"vscode": "^1.4.0"
 	},
 	"activationEvents": [
+		"workspaceContains:./funk.cfg"
 	],
 	"main": "bin/main.js",
 	"contributes": {
@@ -14,29 +15,78 @@
 				"command": "hellohaxe.sayHello",
 				"title": "Say Hello"
 			},
-						{
+			{
 				"command": "mikolka.setup",
 				"title": "Funk: Configure compiler"
 			},
-						{
+			{
 				"command": "mikolka.new",
 				"title": "Funk: Make new project"
 			},
-						{
+			{
 				"command": "mikolka.just-run",
 				"title": "Funk: Just run"
-			},						
+			},
 			{
 				"command": "mikolka.just-compile",
 				"title": "Funk: Just compile"
-			},			
+			},
 			{
 				"command": "mikolka.run",
 				"title": "Funk: Compile and Run"
-			},			{
+			},
+			{
 				"command": "mikolka.export",
 				"title": "Funk: Export current mod"
 			}
+		],
+		"debuggers": [
+			{
+				"type": "run-game",
+				"label": "Run the Funkin copy",
+				"program": "./bin/funkin-runner.js",
+				"runtime": "node",
+				"configurationAttributes": {
+					"launch": {
+						"properties": {
+							"cwd": {
+								"type": "string",
+								"description": "Path to the current working directory. If not specified, the workspace directory is used."
+							},
+							"cmd_prefix": {
+								"type": "string",
+								"description": "Prefix to use in the command"
+							},
+							"execName": {
+								"type": "string",
+								"description": "Name of the executable"
+							},
+							"args": {
+								"type": "array",
+								"description": "The Haxe command-line arguments. If not specified, the selected Haxe configuration is used.",
+								"items": {
+									"type": "string"
+								}
+							},
+							"trace": {
+								"type": "boolean",
+								"description": "Traces some other output",
+								"default": true
+							}
+						}
+					}
+				},
+				"initialConfigurations": [
+					{
+						"name": "Funkin game",
+						"type": "run-game",
+						"request": "launch"
+					}
+				]
+			}
 		]
+	},
+	"dependencies": {
+		"vscode-debugadapter": "^1.51.0"
 	}
 }

@@ -1,0 +1,8 @@
+-cp src
+--macro include("mikolka")
+-D analyzer-optimize
+-D js-es=6
+-lib vscode 
+-lib vscode-debugadapter 
+-js bin/main.js 
+mikolka.Main

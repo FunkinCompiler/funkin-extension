@@ -1,6 +1,6 @@
-package;
+package mikolka;
 
-import vscode.*;
+import mikolka.vscode.*;
 import mikolka.vscode.ComandRegistry;
 import mikolka.config.FunkCfg;
 
@@ -14,6 +14,11 @@ class Main {
 			Vscode.window.showInformationMessage("Hello from Haxe!");
 		}));
 		CommandRegistry.registerCommands(context);
-		//context.subscriptions.push(Vscode.commands.registerCommand())
+		// context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("funkin-game",{
+		// 	provideDebugConfigurations: (folder, ?token) -> {
+		// 		return DebugConfiguration
+		// 	}
+		// }));
+		
 	}
 }

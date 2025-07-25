@@ -8,35 +8,32 @@ import js.Node;
 import mikolka.vscode.Interaction;
 
 class Process {
-	public static function spawnProcess(cmd:String,cwd:String,onExit:(code:Int) ->Void) {	
-		Sys.println(cwd+" >>> " + cmd);
-		var proc = ChildProcess.spawn(cmd,null,{
-			cwd: cwd,
-			stdio: Pipe,
-			shell: true
-		});
-		proc.stdout.on(ReadableEvent.Data, (data:Buffer) ->{
-			Vscode.debug.activeDebugConsole.append(data.toString("utf-8"));
-		});
-		proc.stderr.on(ReadableEvent.Data, (data:Buffer) ->{
-			Vscode.debug.activeDebugConsole.append(data.toString("utf-8"));
-		});
-		proc.on(ChildProcessEvent.Exit, (errorCode:Null<Int>, _) -> {
-			if(errorCode == null){
-				Interaction.displayError("Fatality occurred while running the game!");
-				onExit(-1000);
-			}
-			else onExit(errorCode);
-		});
-		return proc;
-	}
-
 	public static function spawnFunkinGame(cwd:String, execName:String, cmd_prefix:String = "") {
 
-		spawnProcess('$cmd_prefix ./$execName',cwd,(code) ->{
-			if(code != 0) Interaction.displayError("Process exited with code: "+code); 
+		if(Vscode.debug.activeDebugSession != null) return;
+		trace({
+			
+				type: "run-game",
+				name: "Spawn Funkin instance",
+				request: "launch",
+				cmd_prefix:cmd_prefix,
+				execName:execName,
+				cwd:cwd
+			
 		});
-
+		Vscode.debug.startDebugging(null,cast {
+				type: "run-game",
+				name: "Spawn Funkin instance",
+				request: "launch",
+				cmd_prefix:cmd_prefix,
+				execName:execName,
+				cwd:cwd
+			
+		}).then((sucsess) ->{
+			if(!sucsess){
+				Vscode.window.showErrorMessage("Funkin failed to funk!",{modal: true});
+			}
+		});
 	}
 	public static function checkCommand(execName:String,cwd:Null<String> = null,errTitle:String = "Error checking command"):Bool {
         var proc = ChildProcess.spawnSync(execName,{

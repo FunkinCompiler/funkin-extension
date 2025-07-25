@@ -1,13 +1,21 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"type": "hxml",
-			"file": "build.hxml",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "hxml",
+      "file": "extension.hxml",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": {
+        "type": "hxml",
+        "file": "funkin-runner.hxml",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    }
+  ]
 }
