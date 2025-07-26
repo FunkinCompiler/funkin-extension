@@ -1962,6 +1962,7 @@ class mikolka_Main {
 			Vscode.window.showInformationMessage("Hello from Haxe!");
 		}));
 		mikolka_vscode_CommandRegistry.registerCommands(context);
+		mikolka_vscode_DebuggerSetup.init(context);
 	}
 }
 $hx_exports["activate"] = mikolka_Main.activate;
@@ -1990,7 +1991,7 @@ class mikolka_commands_CompileTasks {
 				if(userModVersion != "") {
 					let new_poly = poly_json.replace(varGetter.r,"\"mod_version\": \"" + userModVersion + "\"");
 					js_node_Fs.writeFileSync(manifestPath,new_poly);
-					console.log("src/mikolka/commands/CompileTasks.hx:48:","Updated you mod's version to " + userModVersion);
+					console.log("src/mikolka/commands/CompileTasks.hx:49:","Updated you mod's version to " + userModVersion);
 				}
 				mikolka_commands_CompileTasks.Task_CompileGame(mod_assets,hxc_source,fnfc_assets,export_mod_path);
 				let zip_target = mikolka_helpers_FileManager.getProjectPath("" + userModName + ".zip");
@@ -2014,29 +2015,7 @@ class mikolka_commands_CompileTasks {
 		hxc.processDirectory();
 	}
 	static Task_RunGame(game_path) {
-		let tmp = mikolka_helpers_FileManager.getProjectPath(game_path);
-		let project_game_folder = tmp != null ? tmp : "";
-		let linux_bin = mikolka_helpers_FileManager.doesTargetExist(haxe_io_Path.join([game_path,"Funkin"]));
-		let windows_bin = mikolka_helpers_FileManager.doesTargetExist(haxe_io_Path.join([game_path,"Funkin.exe"]));
-		let mac_bin = mikolka_helpers_FileManager.doesTargetExist(haxe_io_Path.join([game_path,"Funkin.app"]));
-		if(windows_bin) {
-			if(Sys.systemName() == "Windows") {
-				mikolka_helpers_Process.spawnFunkinGame(project_game_folder,"Funkin.exe");
-			} else {
-				console.log("src/mikolka/commands/CompileTasks.hx:86:","[INFO] Windows build on non-windows machine. Attempting to run using wine...");
-				mikolka_helpers_Process.spawnFunkinGame(project_game_folder,"Funkin.exe","wine ");
-			}
-		} else if(linux_bin) {
-			if(Sys.systemName() == "Linux") {
-				mikolka_helpers_Process.spawnFunkinGame(project_game_folder,"Funkin");
-			} else {
-				mikolka_vscode_Interaction.displayError("Incompatible FNF version. Replace it with the windows one.");
-			}
-		} else if(mac_bin && Sys.systemName() == "Mac") {
-			mikolka_vscode_Interaction.displayError("I personally don't know how to run the game natively on your platform\n" + "You might try to install wine and use Windows build instead");
-		} else {
-			mikolka_vscode_Interaction.displayError("No FNF binary found. Make sure that there's copy of FNF in " + project_game_folder + " directory.");
-		}
+		mikolka_vscode_DebuggerSetup.spawnFunkinGame();
 	}
 	static copyTemplate(mod_assets,export_mod_path) {
 		sys_FileSystem.createDirectory(mod_assets);
@@ -2321,20 +2300,6 @@ class mikolka_helpers_LangStrings {
 }
 mikolka_helpers_LangStrings.__name__ = true;
 class mikolka_helpers_Process {
-	static spawnFunkinGame(cwd,execName,cmd_prefix) {
-		if(cmd_prefix == null) {
-			cmd_prefix = "";
-		}
-		if(Vscode.debug.activeDebugSession != null) {
-			return;
-		}
-		console.log("src/mikolka/helpers/Process.hx:14:",{ type : "run-game", name : "Spawn Funkin instance", request : "launch", cmd_prefix : cmd_prefix, execName : execName, cwd : cwd});
-		Vscode.debug.startDebugging(null,{ type : "run-game", name : "Spawn Funkin instance", request : "launch", cmd_prefix : cmd_prefix, execName : execName, cwd : cwd}).then(function(sucsess) {
-			if(!sucsess) {
-				Vscode.window.showErrorMessage("Funkin failed to funk!",{ modal : true});
-			}
-		});
-	}
 	static checkCommand(execName,cwd,errTitle) {
 		if(errTitle == null) {
 			errTitle = "Error checking command";
@@ -2528,6 +2493,61 @@ class mikolka_vscode_CommandRegistry {
 	}
 }
 mikolka_vscode_CommandRegistry.__name__ = true;
+class mikolka_vscode_DebuggerSetup {
+	static init(context) {
+		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("run-game",{ resolveDebugConfiguration : function(folder,debugConfiguration,token) {
+			let project_folder = folder != null ? folder.uri.fsPath : null;
+			if(project_folder == null) {
+				mikolka_vscode_Interaction.displayError("Running FNF without a folder! This will likely fail!");
+			}
+			return mikolka_vscode_DebuggerSetup.requestStaticConfiguration(project_folder,debugConfiguration);
+		}},vscode_DebugConfigurationProviderTriggerKind.Initial));
+	}
+	static spawnFunkinGame() {
+		if(Vscode.debug.activeDebugSession != null) {
+			return;
+		}
+		let tmp = Vscode.workspace;
+		let folder = tmp != null ? tmp.workspaceFolders[0] : null;
+		if(folder == null) {
+			mikolka_vscode_Interaction.displayErrorAlert("Cannot start the game","You need to open a folder before starting it!");
+			return;
+		}
+		Vscode.debug.startDebugging(folder,{ type : "run-game", name : "Spawn Funkin instance", request : "launch"}).then(function(success) {
+			if(!success) {
+				Vscode.window.showErrorMessage("Funkin failed to funk!",{ modal : true});
+			}
+		});
+	}
+	static requestStaticConfiguration(project_game_folder,base) {
+		console.log("src/mikolka/vscode/DebuggerSetup.hx:62:","AYO!!");
+		if(base.execName == null) {
+			base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
+		}
+		if(base.cmd_prefix == null) {
+			base.cmd_prefix = "";
+		}
+		if(base.cmd_prefix == null) {
+			base.cmd_prefix = "";
+		}
+		if(base.cmd_prefix == null) {
+			base.cmd_prefix = "";
+		}
+		if(base.args == null) {
+			base.args = [];
+		}
+		if(base.trace == null) {
+			base.trace = true;
+		}
+		if(base.cwd == null) {
+			base.cwd = "../funkinGame/";
+		}
+		base.cwd = haxe_io_Path.join([project_game_folder,base.cwd]);
+		console.log("src/mikolka/vscode/DebuggerSetup.hx:72:",base);
+		return base;
+	}
+}
+mikolka_vscode_DebuggerSetup.__name__ = true;
 class mikolka_vscode_Interaction {
 	static displayError(msg) {
 		Vscode.window.showErrorMessage(msg);
@@ -2756,6 +2776,7 @@ var sys_io_FileSeek = $hxEnums["sys.io.FileSeek"] = { __ename__:true,__construct
 	,SeekEnd: {_hx_name:"SeekEnd",_hx_index:2,__enum__:"sys.io.FileSeek",toString:$estr}
 };
 sys_io_FileSeek.__constructs__ = [sys_io_FileSeek.SeekBegin,sys_io_FileSeek.SeekCur,sys_io_FileSeek.SeekEnd];
+var vscode_DebugConfigurationProviderTriggerKind = require("vscode").DebugConfigurationProviderTriggerKind;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $global.$haxeUID++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = m.bind(o); o.hx__closures__[m.__id__] = f; } return f; }
 $global.$haxeUID |= 0;
 if(typeof(performance) != "undefined" ? typeof(performance.now) == "function" : false) {

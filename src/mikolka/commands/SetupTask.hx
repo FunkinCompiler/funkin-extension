@@ -1,5 +1,7 @@
 package mikolka.commands;
 
+import vscode.TaskDefinition;
+import vscode.Task;
 import haxe.Exception;
 import sys.io.File;
 import sys.FileSystem;
@@ -15,8 +17,11 @@ typedef RepoLibrary = {
 	commit:String
 }
 
-class SetupTask {
+class SetupTask extends Task {
 
+	public function new() {
+		
+	}
 	private static var localCwd:String = "";
 	public static function task_setupEnvironment(template_url:String) {
         var force_lib_install:Bool = false;

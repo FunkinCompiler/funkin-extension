@@ -6,12 +6,9 @@ using StringTools;
 
 class FunkCfg {
     private static var DEFAULT_MAP:Map<String,String> =[
-        "game_path" => "../funkinGame",
-        "game_mod_name" => "workbench",
         "mod_fnfc_folder" => "fnfc_files",
         "mod_hx_folder" => "source/mod/",
-        "mod_content_folder" => "mod_base",
-        "template_remote_src" => "https://raw.githubusercontent.com/FunkinCompiler/template-binaries/refs/heads/main/0.6.3.zip",
+        "mod_content_folder" => "mod_base"
     ];
     
     private var map:Map<String,String>;
@@ -23,14 +20,6 @@ class FunkCfg {
         return map[key];
     }
 
-    public var GAME_PATH(get,null):String;
-    function get_GAME_PATH():String {
-        return getKey("game_path");
-    }
-    public var GAME_MOD_NAME(get,null):String;
-    function get_GAME_MOD_NAME():String {
-        return getKey("game_mod_name");
-    }
     public var MOD_FNFC_FOLDER(get,null):String;
     function get_MOD_FNFC_FOLDER():String {
         return getKey("mod_fnfc_folder");
@@ -42,10 +31,6 @@ class FunkCfg {
     public var MOD_CONTENT_FOLDER(get,null):String;
     function get_MOD_CONTENT_FOLDER():String {
         return getKey("mod_content_folder");
-    }
-    public var TEMPLATE_REMOTE_SRC(get,null):String;
-    function get_TEMPLATE_REMOTE_SRC():String {
-        return getKey("template_remote_src");
     }
 
 

@@ -1,4 +1,4 @@
-package mikolka.vscode;
+package mikolka.vscode.providers;
 
 import mikolka.commands.*;
 
@@ -17,7 +17,7 @@ class CommandRegistry {
 			ProjectTasks.task_setupProject(cfg.TEMPLATE_REMOTE_SRC);
 		});
 		makeCommand("just-run",context,() -> {
-			CompileTasks.Task_RunGame(cfg.GAME_PATH);
+			CompileTasks.Task_RunGame();
 		});
 		makeCommand("just-compile",context,() -> {
 			CompileTasks.Task_CompileGame(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);
@@ -25,7 +25,7 @@ class CommandRegistry {
 		});
 		makeCommand("run",context,() -> {
 			CompileTasks.Task_CompileGame(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);
-			CompileTasks.Task_RunGame(cfg.GAME_PATH);
+			CompileTasks.Task_RunGame();
 		});
 		makeCommand("export",context,() -> {
 			CompileTasks.Task_ExportGame(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);

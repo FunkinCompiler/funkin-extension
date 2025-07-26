@@ -1,5 +1,6 @@
 package mikolka.commands;
 
+import mikolka.vscode.DebuggerSetup;
 import mikolka.helpers.LangStrings;
 import mikolka.programs.Hxc;
 import mikolka.programs.Fnfc;
@@ -74,28 +75,8 @@ class CompileTasks {
 		hxc.processDirectory();
 	}
 
-	public static function Task_RunGame(game_path:String) {
-		var project_game_folder = FileManager.getProjectPath(game_path) ?? "";
-		var linux_bin = FileManager.doesTargetExist(Path.join([game_path, "Funkin"]));
-		var windows_bin = FileManager.doesTargetExist(Path.join([game_path, "Funkin.exe"]));
-		var mac_bin = FileManager.doesTargetExist(Path.join([game_path, "Funkin.app"])); // not supported
-		if (windows_bin) {
-			if (Sys.systemName() == "Windows")
-				Process.spawnFunkinGame(project_game_folder, "Funkin.exe");
-			else {
-				trace("[INFO] Windows build on non-windows machine. Attempting to run using wine...");
-				Process.spawnFunkinGame(project_game_folder, "Funkin.exe", "wine ");
-			}
-		} else if (linux_bin) {
-			if (Sys.systemName() == "Linux")
-				Process.spawnFunkinGame(project_game_folder, "Funkin");
-			else
-				Interaction.displayError('Incompatible FNF version. Replace it with the windows one.');
-		} else if (mac_bin && Sys.systemName() == "Mac")
-			Interaction.displayError("I personally don't know how to run the game natively on your platform\n"
-				+ "You might try to install wine and use Windows build instead");
-		else
-			Interaction.displayError('No FNF binary found. Make sure that there\'s copy of FNF in $project_game_folder directory.');
+	public static function Task_RunGame() {
+		DebuggerSetup.spawnFunkinGame();
 	}
 
 	private static function copyTemplate(mod_assets:String, export_mod_path:String) {

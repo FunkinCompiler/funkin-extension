@@ -8,33 +8,6 @@ import js.Node;
 import mikolka.vscode.Interaction;
 
 class Process {
-	public static function spawnFunkinGame(cwd:String, execName:String, cmd_prefix:String = "") {
-
-		if(Vscode.debug.activeDebugSession != null) return;
-		trace({
-			
-				type: "run-game",
-				name: "Spawn Funkin instance",
-				request: "launch",
-				cmd_prefix:cmd_prefix,
-				execName:execName,
-				cwd:cwd
-			
-		});
-		Vscode.debug.startDebugging(null,cast {
-				type: "run-game",
-				name: "Spawn Funkin instance",
-				request: "launch",
-				cmd_prefix:cmd_prefix,
-				execName:execName,
-				cwd:cwd
-			
-		}).then((sucsess) ->{
-			if(!sucsess){
-				Vscode.window.showErrorMessage("Funkin failed to funk!",{modal: true});
-			}
-		});
-	}
 	public static function checkCommand(execName:String,cwd:Null<String> = null,errTitle:String = "Error checking command"):Bool {
         var proc = ChildProcess.spawnSync(execName,{
 			cwd: cwd,

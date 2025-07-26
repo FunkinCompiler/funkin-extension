@@ -10,6 +10,7 @@
 	],
 	"main": "bin/main.js",
 	"contributes": {
+
 		"commands": [
 			{
 				"command": "hellohaxe.sayHello",
@@ -38,6 +39,36 @@
 			{
 				"command": "mikolka.export",
 				"title": "Funk: Export current mod"
+			}
+		],
+		"jsonValidation": [
+			{
+				"fileMatch": "haxelib.json",
+				"url": "http://json.schemastore.org/haxelib"
+			},
+			{
+				"fileMatch": "hxformat.json",
+				"url": "./schemas/hxformat.schema.json"
+			}
+		],
+		"taskDefinitions": [
+						{
+				"type": "funk",
+				"required": [
+					"modName",
+					"gamePath"
+				],
+				"properties": {
+					"modName": {
+						"type": "string",
+						"description": "THe name to use for the mod. If you have the mod with the same name, this task will override it!",
+						"default":"workbench"
+					},	
+					"gamePath": {
+						"type": "string",
+						"description": "THe path to your game. Only relative paths are supported for now."
+					}
+				}
 			}
 		],
 		"debuggers": [
