@@ -1,5 +1,6 @@
 package mikolka;
 
+import mikolka.vscode.providers.TaskRegistry;
 import mikolka.vscode.*;
 import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.vscode.providers.ComandRegistry;
@@ -14,6 +15,7 @@ class Main {
 			Vscode.window.showInformationMessage("Hello from Haxe!");
 		}));
 		CommandRegistry.registerCommands(context);
+		TaskRegistry.registerTasks(context);
 		DebuggerSetup.init(context);
 		// context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("funkin-game",{
 		// 	provideDebugConfigurations: (folder, ?token) -> {

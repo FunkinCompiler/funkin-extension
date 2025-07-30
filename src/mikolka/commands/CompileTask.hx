@@ -29,13 +29,14 @@ class CompileTask {
 			return;
 		}
 		FileManager.getProjectPath(project_path -> {
+			trace("Got path");
 			var export_mod_path = Path.join([game_cwd, "mods", mod_name]);
 
 			var projectConfig = new FunkCfg(project_path);
 			Task_CompileGame({
-				hxc_source: projectConfig.MOD_HX_FOLDER,
-				mod_assets: projectConfig.MOD_CONTENT_FOLDER,
-				fnfc_assets: projectConfig.MOD_FNFC_FOLDER,
+				hxc_source: Path.join([project_path, projectConfig.MOD_HX_FOLDER]),
+				mod_assets: Path.join([project_path, projectConfig.MOD_CONTENT_FOLDER]),
+				fnfc_assets: Path.join([project_path, projectConfig.MOD_FNFC_FOLDER]),
 				export_mod_path: export_mod_path,
 				writeLine: writeLine
 			});
@@ -44,8 +45,10 @@ class CompileTask {
 
 	static function Task_CompileGame(cfg:CompileTaskConfig) // baseGane_modDir, Mod_Directory
 	{
-		if (!FileManager.isManifestPresent(cfg.mod_assets))
+		if (!FileManager.isManifestPresent(cfg.mod_assets)) {
+			Interaction.displayErrorAlert("Error", 'No manifest found in ${cfg.mod_assets}!');
 			return;
+		}
 		FileManager.deleteDirRecursively(cfg.export_mod_path);
 		copyTemplate(cfg.mod_assets, cfg.export_mod_path);
 		var fnfc = new Fnfc(cfg.fnfc_assets, cfg.export_mod_path, cfg.writeLine);

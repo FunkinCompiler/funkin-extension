@@ -15,15 +15,19 @@ typedef TerminalOptions = {
 class OutputTerminal  {
     public static function makeTerminal(action:(TerminalOptions) -> Void):Pseudoterminal {
         var writeEmitter = new EventEmitter<String>();
+        var exitEmitter = new EventEmitter<Int>();
         var token = new CancellationTokenSource();
         return {
             onDidWrite: writeEmitter.event,
+            onDidClose: exitEmitter.event,
             open: initialDimensions -> {
+                trace("Running action:");
                 action({
                     dimensions: initialDimensions,
                     token: token.token,
                     writeLine: makeWriterCallback(writeEmitter)
                 });
+                exitEmitter.fire(0);
                 token.dispose();
             },
             close: () -> {

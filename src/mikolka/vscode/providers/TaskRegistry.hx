@@ -38,6 +38,7 @@ class TaskRegistry {
 				var full_project_path = Vscode.workspace.workspaceFolders[0].uri.fsPath;
 					
 				accept(OutputTerminal.makeTerminal(struct -> {
+					trace("Getting cwd:");
 					var game_cwd = Path.join([full_project_path, manifest.gamePath]);
 					CompileTask.CompileCurrentMod(game_cwd, manifest.modName, struct.writeLine);
 				}));
@@ -67,8 +68,9 @@ class TaskRegistry {
 	 * often created from information found in the `tasks.json`-file. Such tasks miss
 	 * the information on how to execute them and a task provider must fill in
 	 * the missing information in the `resolveTask`-method. This method will not be
-	 * called for tasks returned from the above `provideTasks` method since those
-	 * tasks are always fully resolved. A valid default implementation for the
+	 * called for tasks returned from the above `provideTasks` method (LIAR!!!) 
+	 *
+	 * A valid default implementation for the
 	 * `resolveTask` method is to return `undefined`.
 	 *
 	 * Note that when filling in the properties of `task`, you _must_ be sure to
@@ -80,6 +82,7 @@ class TaskRegistry {
 	 * @return The resolved task
 	 */
 	static function resolveTask(task:Task, token:CancellationToken):ProviderResult<Task> {
+		trace("Resolving partial task");
 		task.execution = getModCompileTask();
 		return task;
 	}
