@@ -1,6 +1,7 @@
 package mikolka;
 
 import mikolka.vscode.*;
+import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.vscode.providers.ComandRegistry;
 import mikolka.config.FunkCfg;
 
@@ -9,7 +10,6 @@ class Main {
     @:expose("activate")
     static function activate(context:vscode.ExtensionContext) {
         Vscode.window.showInformationMessage("Hello from Haxe!");
-		projectConfig = new FunkCfg();
 		context.subscriptions.push(Vscode.commands.registerCommand("hellohaxe.sayHello", function() {
 			Vscode.window.showInformationMessage("Hello from Haxe!");
 		}));

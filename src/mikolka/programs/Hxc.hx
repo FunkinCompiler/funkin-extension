@@ -22,10 +22,12 @@ class Hxc {
 
 	var src_path:String;
 	var mod_export_path:String;
+	var writeLine:String -> Void;
 
-	public function new(src_path:String, mod_export_path:String) {
+	public function new(src_path:String, mod_export_path:String,writeLine:String -> Void) {
 		this.src_path = src_path;
 		this.mod_export_path = mod_export_path; // baseGane_modDir, Mod_Directory
+		this.writeLine = writeLine;
 	}
 
 	public function processDirectory() {
@@ -55,7 +57,7 @@ class Hxc {
 
 		var targetDir = Path.join(filePackage);
 		FileSystem.createDirectory(targetDir);
-		trace(file_name.substr(1));
+		writeLine(file_name.substr(1));
 		File.saveContent(Path.join([targetDir, Path.withoutDirectory(file_name) + "c"]), result);
 	}
 }

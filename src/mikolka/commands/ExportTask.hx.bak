@@ -1,20 +1,14 @@
 package mikolka.commands;
 
-import mikolka.vscode.DebuggerSetup;
-import mikolka.helpers.LangStrings;
-import mikolka.programs.Hxc;
-import mikolka.programs.Fnfc;
-import mikolka.helpers.Process;
-import mikolka.vscode.Interaction;
 import mikolka.helpers.ZipTools;
 import mikolka.helpers.FileManager;
+import mikolka.helpers.LangStrings;
+import mikolka.vscode.Interaction;
 
-import haxe.io.Path;
-import sys.FileSystem;
 import sys.io.File;
 
-class CompileTasks {
-	public static function Task_ExportGame(mod_assets:String, hxc_source:String, fnfc_assets:String, export_mod_path:String) {
+class ExportTask {
+    	public static function Task_ExportGame(mod_assets:String, hxc_source:String, fnfc_assets:String, export_mod_path:String) {
 		if (!FileManager.isManifestPresent(mod_assets)) {
 			Interaction.displayError(LangStrings.MSG_EXPORT_META_MISSING);
 			return;
@@ -61,29 +55,5 @@ class CompileTasks {
 				Interaction.displayError("Action canceled!");
 			});
 		});
-	}
-
-	public static function Task_CompileGame(mod_assets:String, hxc_source:String, fnfc_assets:String, export_mod_path:String) // baseGane_modDir, Mod_Directory
-	{
-		if (!FileManager.isManifestPresent(mod_assets))
-			return;
-		FileManager.deleteDirRecursively(export_mod_path);
-		copyTemplate(mod_assets, export_mod_path);
-		var fnfc = new Fnfc(fnfc_assets, export_mod_path);
-		var hxc = new Hxc(hxc_source, export_mod_path);
-		fnfc.processDirectory();
-		hxc.processDirectory();
-	}
-
-	public static function Task_RunGame() {
-		DebuggerSetup.spawnFunkinGame();
-	}
-
-	private static function copyTemplate(mod_assets:String, export_mod_path:String) {
-		FileSystem.createDirectory(mod_assets);
-		FileManager.scanDirectory(mod_assets, s -> {
-			FileSystem.createDirectory(Path.join([export_mod_path, Path.directory(s)]));
-			File.copy('$mod_assets/$s', Path.join([export_mod_path, s]));
-		}, s -> {});
 	}
 }

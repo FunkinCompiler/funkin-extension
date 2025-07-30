@@ -17,43 +17,46 @@ typedef RepoLibrary = {
 	commit:String
 }
 
-class SetupTask extends Task {
+class SetupTask {
 
-	public function new() {
-		
+	public function new(writeLine:String -> Void) {
+		this.writeLine = writeLine;
 	}
-	private static var localCwd:String = "";
-	public static function task_setupEnvironment(template_url:String) {
+	var writeLine:String -> Void;
+	private var localCwd:String = "";
+
+	public function task_setupEnvironment() {
         var force_lib_install:Bool = false;
 		var postfix = " --never";
-		Sys.println(LangStrings.MSG_SETUP_CHECKING_GIT);
+
+		writeLine(LangStrings.MSG_SETUP_CHECKING_GIT);
 		if (!Process.checkCommand("git -v")) {
 			Interaction.displayError(LangStrings.SETUP_GIT_ERROR);
 			return;
 		}
-		Sys.println(LangStrings.MSG_SETUP_CHECKING_HAXE);
+		writeLine(LangStrings.MSG_SETUP_CHECKING_HAXE);
 		if (!Process.checkCommand("haxe --version")) {
 			Interaction.displayError(LangStrings.SETUP_HAXE_ERROR);
 			return;
 		}
 
-		Sys.println("[SETUP] Checking haxelib..");
+		writeLine("[SETUP] Checking haxelib..");
 		if (!Process.isPureHaxelib()) {
 			Interaction.requestConfirmation(LangStrings.SETUP_HAXELIB_ERROR,() ->{
 
-				Sys.println("Continuing!");
-				installFunkinHaxelibs(template_url);
+				writeLine("Continuing!");
+				installFunkinHaxelibs();
 			},() ->{
 				Interaction.displayError("Setup aborted!");
 
 			});
 		}
-		else installFunkinHaxelibs(template_url);
+		else installFunkinHaxelibs();
 	}
 
-	static function installFunkinHaxelibs(template_url:String){
+	function installFunkinHaxelibs(){
 
-		Sys.println("[SETUP] Reading dependencies..");
+		writeLine("[SETUP] Reading dependencies..");
 		runSetupCommand("haxelib git thx.core  https://github.com/fponticelli/thx.core.git 2bf2b992e06159510f595554e6b952e47922f128 --never --skip-dependencies");
 		runSetupCommand("haxelib git hmm  https://github.com/FunkinCrew/hmm.git --never --skip-dependencies");
 		runSetupCommand("haxelib git grig.audio  https://gitlab.com/haxe-grig/grig.audio.git 57f5d47f2533fd0c3dcd025a86cb86c0dfa0b6d2 --never --skip-dependencies");
@@ -61,11 +64,11 @@ class SetupTask extends Task {
 		var haxelib_repo = Process.resolveCommand("haxelib config").replace("\n","");
 
 		// This installs into a local repo. We need to move them
-		Sys.println("CWD: "+'${haxelib_repo}funkin/git/');
+		writeLine("CWD: "+'${haxelib_repo}funkin/git/');
 		localCwd = '${haxelib_repo}funkin/git/';
 		runSetupCommand("haxelib run hmm reinstall");
 
-		Sys.println("[SETUP] Moving dependencies..");
+		writeLine("[SETUP] Moving dependencies..");
 		for(dir in FileSystem.readDirectory('${haxelib_repo}funkin/git/.haxelib/')){
 			
 			try {
@@ -76,7 +79,7 @@ class SetupTask extends Task {
 					);
 				}
 				catch(x){
-					trace('Move failed: ${haxelib_repo}funkin/git/.haxelib/$dir -> ${haxelib_repo}$dir/');
+					writeLine('Move failed: ${haxelib_repo}funkin/git/.haxelib/$dir -> ${haxelib_repo}$dir/');
 				}
 		}
 		var grig_dev_file = File.write('${haxelib_repo}.dev');
@@ -84,15 +87,12 @@ class SetupTask extends Task {
 		grig_dev_file.flush();
 		grig_dev_file.close();
 
-		Sys.println('[SETUP] Checking mod template..');
-		if (!ProjectTasks.assertTemplateZip(template_url)) {
-			Sys.println("Mod template is missing!");
-		}
+		writeLine('[SETUP] Checking mod template..');
 
-		Sys.println("[SETUP] Setup done!");
+		writeLine("[SETUP] Setup done!");
 	}
-    static function runSetupCommand(cmd:String):Bool {
-        Sys.println("   > " + cmd);
+    function runSetupCommand(cmd:String):Bool {
+        writeLine("   > " + cmd);
         var code = Process.checkCommand(cmd,localCwd,"Setup step failed");
 
 		return code;

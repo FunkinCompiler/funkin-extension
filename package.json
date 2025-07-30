@@ -8,6 +8,16 @@
 	"activationEvents": [
 		"workspaceContains:./funk.cfg"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mikolka9144/funkin-extension.git"
+	},
+	"files": [
+		"bin",
+		"node_modules",
+		"LICENSE.md",
+		"README.md"
+	],
 	"main": "bin/main.js",
 	"contributes": {
 

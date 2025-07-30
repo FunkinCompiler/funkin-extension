@@ -13,9 +13,11 @@ using StringTools;
 class Fnfc {
     private var path:String;
 	  var mod_export_path:String;
-    public function new(fnfc_path:String,mod_export_path:String) {
+    var writeLine:String -> Void;
+    public function new(fnfc_path:String,mod_export_path:String,writeLine:String -> Void) {
         path = fnfc_path;
         this.mod_export_path = mod_export_path; //baseGane_modDir, Mod_Directory
+        this.writeLine = writeLine;
     }
     public function processDirectory() {
         FileManager.scanDirectory(path,processFile, s -> {});
@@ -23,11 +25,11 @@ class Fnfc {
     public function processFile(file_path:String) {
         if (!file_path.endsWith(".fnfc"))
             {
-              trace(LangStrings.FNFC_INVALID_FILE(file_path));
+              writeLine(LangStrings.FNFC_INVALID_FILE(file_path));
               return;
             }
             var zip = Reader.readZip(File.read(Path.join([path, file_path])));
-            trace(file_path.substr(1));
+            writeLine(file_path.substr(1));
       
             var fnfc_manifestList = zip.filter(s -> s.fileName == "manifest.json");
             if (fnfc_manifestList.length != 1)
@@ -56,7 +58,7 @@ class Fnfc {
               }
               else
               {
-                trace('[WARN] file ${node.fileName} is not known to be valid. Ignoring!');
+                writeLine('[WARN] file ${node.fileName} is not known to be valid. Ignoring!');
                 continue;
               }
               FileSystem.createDirectory(Path.directory(target_File));

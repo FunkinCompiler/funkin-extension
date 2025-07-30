@@ -1,6 +1,5 @@
 package mikolka.helpers;
 
-import vscode.Uri;
 import sys.io.File;
 import haxe.zip.Entry;
 import haxe.io.Path;
@@ -42,21 +41,47 @@ class FileManager {
 
 	/**
 		Converts given target to the path from the current workspace folder,
-		or `null` if no folder is opened.
+		If not opened, request a user to select one.
 	**/
-	public static function getProjectPath(target:String):Null<String> {
-		if(Vscode.workspace.workspaceFolders.length == 0) return null;
-		return Path.join([Vscode.workspace.workspaceFolders[0].uri.fsPath,target]);
+	// Copied from vshaxe extension
+	public static function getProjectPath(onResult:(String) -> Void) {
+		switch Vscode.workspace.workspaceFolders {
+			case null | []:
+				Vscode.window.showOpenDialog({
+					canSelectFolders: true,
+					canSelectFiles: false
+				}).then(folders -> {
+					if (folders != null && folders.length > 0) {
+						Vscode.commands.executeCommand("vscode.openFolder", folders[0]);
+						onResult(folders[0].fsPath);
+					}
+				});
+			case [folder]:
+				onResult(folder.uri.fsPath);
+			case folders:
+				final options = {
+					placeHolder: "Select a folder to set up a Haxe project into...",
+				}
+				Vscode.window.showWorkspaceFolderPick(options).then(function(folder) {
+					if (folder == null)
+						return;
+					onResult(folder.uri.fsPath);
+				});
+		}
 	}
-
-	/**
-		CChecks iof the given target exists relative to the opened folder
-	**/
-	public static function doesTargetExist(target:String):Bool {
-		var path = getProjectPath(target);
-		return path != null && FileSystem.exists(path);
+	public static function copyRec(from:String, to:String):Void {
+		function loop(src, dst) {
+			final fromPath = from + src;
+			final toPath = to + dst;
+			if (FileSystem.isDirectory(fromPath)) {
+				FileSystem.createDirectory(toPath);
+				for (file in FileSystem.readDirectory(fromPath))
+					loop(src + "/" + file, dst + "/" + file);
+			} else {
+				File.copy(fromPath, toPath);
+			}
+		}
+		loop("", "");
 	}
-
-
 
 }

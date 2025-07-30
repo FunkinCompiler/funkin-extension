@@ -11,25 +11,20 @@ class CommandRegistry {
         var cfg = Main.projectConfig;
         
 		makeCommand("setup",context,() -> {
-			SetupTask.task_setupEnvironment(cfg.TEMPLATE_REMOTE_SRC);
+			//var console = Out
+			OutputTerminal.makeTerminal(struct -> {
+				var setup = new SetupTask(struct.writeLine);
+				setup.task_setupEnvironment();
+			});
 		});
 		makeCommand("new",context,() -> {
-			ProjectTasks.task_setupProject(cfg.TEMPLATE_REMOTE_SRC);
+			new ProjectTasks(context.asAbsolutePath("./scaffold")).makeProject();
 		});
-		makeCommand("just-run",context,() -> {
-			CompileTasks.Task_RunGame();
-		});
-		makeCommand("just-compile",context,() -> {
-			CompileTasks.Task_CompileGame(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);
-			trace("Done!");
-		});
-		makeCommand("run",context,() -> {
-			CompileTasks.Task_CompileGame(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);
-			CompileTasks.Task_RunGame();
-		});
-		makeCommand("export",context,() -> {
-			CompileTasks.Task_ExportGame(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);
-			trace("Done!");
-		});
+
+		//TODO Zip exports are a bit wonky right now!
+		// makeCommand("export",context,() -> {
+		// 	CompileTask.CompileCurrentMod(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);
+		// 	trace("Done!");
+		// });
     }
 }

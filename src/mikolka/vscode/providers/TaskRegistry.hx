@@ -1,5 +1,9 @@
 package mikolka.vscode.providers;
 
+import js.lib.Promise;
+import js.lib.Promise.Thenable;
+import haxe.io.Path;
+import mikolka.commands.CompileTask;
 import vscode.Pseudoterminal;
 import mikolka.vscode.definitions.FunkTaskDefinition;
 import vscode.ProviderResult;
@@ -9,9 +13,8 @@ import vscode.Task;
 import vscode.TaskScope;
 import vscode.CustomExecution;
 
-class TaskRegistry  {
-
-		/**
+class TaskRegistry {
+	/**
 	 * Constructs a CustomExecution task object. The callback will be executed when the task is run, at which point the
 	 * extension should return the Pseudoterminal it will "run in". The task should wait to do further execution until
 	 * {@link Pseudoterminal.open} is called. Task cancellation should be handled using
@@ -20,23 +23,38 @@ class TaskRegistry  {
 	 * @param callback The callback that will be called when the task is started by a user. Any ${} style variables that
 	 * were in the task definition will be resolved and passed into the callback as `resolvedDefinition`.
 	 */
-
+	// This configures the code for the task
 	static function getModCompileTask():CustomExecution {
-		return new CustomExecution(resolvedDefinition -> {
+		return new CustomExecution(resolvedDefinition -> new Promise((accept, reject) -> {
 			var manifest:FunkTaskDefinition = cast resolvedDefinition;
 			trace("Task executed");
-			return 
-		});
-	} 
+
+			if (Vscode.workspace.workspaceFolders == null || Vscode.workspace.workspaceFolders.length == 0) {
+				reject("No folder seems to be opened! This is not supported!");
+				
+			}
+			else{
+				
+				var full_project_path = Vscode.workspace.workspaceFolders[0].uri.fsPath;
+					
+				accept(OutputTerminal.makeTerminal(struct -> {
+					var game_cwd = Path.join([full_project_path, manifest.gamePath]);
+					CompileTask.CompileCurrentMod(game_cwd, manifest.modName, struct.writeLine);
+				}));
+			}
+
+		}));
+	}
 
 	public static function registerTasks(context:vscode.ExtensionContext) {
 		var defaultTask = new Task(cast {
 			type: "funk",
 			modName: "workbench",
 			gamePath: "../funkinGame/"
-		},TaskScope.Workspace,"Compile current V-Slice mod","Funk",getModCompileTask());
+		}, TaskScope.Workspace, "Compile current V-Slice mod", "Funk",
+			getModCompileTask());
 
-		context.subscriptions.push(Vscode.tasks.registerTaskProvider("funk",{
+		context.subscriptions.push(Vscode.tasks.registerTaskProvider("funk", {
 			resolveTask: TaskRegistry.resolveTask,
 			provideTasks: token -> {
 				return [defaultTask];
@@ -61,7 +79,7 @@ class TaskRegistry  {
 	 * @param token A cancellation token.
 	 * @return The resolved task
 	 */
-	static function resolveTask(task:Task, token:CancellationToken):ProviderResult<Task>{
+	static function resolveTask(task:Task, token:CancellationToken):ProviderResult<Task> {
 		task.execution = getModCompileTask();
 		return task;
 	}

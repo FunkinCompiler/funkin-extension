@@ -1,5 +1,6 @@
 package mikolka.config;
 
+import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File;
 using StringTools;
@@ -12,8 +13,8 @@ class FunkCfg {
     ];
     
     private var map:Map<String,String>;
-    public function new(cfg_path:String = "funk.cfg") {
-        map = loadFile(cfg_path);
+    public function new(workspace_folder:String,cfg_path:String = "funk.cfg") {
+        map = loadFile(Path.join([workspace_folder,cfg_path]));
     }
     private function getKey(key:String) {
         if(!map.exists(key)) return DEFAULT_MAP[key];
@@ -34,7 +35,7 @@ class FunkCfg {
     }
 
 
-    public static function loadFile(cfg_path:String) {
+    public static function loadFile(cfg_path:String = "") {
         if(!FileSystem.exists(cfg_path)) {
             Sys.println("No config! Creating a new one.");
             saveFile(cfg_path,DEFAULT_MAP);
