@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Manifest for your mod. Without it your mod won't be recognised my the game.",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A readable name for the mod.",
+      "minLength": 1
+    },
+    "description": {
+      "description": "A readable description for the mod.",
+      "type": "string",
+      "minLength": 1
+    },
+    "homepage": {
+      "type": "string",
+      "description": "A URL where users can learn more about your mod."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional properties for this mod. You can later pull them from this mod's 'ModMetadata.metadata' object."
+    },
+    "contributors": {
+      "type": "array",
+      "description": "List of authors contributing to the creation of this mod.",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The contributor's name.",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "description": "The role the contributor played, for example 'Artist' or 'Programmer'."
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of this author."
+          },
+          "url": {
+            "type": "string",
+            "description": "A link to this author's personal page. It might be simple cardd, or github profile or anything else!"
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "A list of mods that this mods depends on and and their versions. Without those present your mod won't be loaded."
+    },
+    "optionalDependencies": {
+      "type": "object",
+      "description": "A list of mods that this mods can depend on and their versions. In case those are present they'll be loaded BEFORE your mod."
+    },
+    "api_version": {
+      "type": "string",
+      "description": "FNF's API version this mod makes use of.",
+      "default": "0.1.0",
+      "minLength": 1
+    },
+    "mod_version": {
+      "type": "string",
+      "description": "Current version of this mod (you can change this when exporting the mod).",
+      "minLength": 1
+    },
+    "license": {
+      "type": "string",
+      "description": "A name of the licence under which this mod is distributed.",
+      "default": "Apache-2.0",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "contributors",
+    "api_version",
+    "mod_version"
+  ]
+}

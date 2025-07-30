@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import mikolka.config.VsCodeConfig;
 import mikolka.helpers.FileManager;
 import haxe.io.Path;
 import vscode.debugProtocol.DebugProtocol.LaunchRequestArguments;
@@ -62,7 +63,9 @@ class DebuggerSetup {
 		if(base.cmd_prefix == null) base.cmd_prefix = "";
 		if(base.args == null) base.args = [];
 		if(base.trace == null) base.trace = true;
-		if(base.cwd == null) base.cwd = "../funkinGame/";
+		if(base.cwd == null) base.cwd = new VsCodeConfig().GAME_PATH;
+		trace(base.preLaunchTask);
+		if(base.preLaunchTask == null) base.preLaunchTask = "Funk: Compile current V-Slice mod";
 		base.cwd = Path.join([project_game_folder,base.cwd]);
 
 		trace(base);

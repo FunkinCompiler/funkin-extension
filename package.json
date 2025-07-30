@@ -1,68 +1,119 @@
 {
-	"name": "hellohaxe",
-	"publisher": "",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.4.0"
-	},
-	"activationEvents": [
-		"workspaceContains:./funk.cfg"
+	"name": "funkin-compiler",
+	"publisher": "mikolka9144",
+	"displayName": "Funkin Compiler",
+	"version": "0.3.0",
+	"description": "A simple extension to both develop and compile mods made for the game \"Fridat Night Funkin'\" in a more comfortable environment than a notepad.",
+	"categories": [
+		"Programming Languages",
+		"Formatters",
+		"Debuggers",
+		"Linters"
 	],
+	"galleryBanner": {
+		"theme": "dark",
+		"color": "#cc2c9e"
+	},
+	"icon": "assets/logo.png",
+	"license": "GPL-3.0",
+	"bugs": "https://github.com/mikolka9144/funkin-extension/issues",
+	"homepage": "https://github.com/mikolka9144/funkin-extension/blob/main/README.md",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/mikolka9144/funkin-extension.git"
 	},
+	"capabilities": {
+		"virtualWorkspaces": {
+			"supported": false,
+			"description": "It doesn't work"
+		}
+	},
+	"engines": {
+		"vscode": "^1.4.0"
+	},
+	"extensionDependencies": [
+		"nadako.vshaxe",
+		"openfl.lime-vscode-extension"
+	],
+	"activationEvents": [
+		"workspaceContains:./funk.cfg"
+	],
 	"files": [
 		"bin",
+		"assets",
 		"node_modules",
-		"LICENSE.md",
-		"README.md"
+		"LICENSE.md"
 	],
 	"main": "bin/main.js",
 	"contributes": {
-
+		"configuration": [
+			{
+				"title": "Funkin compiler",
+				"properties": {
+					"funkinCompiler.gamePath": {
+						"description": "A path to your FNF V-Slice instance. It is recommended to use relative paths here, but absolute should also work.",
+						"type": "string",
+						"default": "../funkinGame/"
+					},
+					"funkinCompiler.modName": {
+						"description": "Name of the mod folder to compile your mod into.",
+						"type": "string",
+						"default": "workbench"
+					}
+				}
+			}
+		],
 		"commands": [
 			{
 				"command": "hellohaxe.sayHello",
+				"category": "Funkin",
 				"title": "Say Hello"
 			},
 			{
 				"command": "mikolka.setup",
-				"title": "Funk: Configure compiler"
+				"category": "Funkin",
+				"title": "Configure compiler"
 			},
 			{
 				"command": "mikolka.new",
-				"title": "Funk: Make new project"
-			},
-			{
-				"command": "mikolka.just-run",
-				"title": "Funk: Just run"
-			},
-			{
-				"command": "mikolka.just-compile",
-				"title": "Funk: Just compile"
-			},
-			{
-				"command": "mikolka.run",
-				"title": "Funk: Compile and Run"
-			},
-			{
-				"command": "mikolka.export",
-				"title": "Funk: Export current mod"
+				"category": "Funkin",
+				"title": "Make new project"
 			}
 		],
 		"jsonValidation": [
 			{
-				"fileMatch": "haxelib.json",
-				"url": "http://json.schemastore.org/haxelib"
+				"fileMatch": [
+					"**/_polymod_meta.json"
+				],
+				"url": "./assets/jsonc/manifest.json"
 			},
 			{
-				"fileMatch": "hxformat.json",
-				"url": "./schemas/hxformat.schema.json"
+				"fileMatch": [
+					"**/data/levels/*.json"
+				],
+				"url": "./assets/jsonc/levels.json"
+			},
+			{
+				"fileMatch": [
+					"**/data/stages/*.json"
+				],
+				"url": "./assets/jsonc/stages.json"
+			},
+			{
+				"fileMatch": [
+					"**/data/characters/*.json"
+				],
+				"url": "./assets/jsonc/chars.json"
+			},
+			{
+				"fileMatch": [
+					"**/data/players/*.json"
+				],
+				"url": "./assets/jsonc/players.json"
 			}
 		],
 		"taskDefinitions": [
-						{
+			{
 				"type": "funk",
 				"required": [
 					"modName",
@@ -71,9 +122,8 @@
 				"properties": {
 					"modName": {
 						"type": "string",
-						"description": "THe name to use for the mod. If you have the mod with the same name, this task will override it!",
-						"default":"workbench"
-					},	
+						"description": "THe name to use for the mod. If you have the mod with the same name, this task will override it!"
+					},
 					"gamePath": {
 						"type": "string",
 						"description": "THe path to your game. Only relative paths are supported for now."

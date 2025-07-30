@@ -18,7 +18,7 @@ class CommandRegistry {
 			});
 		});
 		makeCommand("new",context,() -> {
-			new ProjectTasks(context.asAbsolutePath("./scaffold")).makeProject();
+			new ProjectTasks(context.asAbsolutePath("./assets/scaffold")).makeProject();
 		});
 
 		//TODO Zip exports are a bit wonky right now!

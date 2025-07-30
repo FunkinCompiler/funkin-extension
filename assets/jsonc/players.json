@@ -1,0 +1,223 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "File responsible for a playable character in the Player selector",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version number for the Playable Character data file format.",
+      "default": "1.0.0"
+    },
+    "name": {
+      "type": "string",
+      "description": "The readable name for the character. Doesn't have any use as far as I know."
+    },
+    "ownedChars": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "The list of Characters this character owns. If a song has any of these characters set as 'bf', it'll be displayed by this character"
+    },
+    "showUnownedChars": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, this character also displays songs not belonging to any playable characters"
+    },
+    "unlocked": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the character is unlocked. If `false`, you might be able to unlock it under a desired condition."
+    },
+    "freeplayStyle": {
+      "description": "The ID for a Freeplay style to display. ",
+      "type": "string",
+      "default": "bf"
+    },
+    "freeplayDJ": {
+      "type": "object",
+      "description": "Data for the DJ in the Freeplay menu.",
+      "properties": {
+        "assetPath": {
+          "type": "string",
+          "description": "The folder where the Animate Atlas for this character is located, relative to the images/ folder."
+        },
+        "text1": {
+          "type": "string",
+          "description": "Text 1 for the BF's freeplay card.You can ignor this if you're not using this card for your character."
+        },
+        "text2": {
+          "type": "string",
+          "description": "Text 1 for the BF's freeplay card.You can ignor this if you're not using this card for your character."
+        },
+        "text3": {
+          "type": "string",
+          "description": "Text 1 for the BF's freeplay card.You can ignor this if you're not using this card for your character."
+        },
+        "animations": {
+          "type": "array",
+          "description": "A list of animation data for the DJ chatacter.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "intro",
+                  "idle",
+                  "idleEasterEgg",
+                  "confirm",
+                  "fistPump",
+                  "loss",
+                  "charSelect"
+                ]
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Name of the SYMBOL to use for this animation (NOT THE TAG NAME!)"
+              },
+              "offsets": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "description": "Offsets for this animation.",
+                "default": [0, 0]
+              }
+            },
+            "required": ["name", "prefix", "offsets"]
+          }
+        }
+      }
+    },
+    "charSelect": {
+      "type": "object",
+      "description": "Data for the Character Select menu.",
+      "properties": {
+        "position": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8,
+          "description": " The preferred grid square for the character in the Character Select grid."
+        },
+        "gf": {
+          "type": "object",
+          "description": "Data for the GF to be used for this character.",
+          "properties": {
+            "assetPath": {
+              "type": "string",
+              "description": "The folder where the Animate Atlas for this character is located, relative to the images/ folder. "
+            },
+            "animInfoPath": {
+              "type": "string",
+              "description": "A path to a Flash JSFL file describing character sliding movement."
+            },
+            "visualizer": {
+              "type": "boolean",
+              "description": "Whether the character is hooked up to display a visualizer (like Nene's ABot).",
+              "default": false
+            }
+          }
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "description": "Data for the Results screen.",
+      "properties": {
+        "music": {
+          "type": "object",
+          "description": "Data for the music to play in the Results Screen. Make sure to include a metadata file in the folder to tell the game what BPM the song is, and how to loop it.",
+          "properties": {
+            "PERFECT_GOLD": {
+              "type": "string",
+              "description": "The path to a music track in the music/ folder. Played during the Perfect rank animation with all SICKs."
+            },
+            "PERFECT": {
+              "type": "string",
+              "description": "The path to a music track in the music/ folder. Played during the Perfect rank animation."
+            },
+            "EXCELLENT": {
+              "type": "string",
+              "description": "The path to a music track in the music/ folder. Played during the Excellent rank animation."
+            },
+            "GREAT": {
+              "type": "string",
+              "description": "The path to a music track in the music/ folder. Played during the Great rank animation."
+            },
+            "GOOD": {
+              "type": "string",
+              "description": "The path to a music track in the music/ folder. Played during the Good rank animation."
+            },
+            "SHIT": {
+              "type": "string",
+              "description": "The path to a music track in the music/ folder. Played during the Loss rank animation."
+            }
+          }
+        },
+        "perfectGold": {
+          "type": "array",
+          "description": "Data for the animation played when the player gets a Perfect rank with all SICKs. ",
+          "items": {
+            "$ref": "#/properties/results/definitions/anim"
+          }
+        },
+        "perfect": {
+          "type": "array",
+          "description": "Data for the animation played when the player gets a Perfect rank with all SICKs. ",
+          "items": {
+            "$ref": "#/properties/results/definitions/anim"
+          }
+        },
+        "excellent": {
+          "type": "array",
+          "description": "Data for the animation played when the player gets a Excellent rank. ",
+          "items": {
+            "$ref": "#/properties/results/definitions/anim"
+          }
+        },
+        "great": {
+          "type": "array",
+          "description": "Data for the animation played when the player gets a Great rank.",
+          "items": {
+            "$ref": "#/properties/results/definitions/anim"
+          }
+        },
+        "good": {
+          "type": "array",
+          "description": "Data for the animation played when the player gets a Good rank.",
+          "items": {
+            "$ref": "#/properties/results/definitions/anim"
+          }
+        },
+        "loss": {
+          "type": "array",
+          "description": "Data for the animation played when the player gets a L rank.",
+          "items": {
+            "$ref": "#/properties/results/definitions/anim"
+          }
+        }
+      },
+      "definitions": {
+        "anim": {
+          "type": "object",
+          "properties": {
+            "renderType":{
+              "type":"string",
+              "description": "Rendering type of this sprite. Used wnen determinating how to load it.",
+              "enum": [
+                "animateatlas",
+                "sparrow"
+              ],
+              "default":"animateatlas"
+            },
+            "assetPath":{
+              "type":"string",
+              "description": "A path to the graphic for this sprite."
+            }
+          }
+        }
+      }
+    }
+  },
+  "type": "object"
+}

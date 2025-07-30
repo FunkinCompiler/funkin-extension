@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import mikolka.config.VsCodeConfig;
 import js.lib.Promise;
 import js.lib.Promise.Thenable;
 import haxe.io.Path;
@@ -27,33 +28,34 @@ class TaskRegistry {
 	static function getModCompileTask():CustomExecution {
 		return new CustomExecution(resolvedDefinition -> new Promise((accept, reject) -> {
 			var manifest:FunkTaskDefinition = cast resolvedDefinition;
-			trace("Task executed");
+
+			// Pulling the config in case the tasks missed those
+			var vscodeConfig = new VsCodeConfig();
+			if (manifest.modName == null || manifest.modName == "")
+				manifest.modName = vscodeConfig.MOD_NAME;
+
+			if (manifest.gamePath == null || manifest.gamePath == "")
+				manifest.gamePath = vscodeConfig.GAME_PATH;
+
+			trace(manifest);
+			trace(vscodeConfig.MOD_NAME);
 
 			if (Vscode.workspace.workspaceFolders == null || Vscode.workspace.workspaceFolders.length == 0) {
 				reject("No folder seems to be opened! This is not supported!");
-				
-			}
-			else{
-				
+			} else {
 				var full_project_path = Vscode.workspace.workspaceFolders[0].uri.fsPath;
-					
+
 				accept(OutputTerminal.makeTerminal(struct -> {
 					trace("Getting cwd:");
 					var game_cwd = Path.join([full_project_path, manifest.gamePath]);
 					CompileTask.CompileCurrentMod(game_cwd, manifest.modName, struct.writeLine);
 				}));
 			}
-
 		}));
 	}
 
 	public static function registerTasks(context:vscode.ExtensionContext) {
-		var defaultTask = new Task(cast {
-			type: "funk",
-			modName: "workbench",
-			gamePath: "../funkinGame/"
-		}, TaskScope.Workspace, "Compile current V-Slice mod", "Funk",
-			getModCompileTask());
+		var defaultTask = new Task({type: "funk"}, TaskScope.Workspace, "Compile current V-Slice mod", "Funk", getModCompileTask());
 
 		context.subscriptions.push(Vscode.tasks.registerTaskProvider("funk", {
 			resolveTask: TaskRegistry.resolveTask,
@@ -83,7 +85,9 @@ class TaskRegistry {
 	 */
 	static function resolveTask(task:Task, token:CancellationToken):ProviderResult<Task> {
 		trace("Resolving partial task");
-		task.execution = getModCompileTask();
+
+		if (task.execution == null)
+			task.execution = getModCompileTask();
 		return task;
 	}
 }

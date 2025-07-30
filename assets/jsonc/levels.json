@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "File defining a week/level in V-slice FNF",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version number for the Level data file format. This can control whethever certain features are available to you or if this file will load at all.",
+      "default": "1.0.1",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "The version number for the Level data file format.",
+      "minLength": 1
+    },
+    "visible": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this story level is visible in the Story Menu."
+    },
+    "titleAsset": {
+      "type": "string",
+      "description": "The asset to use for the level name in the list of level, relative to the 'images' folder in your mod folder.",
+      "minLength": 1
+    },
+    "props": {
+      "type": "array",
+      "description": "Data for the props to display on the Story Menu when the level is selected. For example, Week 1 will display Daddy Dearest, Boyfriend, and Girlfriend.",
+      "uniqueItems": true,
+      "minItems": 0,
+      "items": {
+        "required": ["assetPath"],
+        "properties": {
+          "assetPath": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A path to the image/sparrow sprite to use for this prop"
+          },
+          "scale": {
+            "type": "number",
+            "description": "A scale for this prop's sprite",
+            "default": 1.0
+          },
+          "alpha": {
+            "type": "number",
+            "description": "Controls visible should this prop be form 1 (completely visible) to 0 (invisible)",
+            "default": 1.0
+          },
+          "danceEvery": {
+            "type": "number",
+            "description": "How often (in beats) should this prop bop to the music.",
+            "default": 1
+          },
+          "isPixel": {
+            "type": "boolean",
+            "default": false,
+            "description": "Controls whethever this prop should be treated as a pixel art (which disables anti-aliasing)"
+          },
+          "offsets": {
+            "type": "array",
+            "description": "An offset in which this prop should be placed in",
+            "default": [0.0, 0.0]
+          },
+          "animations": {
+            "type": "array",
+            "description": "A set of animations available for this prop (If empty, sprite will be static)",
+            "uniqueItems": true,
+            "items": {
+              "required": ["name"],
+              "properties": {
+                "offsets": {
+                  "type": "array",
+                  "default": [0, 0],
+                  "description": "Offset from the prop's real position when playing this animation"
+                },
+                "flipY": {
+                  "default": false,
+                  "description": "Whethever to flip Y axis of this prop when playing this animation",
+                  "type": "boolean"
+                },
+                "frameRate": {
+                  "type": "number",
+                  "default": 24,
+                  "description": "How many frames to play of this animation in 1 second."
+                },
+                "prefix": {
+                  "type": "string",
+                  "description": "Prefix of all frames making up this animation. Optional for 'Packer' props.",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "description": "A name of this prop's animation.",
+                  "minLength": 1,
+                  "enum": ["idle", "danceLeft", "danceRight", "confirm"]
+                },
+                "looped": {
+                  "default": false,
+                  "description": "Whethever this animation should repeat itself after finishing.",
+                  "type": "boolean"
+                },
+                "flipX": {
+                  "default": false,
+                  "description": "Whethever to flip X axis of this prop when playing this animation",
+                  "type": "boolean"
+                },
+                "frameIndices": {
+                  "type": "array",
+                  "default": [],
+                  "description": "A list of frame numbers to use for this animation. Empty list will use all frames."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "background": {
+      "type": "string",
+      "default": "#F9CF51",
+      "description": "The background to use for the level. #F9CF51 is the classic yellow, but this field takes either a color code OR an image file path (relative to the images folder in your mod folder).",
+      "minLength": 1
+    },
+    "songs": {
+      "type": "array",
+      "description": "A list of songs that this week consists of. They will be played in the order you put them here."
+    }
+  },
+  "required": ["version", "name", "titleAsset", "props", "songs"]
+}

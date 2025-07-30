@@ -10,7 +10,7 @@ class Main {
 	public static var projectConfig:FunkCfg ;
     @:expose("activate")
     static function activate(context:vscode.ExtensionContext) {
-        Vscode.window.showInformationMessage("Hello from Haxe!");
+        Vscode.window.showInformationMessage("Funkin COmpiler is now running!");
 		context.subscriptions.push(Vscode.commands.registerCommand("hellohaxe.sayHello", function() {
 			Vscode.window.showInformationMessage("Hello from Haxe!");
 		}));

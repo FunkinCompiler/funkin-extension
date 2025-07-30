@@ -29,7 +29,7 @@ class CompileTask {
 			return;
 		}
 		FileManager.getProjectPath(project_path -> {
-			trace("Got path");
+			trace("Got path: "+Std.string([game_cwd, "mods", mod_name]));
 			var export_mod_path = Path.join([game_cwd, "mods", mod_name]);
 
 			var projectConfig = new FunkCfg(project_path);

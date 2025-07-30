@@ -1,0 +1,191 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version number for the Character data file format.",
+      "default": "1.0.1",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "The readable name for the character, used in places like the Chart Editor.",
+      "minLength": 1
+    },
+    "renderType": {
+      "type": "string",
+      "description": "Format used by this character's sprite. If using 'custom' you must implement one yourself.",
+      "default": "sparrow",
+      "enum": ["sparrow", "packer", "multisparrow", "animateatlas", "custom"],
+      "minLength": 1
+    },
+    "assetPath": {
+      "type": "string",
+      "description": "The main asset path to use for this character, relative to the images directory in your mod folder. This value depends on the 'renderType' this character uses.",
+      "minLength": 1
+    },
+    "scale": {
+      "type": "number",
+      "default": 1,
+      "description": "Scale for this character (might be a little buggy)."
+    },
+    "healthIcon": {
+      "type": "object",
+      "description": "Properties of this character's icon on a health bar.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Alternative icon id to use for fetching health icon.",
+          "minLength": 1
+        },
+        "scale": {
+          "type": "number",
+          "default": 1,
+          "description": "Scale for this icon."
+        },
+        "flipX": {
+          "type": "boolean",
+          "default": false,
+          "description": "Flips icon in X axis."
+        },
+        "isPixel": {
+          "type": "boolean",
+          "default": false,
+          "description": "Applies some settings meant for icons of pixel characters (multiplies scale by 6 and disables antialiasing)."
+        },
+        "offsets": {
+          "type": "array",
+          "default": [0, 25],
+          "description": "Offset for this health icon."
+        }
+      }
+    },
+    "death": {
+      "type": "object",
+      "description": "Properties for this character when entering it's game over screen.",
+      "properties": {
+        "cameraOffsets": {
+          "type": "array",
+          "description": "Offset to apply to camera's position when focusing on this character during a game over.",
+          "default": [0, 0]
+        },
+        "cameraZoom": {
+          "description": "A multiplier for the stage's camera zoom when entering game over screen for this character.",
+          "type": "number",
+          "default": 1
+        },
+        "preTransitionDelay": {
+          "type": "number",
+          "default": 0,
+          "description": "A time to wait before starting game over animation after this character dies."
+        }
+      }
+    },
+    "singTime": {
+      "type": "number",
+      "default": 1.0,
+      "description": "The amount of time, in steps, for a character to keep singing after they let go of a note."
+    },
+    "startingAnimation": {
+      "type": "string",
+      "default": "idle",
+      "description": "The animation for the character to play when they are first loaded in.",
+      "minLength": 1
+    },
+    "animations": {
+      "type": "array",
+      "description": "List of animations for this character.",
+      "uniqueItems": true,
+      "items": {
+        "required": ["name"],
+        "properties": {
+          "offsets": {
+            "type": "array",
+            "default": [0, 0],
+            "description": "Offset from this character's real position when playing this animation."
+          },
+          "assetPath": {
+            "type": "string",
+            "description": "If this character uses 'multisparrow' rendering, this will let you define different spritesheet to use for this animation."
+          },
+          "flipY": {
+            "default": false,
+            "description": "Whethever to flip Y axis of this character when playing this animation.",
+            "type": "boolean"
+          },
+          "frameRate": {
+            "type": "number",
+            "default": 24,
+            "description": "How many frames to play of this animation in 1 second."
+          },
+          "prefix": {
+            "type": "string",
+            "description": "The animation name as specified by your spritesheet.",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "pattern": "[a-zA-z]+",
+            "description": "A name of this character's animation.",
+            "minLength": 1,
+            "enum": [
+              "idle",
+              "danceLeft",
+              "danceRight",
+              "singLEFT",
+              "singDOWN",
+              "singUP",
+              "singRIGHT",
+              "singLEFTmiss",
+              "singDOWNmiss",
+              "singUPmiss",
+              "singRIGHTmiss",
+              "fakeoutDeath",
+              "firstDeath",
+              "deathLoop",
+              "deathConfirm"
+            ]
+          },
+          "looped": {
+            "default": false,
+            "description": "Whethever this animation should repeat itself after finishing.",
+            "type": "boolean"
+          },
+          "flipX": {
+            "default": false,
+            "description": "Whethever to flip X axis of this character when playing this animation",
+            "type": "boolean"
+          },
+          "frameIndices": {
+            "type": "array",
+            "default": [],
+            "description": "A list of frame numbers to use for this animation. Empty list will use all frames."
+          }
+        }
+      }
+    },
+    "offsets": {
+      "type": "array",
+      "description": "An offset in which this character should be placed in",
+      "default": [0.0, 0.0]
+    },
+    "cameraOffsets": {
+      "type": "array",
+      "description": "Offset to apply to camera's position when focusing on this character.",
+      "default": [0, 0]
+    },
+    "danceEvery": {
+      "description": "How often (in beats) should this character bop to the music",
+      "default": 1,
+      "type": "number"
+    },
+    "isPixel": {
+      "type": "boolean",
+      "description": "Controls whethever this character should be treated as a pixel art (which disables anti-aliasing)",
+      "default": false
+    }
+  },
+  "required": ["version", "name", "animations"]
+}

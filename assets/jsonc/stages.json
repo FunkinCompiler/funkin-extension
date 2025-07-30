@@ -1,0 +1,247 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version number for the Stage data file format.",
+      "default": "1.0.1",
+      "minLength": 1
+    },
+    "cameraZoom": {
+      "default": 1.0,
+      "description": "The default camera zoom level for the stage.",
+      "type": "number"
+    },
+    "directory": {
+      "type": "string",
+      "description": "Asset folder/library this stage uses.",
+      "default": "shared",
+      "minLength": 1
+    },
+    "props": {
+      "type": "array",
+      "description": "An array of props to add to the stage, specifying what sprites should be used and where those sprites should be positioned.",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "required": ["position", "animType", "assetPath"],
+        "properties": {
+          "zIndex": {
+            "description": "Controls how high the prop is positioned over other props. Higher values will draw this prop over props with lower `zIndex`.",
+            "default": 0,
+            "type": "number"
+          },
+          "danceEvery": {
+            "description": "How often (in beats) should this prop bop to the music.",
+            "default": 1,
+            "type": "number"
+          },
+          "angle": {
+            "type": "number",
+            "description": "The angle of the prop, as a float.",
+            "default": 1.0
+          },
+          "blend": {
+            "type": "string",
+            "enum": [
+              "",
+              "ADD",
+              "ALPHA",
+              "DARKEN",
+              "DIFFERENCE",
+              "ERASE",
+              "HARDLIGHT",
+              "INVERT",
+              "LAYER",
+              "LIGHTEN",
+              "MULTIPLY",
+              "NORMAL",
+              "SCREEN",
+              "SHADER",
+              "SUBTRACT"
+            ],
+            "description": "The blend mode of the prop. For more information about blend modes, see https://api.openfl.org/openfl/display/BlendMode.html",
+            "default": ""
+          },
+          "position": {
+            "type": "array",
+            "description": "The horizontal and vertical position of the prop, in pixels.",
+            "default": [0, 0]
+          },
+          "scale": {
+            "type": "array",
+            "description": "Specifies the size of the prop relative to it's original size.",
+            "default": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of this prop. You only need this if you want to refer to this prop later in the code with `PlayState.instance.currentStage.getNamedProp(name)`.",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "default": "#FFFFFF",
+            "description": "The color of the prop overlay, as a hex string. White overlays, or the ones with the value #FFFFFF, do not appear.",
+            "minLength": 1
+          },
+          "animType": {
+            "type": "string",
+            "description": "Type of this prop's sprite",
+            "default": "sparrow",
+            "enum": ["sparrow", "packer"],
+            "minLength": 1
+          },
+          "alpha": {
+            "type": "integer",
+            "default": 1.0,
+            "description": "Specifies the opacity of the prop, with `1.0` being fully opaque and `0.0` being completely transparent. "
+          },
+          "isPixel": {
+            "type": "boolean",
+            "description": "Specifies whether to display this image as a pixel prop (disabling texture smoothing).",
+            "default": false
+          },
+          "startingAnimation": {
+            "type": "string",
+            "description": "The animation to play on the prop when the stage starts (remove if you don't want to play any animation).",
+            "minLength": 1
+          },
+          "scroll": {
+            "type": "array",
+            "default": [0, 0],
+            "description": "Controls how much this prop moves with the camera [x,y] axis movements. '0' means it doesn't move at all, while '1' syncs it with camera movement in the given axis."
+          },
+          "assetPath": {
+            "type": "string",
+            "description": "Path to the sprite of this prop relative to 'images' folder OR hexadecimal color (since v1.0.1).",
+            "minLength": 1
+          },
+          "animations": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "required": ["name"],
+              "properties": {
+                "offsets": {
+                  "type": "array",
+                  "default": [0, 0],
+                  "description": "Offset from the prop's real position when playing this animation."
+                },
+                "flipY": {
+                  "default": false,
+                  "description": "Whethever to flip Y axis of this prop when playing this animation.",
+                  "type": "boolean"
+                },
+                "frameRate": {
+                  "type": "number",
+                  "default": 24,
+                  "description": "How many frames to play of this animation in 1 second."
+                },
+                "prefix": {
+                  "type": "string",
+                  "description": "Prefix of all frames making up this animations. Optional for 'Packer' props.",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "description": "A name of this prop's animation.",
+                  "minLength": 1,
+                  "enum": ["idle", "danceLeft", "danceRight"]
+                },
+                "looped": {
+                  "default": false,
+                  "description": "Whethever this animation should repeat itself after it finishes.",
+                  "type": "boolean"
+                },
+                "flipX": {
+                  "default": false,
+                  "description": "Whethever to flip X axis of this prop when playing this animation",
+                  "type": "boolean"
+                },
+                "frameIndices": {
+                  "type": "array",
+                  "default": [],
+                  "description": "A list of frame numbers to use for this animation. Empty list will use all available frames."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "characters": {
+      "type": "object",
+      "properties": {
+        "bf": {
+          "type": "object",
+          "properties": {
+            "zIndex": {
+              "description": "A value describing the relative position of the player character. Elements with higher values get placed in front of those with lower values.",
+              "default": 0,
+              "type": "number"
+            },
+            "position": {
+              "type": "array",
+              "default": [0, 0],
+              "description": "The X and Y position where the character should be positioned, relative to other props in the stage."
+            },
+            "cameraOffsets": {
+              "type": "array",
+              "description": "Offset to spply to camera's position when focusing on this character.",
+              "default": [-100, -100]
+            }
+          }
+        },
+        "gf": {
+          "type": "object",
+          "properties": {
+            "zIndex": {
+              "description": "Controls how high this character is positioned over other props. Higher values will draw this character over props with lower `zIndex`.",
+              "default": 0,
+              "type": "number"
+            },
+            "position": {
+              "type": "array",
+              "default": [0, 0],
+              "description": "The X and Y position where the character should be positioned, relative to other props in the stage."
+            },
+            "cameraOffsets": {
+              "type": "array",
+              "description": "Offset to spply to camera's position when focusing on this character.",
+              "default": [0, 0]
+            }
+          }
+        },
+        "dad": {
+          "type": "object",
+          "properties": {
+            "zIndex": {
+              "description": "Controls how high this character is positioned over other props. Higher values will draw this character over props with lower `zIndex`.",
+              "default": 0,
+              "type": "number"
+            },
+            "position": {
+              "type": "array",
+              "default": [0, 0],
+              "description": "The X and Y position where the character should be positioned, relative to other props in the stage."
+            },
+            "cameraOffsets": {
+              "type": "array",
+              "description": "Offset to spply to camera's position when focusing on this character.",
+              "default": [100, -100]
+            }
+          }
+        }
+      },
+      "required": ["bf", "gf", "dad"]
+    },
+    "name": {
+      "type": "string",
+      "description": "The readable name for the stage, used in places like the Chart Editor.",
+      "minLength": 1
+    }
+  },
+  "required": ["version", "props", "characters", "name"]
+}
