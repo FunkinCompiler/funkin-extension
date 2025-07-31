@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/FunkinCompiler/funkin-extension">
-    <img src="icon.png" alt="Logo" width="300" height="300">
+    <img src="assets/icon.png" alt="Logo" width="300" height="300">
   </a>
 
 <h3 align="center">Funkin Compiler</h3>
