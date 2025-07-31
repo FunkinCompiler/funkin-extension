@@ -65,4 +65,10 @@ and the following settings (apply as default settings for the compile task):
 Be sure to either restart VSCode or reload the window for the changes to take effect. After that you should be ready to go!
 [Here is a TTW file documenting the project's structure](./GETTING_STARED.md)
 
-Not asossiated "Funkin' Crew" btw.
+## How to compile
+
+Mase sure to install both `vscode` and `vscode-debugadapter` haxelibs.
+
+As for node, run `npm install vscode-debugadapter` to install dependencies for the debugger.
+
+#### Not asossiated "Funkin' Crew" btw.
