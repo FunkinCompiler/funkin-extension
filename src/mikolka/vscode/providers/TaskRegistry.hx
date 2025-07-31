@@ -54,7 +54,7 @@ class TaskRegistry {
 		}));
 	}
 
-	public static function registerTasks(context:vscode.ExtensionContext) {
+	public function new(context:vscode.ExtensionContext) {
 		var defaultTask = new Task({type: "funk"}, TaskScope.Workspace, "Compile current V-Slice mod", "Funk", getModCompileTask());
 
 		context.subscriptions.push(Vscode.tasks.registerTaskProvider("funk", {

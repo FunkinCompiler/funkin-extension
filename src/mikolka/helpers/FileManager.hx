@@ -35,7 +35,9 @@ class FileManager {
 	}
 
 	public static function isFolderEmpty(path:String) {
-		return FileSystem.readDirectory(path).length == 0;
+		var list = FileSystem.readDirectory(path);
+		list.remove(".git");
+		return list.length == 0;
 	}
 	public static function safelyCopyFile(from:String, to:String) {
 		FileSystem.createDirectory(Path.directory(to));

@@ -1,21 +1,32 @@
 package mikolka.vscode.providers;
 
+import vscode.OutputChannel;
 import mikolka.commands.*;
 
 class CommandRegistry {
-    private static function makeCommand(name:String,context:vscode.ExtensionContext,action:() -> Void) {
-        context.subscriptions.push(
-            Vscode.commands.registerCommand("mikolka."+name, action));
-    }
-    public static function registerCommands(context:vscode.ExtensionContext) {
-        var cfg = Main.projectConfig;
+	
+	var commandOutput:OutputChannel;
+    public function new(context:vscode.ExtensionContext) {
+		commandOutput = Vscode.window.createOutputChannel("Funkin compiler");
         
 		makeCommand("setup",context,() -> {
 			//var console = Out
-			OutputTerminal.makeTerminal(struct -> {
-				var setup = new SetupTask(struct.writeLine);
-				setup.task_setupEnvironment();
+			var setup = new SetupTask((txt) -> commandOutput.appendLine(txt));
+			commandOutput.show();
+
+			setup.task_setupEnvironment().then((_) ->{
+				Interaction.displayInformation("Funkin setup completed successfully!").then(_ ->{
+					commandOutput.hide();
+				});
+			},(reason) ->{
+				commandOutput.show();
+				Interaction.displayError(reason).then(_ ->{
+					commandOutput.hide();
+					commandOutput.clear();
+				});
 			});
+
+			
 		});
 		makeCommand("new",context,() -> {
 			new ProjectTasks(context.asAbsolutePath("./assets/scaffold")).makeProject();
@@ -26,5 +37,10 @@ class CommandRegistry {
 		// 	CompileTask.CompileCurrentMod(cfg.MOD_CONTENT_FOLDER, cfg.MOD_HX_FOLDER, cfg.MOD_FNFC_FOLDER, cfg.GAME_PATH+"/mods/"+cfg.GAME_MOD_NAME);
 		// 	trace("Done!");
 		// });
+    }
+
+	    private function makeCommand(name:String,context:vscode.ExtensionContext,action:() -> Void) {
+        context.subscriptions.push(
+            Vscode.commands.registerCommand("mikolka."+name, action));
     }
 }

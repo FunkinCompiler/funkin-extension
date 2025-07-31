@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import js.Lib;
 import mikolka.config.VsCodeConfig;
 import mikolka.helpers.FileManager;
 import haxe.io.Path;
@@ -22,7 +23,7 @@ typedef FNFLaunchRequestArguments = DebugConfiguration & {
 }
 
 class DebuggerSetup {
-	public static function init(context:vscode.ExtensionContext) {
+	public function new(context:vscode.ExtensionContext) {
 		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("run-game", {
 			resolveDebugConfiguration: (folder, debugConfiguration, ?token) -> {
 				var project_folder = folder?.uri.fsPath;
@@ -35,7 +36,7 @@ class DebuggerSetup {
 
 	}
 
-	public static function spawnFunkinGame() {
+	public function spawnFunkinGame() {
 		if (Vscode.debug.activeDebugSession != null)
 			return;
 		var config = {
@@ -55,7 +56,7 @@ class DebuggerSetup {
 		});
 	}
 
-	public static function requestStaticConfiguration(project_game_folder:String,base:Dynamic):FNFLaunchRequestArguments {
+	public function requestStaticConfiguration(project_game_folder:String,base:Dynamic):FNFLaunchRequestArguments {
 		trace("AYO!!");
 		if(base.execName == null) base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
 		if(base.cmd_prefix == null) base.cmd_prefix = "";
@@ -65,7 +66,7 @@ class DebuggerSetup {
 		if(base.trace == null) base.trace = true;
 		if(base.cwd == null) base.cwd = new VsCodeConfig().GAME_PATH;
 		trace(base.preLaunchTask);
-		if(base.preLaunchTask == null) base.preLaunchTask = "Funk: Compile current V-Slice mod";
+		if(base.preLaunchTask == Lib.undefined) base.preLaunchTask = "Funk: Compile current V-Slice mod";
 		base.cwd = Path.join([project_game_folder,base.cwd]);
 
 		trace(base);

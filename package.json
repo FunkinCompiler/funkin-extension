@@ -32,8 +32,7 @@
 		"vscode": "^1.4.0"
 	},
 	"extensionDependencies": [
-		"nadako.vshaxe",
-		"openfl.lime-vscode-extension"
+		"nadako.vshaxe"
 	],
 	"activationEvents": [
 		"workspaceContains:./funk.cfg"
@@ -65,14 +64,9 @@
 		],
 		"commands": [
 			{
-				"command": "hellohaxe.sayHello",
-				"category": "Funkin",
-				"title": "Say Hello"
-			},
-			{
 				"command": "mikolka.setup",
 				"category": "Funkin",
-				"title": "Configure compiler"
+				"title": "Setup Funkin compiler"
 			},
 			{
 				"command": "mikolka.new",
@@ -133,8 +127,8 @@
 		],
 		"debuggers": [
 			{
-				"type": "run-game",
-				"label": "Run the Funkin copy",
+				"type": "funkin-run-game",
+				"label": "Run the FNF: V-Slice instance",
 				"program": "./bin/funkin-runner.js",
 				"runtime": "node",
 				"configurationAttributes": {
@@ -146,22 +140,22 @@
 							},
 							"cmd_prefix": {
 								"type": "string",
-								"description": "Prefix to use in the command"
+								"description": "Prefix to use in the command."
 							},
 							"execName": {
 								"type": "string",
-								"description": "Name of the executable"
+								"description": "Name of the executable."
 							},
 							"args": {
 								"type": "array",
-								"description": "The Haxe command-line arguments. If not specified, the selected Haxe configuration is used.",
+								"description": "The Haxe command-line arguments. If not specified, the selected Haxe configuration is used",
 								"items": {
 									"type": "string"
 								}
 							},
 							"trace": {
 								"type": "boolean",
-								"description": "Traces some other output",
+								"description": "Traces some other output.",
 								"default": true
 							}
 						}
@@ -169,9 +163,23 @@
 				},
 				"initialConfigurations": [
 					{
-						"name": "Funkin game",
-						"type": "run-game",
+						"name": "Compile & Launch current mod",
+						"type": "funkin-run-game",
 						"request": "launch"
+					}
+				],
+				"configurationSnippets": [
+					{
+						"name": "Start FNF without compiling",
+						"type": "funkin-run-game",
+						"request": "launch",
+						"preLaunchTask": ""
+					},
+					{
+						"name": "Compile & start FNF",
+						"type": "funkin-run-game",
+						"request": "launch",
+						"preLaunchTask": "Funk: Compile current V-Slice mod"
 					}
 				]
 			}

@@ -1,12 +1,17 @@
 package mikolka.vscode;
 
+import js.lib.Promise.Thenable;
+
 class Interaction {
 
-	public static function displayError(msg:String) {
-		Vscode.window.showErrorMessage(msg);
+	public static function displayError(msg:String):Thenable<Any> {
+		return Vscode.window.showErrorMessage(msg);
 	}
-	public static function displayErrorAlert(title:String,message:String) {
-		Vscode.window.showErrorMessage(title,{
+	public static function displayInformation(msg:String):Thenable<Any> {
+		return Vscode.window.showInformationMessage(msg);
+	}
+	public static function displayErrorAlert(title:String,message:String):Thenable<Any> {
+		return Vscode.window.showErrorMessage(title,{
 			modal: true,
 			detail: message
 		});
@@ -21,8 +26,8 @@ class Interaction {
 		});
 	}
 
-	public static function requestConfirmation(prompt:String,onYes:() -> Void,onNo:() -> Void) {
-		Vscode.window.showWarningMessage(prompt,"Yes","No").then((result) -> {
+	public static function requestConfirmation(title:String,prompt:String,onYes:() -> Void,onNo:() -> Void) {
+		Vscode.window.showWarningMessage(title,{modal: true,detail: prompt},"Yes","No").then((result) -> {
 			if(result == "Yes"){
 				onYes();
 			}
@@ -33,8 +38,8 @@ class Interaction {
 		});
 	}
 
-	public static function showPressToContinue(prompt:String = "[FIXME] Press any key to continue") {
-		Vscode.window.showWarningMessage(prompt);
+	public static function showPressToContinue(prompt:String = "[FIXME] Press any key to continue"):Thenable<Any> {
+		return Vscode.window.showWarningMessage(prompt);
 	}
 
 }
