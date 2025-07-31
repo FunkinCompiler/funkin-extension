@@ -33,7 +33,7 @@
     {
       "type": "node-terminal",
       "request": "launch",
-      "name": "Compile mod",
+      "name": "Pack Extension",
       "command": "vsce package",
       "cwd": "${workspaceFolder}",
       "preLaunchTask": "hxml: extension.hxml"
