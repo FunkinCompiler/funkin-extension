@@ -107,8 +107,6 @@
 
 -D mobile
 -D desktop
-# THis disables some VERY annoying macros
--D display 
 -D FEATURE_TOUCH_CONTROLS
 
 

@@ -26,7 +26,7 @@
 3. Install the extension.
 4. Run `Funkin: Setup Funkin compiler` command to install necessary dependencies.
 5. Once done, open a new **empty** folder
-6. Run `Funkin: Make new project` to scaffold template for your mod
+6. Run `Funkin: Make new project` to scaffold template for your mod.
 7. Once done, you can customise some settings from ``funk.cfg`` file.
 > Note: filepaths are based on your project's root dorectory
  - ``mod_content_folder`` Points to your mod's base folder. 
@@ -64,3 +64,5 @@ and the following settings (apply as default settings for the compile task):
 
 Be sure to either restart VSCode or reload the window for the changes to take effect. After that you should be ready to go!
 [Here is a TTW file documenting the project's structure](./GETTING_STARED.md)
+
+Not asossiated "Funkin' Crew" btw.

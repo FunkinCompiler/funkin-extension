@@ -92,7 +92,7 @@ class SetupTask {
 
 	function installFunkin(next:Void -> Void) {
 		runSetupCommand(
-			"haxelib git funkin https://github.com/FunkinCompiler/Funkin-lib.git caeb00f5ed84405f06671ee4e9e3cdbb903008a6 --always"
+			"haxelib git funkin https://github.com/FunkinCompiler/Funkin-lib.git e426b60ddd8f6d7ae4f093d1e7c8d3afa123fe3f --always"
 		,next);
 	}
 
