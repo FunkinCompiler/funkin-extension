@@ -1,0 +1,115 @@
+# build.hxml
+
+# Project metadata
+-main Main
+-cp source
+-cp source/mod
+
+--cpp bin/cpp
+#--swf-version 10
+
+# Haxelibs
+-lib lime
+-lib newgrounds
+-lib flixel-addons
+-lib hxdiscord_rpc
+-lib hscript
+-lib haxeui-core
+-lib haxeui-flixel
+-lib polymod
+-lib flxanimate
+-lib funkin.vis
+-lib grig.audio
+-lib extension-admob
+-lib extension-androidtools
+-lib extension-haptics
+-lib extension-iapcore
+-lib extension-iarcore
+-lib FlxPartialSound
+-lib json2object
+-lib jsonpath
+-lib thx.core
+-lib thx.semver
+#? THis MUST be the last lib
+-lib funkin
+
+#This macros add some stuff for FNF
+#--macro include('funkin')
+--macro addMetadata('@:build(funkin.util.macro.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')
+--macro include('haxe.ui.backend.flixel.components')
+--macro include('haxe.ui.backend.flixel')
+--macro include('haxe.ui.core')
+--macro include('haxe.ui.components')
+--macro include('haxe.ui.containers')
+--macro include('haxe.ui.containers.dialogs')
+--macro include('haxe.ui.containers.menus')
+--macro include('haxe.ui.containers.properties')
+--macro include('funkin')
+-D haxeui_dont_impose_base_class
+--macro flixel.system.macros.FlxDefines.run()
+--remap flash:openfl
+# Defines
+
+# Mmakes errors bit better
+-D message.reporting=pretty
+
+# ???
+-D POLYMOD_SCRIPT_EXT=.hscript
+-D FEATURE_OPEN_URL
+-D NO_REDIRECT_ASSETS_FOLDER
+-D haxeui_no_mouse_reset
+-D hscriptPos
+-D lime-threads
+-D tools=8.2.2
+-D HXCPP_CHECK_POINTER
+#-D FEATURE_CHART_EDITOR
+-D NAPE_RELEASE_BUILD
+-D FEATURE_LEVEL_EDITOR
+-D lime-cffi
+-D haxeui_focus_out_on_click
+-D lime-openal
+-D POLYMOD_MOD_METADATA_FILE=_polymod_meta.json
+-D FEATURE_DISCORD_RPC
+-D native
+-D openfl-native
+-D FLX_NO_FOCUS_LOST_SCREEN
+-D POLYMOD_SCRIPT_LIBRARY=scripts
+-D NO_EMBED_ASSETS
+-D POLYMOD_ROOT_PATH=scripts/
+#-D FEATURE_NEWGROUNDS
+-D NO_TOUCH_HERE_TO_PLAY
+-D PRELOAD_ALL
+-D NO_FEATURE_RESULTS_DEBUG
+-D openfl-enable-handle-error
+-D FEATURE_FUNKVIS
+-D FEATURE_FILE_DROP
+-D NO_GITHUB_BUILD
+-D ANDROID_SDK=/home/mikolka/Android/Sdk/
+-D HXCPP_STACK_TRACE
+-D FLX_NO_DEBUG
+-D POLYMOD_APPEND_FOLDER=_append
+-D FEATURE_PARTIAL_SOUNDS
+-D no-compilation
+-D FEATURE_VIDEO_PLAYBACK
+-D FEATURE_POLYMOD_MODS
+-D FEATURE_SCREENSHOTS
+-D NO_FEATURE_GHOST_TAPPING
+-D POLYMOD_MOD_ICON_FILE=_polymod_icon.png
+-D lime-curl
+-D lime-native
+-D lime-vorbis
+-D lime-opengl
+-D FEATURE_LOG_TRACE
+-D NO_FEATURE_DEBUG_FUNCTIONS
+-D FEATURE_NEWGROUNDS_EVENTS
+-D POLYMOD_MERGE_FOLDER=_merge
+
+
+-D mobile
+-D desktop
+# THis disables some VERY annoying macros
+-D display 
+-D FEATURE_TOUCH_CONTROLS
+
+
+# Haxe flags

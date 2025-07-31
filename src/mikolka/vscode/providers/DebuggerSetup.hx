@@ -60,14 +60,14 @@ class DebuggerSetup {
 		trace("AYO!!");
 		if(base.execName == null) base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
 		if(base.cmd_prefix == null) base.cmd_prefix = "";
-		if(base.cmd_prefix == null) base.cmd_prefix = "";
-		if(base.cmd_prefix == null) base.cmd_prefix = "";
 		if(base.args == null) base.args = [];
 		if(base.trace == null) base.trace = true;
 		if(base.cwd == null) base.cwd = new VsCodeConfig().GAME_PATH;
 		trace(base.preLaunchTask);
 		if(base.preLaunchTask == Lib.undefined) base.preLaunchTask = "Funk: Compile current V-Slice mod";
-		base.cwd = Path.join([project_game_folder,base.cwd]);
+
+		var isCwdRelative = StringTools.startsWith(base.cwd,".");
+		if(isCwdRelative) base.cwd = Path.join([project_game_folder,base.cwd]);
 
 		trace(base);
 		return base;

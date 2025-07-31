@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "funkin-run-game",
+      "request": "launch",
+      "name": "Compile & Run FNF mod",
+      "preLaunchTask": "Funk: Compile current V-Slice mod"
+    },
+    {
+      "type": "funkin-run-game",
+      "request": "launch",
+      "name": "Just run FNF",
+      "preLaunchTask": ""
+    }
+  ]
+}

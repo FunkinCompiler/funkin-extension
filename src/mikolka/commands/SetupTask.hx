@@ -27,8 +27,13 @@ class SetupTask {
 	private var localCwd:Null<String> = null;
 
 	public function task_setupEnvironment():Promise<Any> {
-		return new Promise((resolve, deny) -> {
-			var force_lib_install:Bool = false;
+		return new Promise(testEnvironment);
+		// We do a method chain here
+		// yes, I'm indeed stupid
+	}
+
+	function testEnvironment(resolve:Any -> Void,deny:String -> Void) {
+		var force_lib_install:Bool = false;
 			var postfix = " --never";
 
 			writeLine(LangStrings.MSG_SETUP_CHECKING_GIT);
@@ -43,36 +48,56 @@ class SetupTask {
 					if (!Process.isPureHaxelib()) {
 						Interaction.requestConfirmation(LangStrings.SETUP_HAXELIB_ERROR_TITLE, LangStrings.SETUP_HAXELIB_ERROR, () -> {
 							writeLine("Continuing!");
-							installFunkinHaxelibs();
-							resolve(null);
+							installFunkinHaxelibs(resolve);
 						}, () -> {
 							deny("Funkin setup aborted!");
 						});
 					} else {
-						installFunkinHaxelibs();
-						resolve(null);
+						installFunkinHaxelibs(resolve);
 					}
 				}
 			}
-		});
 	}
 
-	function installFunkinHaxelibs() {
-		writeLine("[SETUP] Reading dependencies..");
-		localCwd = null;
-		runSetupCommand("haxelib git thx.core  https://github.com/fponticelli/thx.core.git 2bf2b992e06159510f595554e6b952e47922f128 --never --skip-dependencies");
-		runSetupCommand("haxelib git hmm  https://github.com/FunkinCrew/hmm.git --never --skip-dependencies");
-		runSetupCommand("haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e --never --skip-dependencies");
-		runSetupCommand("haxelib git funkin https://github.com/FunkinCompiler/Funkin-lib.git caeb00f5ed84405f06671ee4e9e3cdbb903008a6 --always");
+	function installFunkinHaxelibs(resolve:Any -> Void) {
+
 		var haxelib_repo = Process.resolveCommand("haxelib config").replace("\n", "");
+		localCwd = null;
+		writeLine("[SETUP] Reading dependencies..");
 
-		// This installs into a local repo. We need to move them
-		writeLine("CWD: " + '${haxelib_repo}funkin/git/');
-		localCwd = '${haxelib_repo}funkin/git/';
-		Process.runCommand("haxelib run hmm reinstall", localCwd, writeLine, () -> finaliseSetup(haxelib_repo));
+		// I love this line <3
+		installThxCore(installGrig.bind(installHmm.bind(installFunkin.bind(() -> {
+			// This installs into a local repo. We need to move them
+			writeLine("CWD: " + '${haxelib_repo}funkin/git/');
+			localCwd = '${haxelib_repo}funkin/git/';
+			Process.runCommand("haxelib run hmm reinstall", localCwd, writeLine, () -> finaliseSetup(haxelib_repo,resolve));
+		}))));
 	}
 
-	function finaliseSetup(haxelib_repo:String) {
+	function installThxCore(next:Void -> Void) {
+		runSetupCommand("haxelib git thx.core  https://github.com/fponticelli/thx.core.git 2bf2b992e06159510f595554e6b952e47922f128 --never --skip-dependencies",next);
+	}
+
+	function installHmm(next:Void -> Void) {
+		runSetupCommand(
+			"haxelib git hmm https://github.com/FunkinCrew/hmm.git --never --skip-dependencies"
+		,next);
+	}
+
+	function installGrig(next:Void -> Void) {
+		runSetupCommand(
+			"haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e --never --skip-dependencies"
+		,next);
+	}
+
+	function installFunkin(next:Void -> Void) {
+		runSetupCommand(
+			"haxelib git funkin https://github.com/FunkinCompiler/Funkin-lib.git caeb00f5ed84405f06671ee4e9e3cdbb903008a6 --always"
+		,next);
+	}
+
+
+	function finaliseSetup(haxelib_repo:String,resolve:Any -> Void) {
 		writeLine("[SETUP] Moving dependencies..");
 		for (dir in FileSystem.readDirectory('${haxelib_repo}funkin/git/.haxelib/')) {
 			try {
@@ -89,13 +114,12 @@ class SetupTask {
 		writeLine('[SETUP] Checking mod template..');
 
 		writeLine("[SETUP] Setup done!");
+		resolve(null);
 	}
 
-	function runSetupCommand(cmd:String):Bool {
+	function runSetupCommand(cmd:String,next:Void -> Void) {
 		writeLine("   > " + cmd);
 		var cwd = localCwd ?? Sys.getCwd();
-		var code = Process.checkCommand(cmd, cwd, "Funkin setup step failed");
-
-		return code;
+		Process.runCommand(cmd, cwd, writeLine,next);
 	}
 }

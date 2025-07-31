@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "nadako.vshaxe", // Basic Haxe integration
+    "wiggin77.codedox", // Haxe documentation
+    "vshaxe.haxe-checkstyle", // Haxe code style and conventions
+    "openfl.lime-vscode-extension", // Lime integration
+    "esbenp.prettier-vscode", // JSON formatting
+    "redhat.vscode-xml", // XML formatting
+    "aaron-bond.better-comments", // Makes comments colorful
+    "tekumara.typos-vscode" // Makes sure you use proper grammar
+  ]
+}
