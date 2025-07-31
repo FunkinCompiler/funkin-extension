@@ -14,7 +14,7 @@
 		"theme": "dark",
 		"color": "#cc2c9e"
 	},
-	"icon": "assets/logo.png",
+	"icon": "assets/icon.png",
 	"license": "GPL-3.0",
 	"bugs": "https://github.com/mikolka9144/funkin-extension/issues",
 	"homepage": "https://github.com/mikolka9144/funkin-extension/blob/main/README.md",

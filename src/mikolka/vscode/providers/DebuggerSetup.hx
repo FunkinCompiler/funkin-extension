@@ -24,7 +24,7 @@ typedef FNFLaunchRequestArguments = DebugConfiguration & {
 
 class DebuggerSetup {
 	public function new(context:vscode.ExtensionContext) {
-		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("run-game", {
+		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("funkin-run-game", {
 			resolveDebugConfiguration: (folder, debugConfiguration, ?token) -> {
 				var project_folder = folder?.uri.fsPath;
 				if(project_folder == null){
@@ -40,7 +40,7 @@ class DebuggerSetup {
 		if (Vscode.debug.activeDebugSession != null)
 			return;
 		var config = {
-			type: "run-game",
+			type: "funkin-run-game",
 			name: "Spawn Funkin instance",
 			request: "launch"
 		};
