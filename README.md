@@ -19,6 +19,19 @@
 </div>
 <h2 align="center">This extension is still in beta</h2>
 
+# Features (as of now)
+
+- .json scema hints
+- Automatic .fnfc extraction
+- Nearly all features of haxe's autocompletion server, including: 
+- - Code autocompletion
+- - Code formatting
+- - Type hints
+- - Static error checking
+- - "Go to definition" function with Ctr+ click on function/class
+
+It's more or less implementation of [this](https://github.com/FunkinCrew/Funkin/issues/5199) suggestion.
+
 ## How to Install
 
 1. Install both Haxe and Git
@@ -71,4 +84,4 @@ Mase sure to install both `vscode` and `vscode-debugadapter` haxelibs.
 
 As for node, run `npm install vscode-debugadapter` to install dependencies for the debugger.
 
-#### Not asossiated "Funkin' Crew" btw.
+#### Not asossiated with "Funkin' Crew" btw.
