@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import haxe.io.Path;
 import mikolka.helpers.Process;
 import mikolka.helpers.LangStrings;
 import mikolka.config.VsCodeConfig;
@@ -21,8 +22,9 @@ class StartupInit {
             });
             return;
         }
-        var haxelib_repo = Process.resolveCommand("haxelib config").replace("\n", "");
-        if(haxelib_repo != cfg.HAXELIB_PATH){
+        var haxelib_repo = Path.removeTrailingSlashes(Process.resolveCommand("haxelib config").replace("\n", ""));
+        var user_repo = Path.removeTrailingSlashes(cfg.HAXELIB_PATH);
+        if(haxelib_repo != user_repo){
              Vscode.window.showWarningMessage(LangStrings.STARTUP_SETUP_DIFFERENT_HAXELIB,"Yes","No").then(s ->{
                 if(s == "Yes") {
                     Vscode.commands.executeCommand("mikolka.setHaxelib");
