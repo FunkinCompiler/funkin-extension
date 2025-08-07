@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.3.2",
+	"version": "0.3.3",
 	"description": "A simple extension to both develop and compile mods made for the game \"Fridat Night Funkin'\" in a more comfortable environment than a notepad.",
 	"categories": [
 		"Programming Languages",
@@ -58,6 +58,11 @@
 						"description": "Name of the mod folder to compile your mod into.",
 						"type": "string",
 						"default": "workbench"
+					},					
+					"funkinCompiler.haxelibPath": {
+						"description": "A path to the haxelib folder used by the compiler. Use the setup command to initialise this field (unless you already have one initialised).",
+						"type": "string",
+						"default": ""
 					}
 				}
 			}
@@ -65,13 +70,18 @@
 		"commands": [
 			{
 				"command": "mikolka.setup",
-				"category": "Funkin",
-				"title": "Setup Funkin compiler"
+				"category": "Funkin compiler",
+				"title": "Setup haxelib"
 			},
 			{
 				"command": "mikolka.new",
-				"category": "Funkin",
+				"category": "Funkin compiler",
 				"title": "Make new project"
+			},			
+			{
+				"command": "mikolka.setHaxelib",
+				"category": "Funkin compiler",
+				"title": "Set haxelib"
 			}
 		],
 		"jsonValidation": [

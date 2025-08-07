@@ -16,7 +16,7 @@ class ProjectTasks {
                 return;
             }
             FileManager.copyRec(scaffold_path,path);
-            Interaction.showPressToContinue("Done!");
+            Interaction.displayInformation("Done!");
         });
     }
 }

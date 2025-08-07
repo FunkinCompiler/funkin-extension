@@ -18,6 +18,17 @@ class Process {
 		return code == 0;
     }
 
+	public static function setHaxelibPath(path:String):Bool {
+        var proc = ChildProcess.spawnSync("haxelib setup",[path],{
+			stdio: Pipe,
+			shell: true
+		});
+		var code = proc.status;
+		if( code != 0){
+			Interaction.displayError(proc.output.toString());
+		}
+		return code == 0;
+    }
 	public static function runCommand(execName:String,cwd:Null<String> = null,onInput:String -> Void,onComplete:Void -> Void) {
 		trace(cwd);
         var proc = ChildProcess.spawn(execName,{

@@ -38,8 +38,4 @@ class Interaction {
 		});
 	}
 
-	public static function showPressToContinue(prompt:String = "[FIXME] Press any key to continue"):Thenable<Any> {
-		return Vscode.window.showWarningMessage(prompt);
-	}
-
 }

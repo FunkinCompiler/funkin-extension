@@ -1,5 +1,7 @@
 package mikolka.vscode.providers;
 
+import mikolka.config.VsCodeConfig;
+import mikolka.helpers.Process;
 import vscode.OutputChannel;
 import mikolka.commands.*;
 
@@ -30,6 +32,12 @@ class CommandRegistry {
 		});
 		makeCommand("new",context,() -> {
 			new ProjectTasks(context.asAbsolutePath("./assets/scaffold")).makeProject();
+		});
+		makeCommand("setHaxelib",context,() -> {
+			var cfg = new VsCodeConfig();
+			var result = Process.setHaxelibPath(cfg.HAXELIB_PATH);
+            if(!result) Interaction.displayError("Failed to set haxelib path!");
+			else Vscode.commands.executeCommand("haxe.restartLanguageServer");
 		});
 
 		//TODO Zip exports are a bit wonky right now!

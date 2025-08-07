@@ -6,7 +6,6 @@ import funkin.play.event.ScriptedSongEvent;
 import funkin.play.cutscene.dialogue.ScriptedConversation;
 import funkin.play.character.ScriptedCharacter.ScriptedAnimateAtlasCharacter;
 import flixel.FlxG;
-import funkin.modding.base.ScriptedMusicBeatSubState;
 import funkin.modding.events.ScriptEvent.UpdateScriptEvent;
 import funkin.modding.module.ModuleHandler;
 import funkin.ui.options.PreferencesMenu;
@@ -30,24 +29,27 @@ class ExampleModule extends Module // ScriptedModule
     if (Std.isOfType(ev.targetState, OptionsState))
     {
       //* We know a state's type here
-      var setState = cast(ev.targetState, OptionsState);
+      var setState:OptionsState = cast(ev.targetState, OptionsState);
       //* so we can cast to it here
-      var prefs = cast(setState.pages.get("preferences"), PreferencesMenu);
+      // ? The error on "preferences" complains about it being an abstract enum
+      // ? Unfortunately polymod doesn't support abstract enums yet
+      var prefs:PreferencesMenu = cast(setState.optionsCodex.pages.get("preferences"), PreferencesMenu);
+      var desc:String = "Check this option to display text in the the debug console";
+
       // Inject options to the options menu
-      prefs.createPrefItemCheckbox("test option", "", (v) -> {
+      prefs.createPrefItemCheckbox("test option", desc, (v) -> {
         // Obtaining "remote" module in ./misc/RemoteModule.hx
-        var funnyModule = cast(ModuleHandler.getModule("remote"), ScriptedModule); 
+        var funnyModule = cast(ModuleHandler.getModule("remote"), ScriptedModule);
         // calling custom function from "remote"
         funnyModule.scriptCall("remoteCall", ["classic"]);
         //* As you can see it's displayed as a 'missing field'
-        
+
         //* but with `mockPolymodCalls` enabled you can do this
         funnyModule.polymodExecFunc("remoteCall", ["new and improved"]);
         funnyModule.polymodExecFunc("remoteMulCall", ["new and improved", 999]);
       }, false);
     }
     super.onStateChangeEnd(ev);
-    
   }
 
   //* this method runs on every update in EVERY STATE

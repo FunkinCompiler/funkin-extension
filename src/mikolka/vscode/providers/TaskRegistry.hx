@@ -47,7 +47,12 @@ class TaskRegistry {
 
 				accept(OutputTerminal.makeTerminal(struct -> {
 					trace("Getting cwd:");
-					var game_cwd = Path.join([full_project_path, manifest.gamePath]);
+					var isGamePathRelative = StringTools.startsWith(manifest.gamePath,".");
+
+					var game_cwd = isGamePathRelative 
+						?  Path.join([full_project_path, manifest.gamePath]) 
+						:  Path.normalize(manifest.gamePath);
+
 					CompileTask.CompileCurrentMod(game_cwd, manifest.modName, struct.writeLine);
 				}));
 			}

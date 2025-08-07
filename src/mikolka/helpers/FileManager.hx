@@ -65,7 +65,7 @@ class FileManager {
 				onResult(folder.uri.fsPath);
 			case folders:
 				final options = {
-					placeHolder: "Select a folder to set up a Haxe project into...",
+					placeHolder: "Select a folder to set up an FNF project into...",
 				}
 				Vscode.window.showWorkspaceFolderPick(options).then(function(folder) {
 					if (folder == null)

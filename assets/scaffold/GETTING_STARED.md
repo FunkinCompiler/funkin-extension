@@ -9,7 +9,7 @@ This folder contains all non-code assets of your mod. If you're working with an 
 
 Think of it as a "base" for your mod to which then you can add things by either writing code or putting .fnfc files into `fnfc_files`.
 
-It's still possible to put additional .hxc files into `mod_base/scripts` like custom song events or scripts you find on the internet, which you want to use.
+It's still possible to put additional .hxc files into `mod_base/scripts` like custom song events or scripts you find on the internet, which you want to use within the Funkin compiler.
 
 ## `mod_base/data` folder
 

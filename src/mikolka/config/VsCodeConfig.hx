@@ -16,4 +16,13 @@ class VsCodeConfig {
     function get_GAME_PATH():String {
         return projectConfig.get("funkinCompiler.gamePath","../funkinGame/");
     }
+
+    public var HAXELIB_PATH(get,set):String;
+    function get_HAXELIB_PATH():String {
+        return projectConfig.get("funkinCompiler.haxelibPath","");
+    }
+    function set_HAXELIB_PATH(value:String):String {
+        projectConfig.update("funkinCompiler.haxelibPath",value,true);
+        return value;
+    }
 }
