@@ -4,3 +4,4 @@ bin
 *.vsix
 package-lock.json
 .env
+.haxelib

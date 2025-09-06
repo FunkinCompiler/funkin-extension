@@ -20,10 +20,21 @@ typedef CompileTaskConfig = {
 	var export_mod_path:String;
 	var writeLine:String->Void;
 }
-
+/**
+ * Contains user-fronting "Compile" task
+ * 
+ * This task compiles the Funkin cCompiler's project into V-Slice runnable mod
+ */
 class CompileTask {
-	// Overlay to pre-fill some values (because it's cleaner)
-	public static function CompileCurrentMod(game_cwd:String, mod_name:String, writeLine:String->Void) {
+	
+	/**
+	 * Compiles currently opened project to a V-Slice mod
+	 * @param game_cwd The path to the V-Slice's root dorectory
+	 * @param writeLine An export mothod for writing logs
+	 * @param mod_name A name of the mod in the tasting environment
+	 * @param copyToGame Should the mod also be copied to the game (for testing)
+	 */
+	public static function CompileCurrentMod(game_cwd:String, writeLine:String->Void,mod_name:String = "workbench",copyToGame:Bool = true) {
 		if (game_cwd == null) {
 			Interaction.displayErrorAlert("Error compiling mod", "No workspace opened!");
 			return;
@@ -33,35 +44,36 @@ class CompileTask {
 			var export_mod_path = Path.join([game_cwd, "mods", mod_name]);
 
 			var projectConfig = new FunkCfg(project_path);
-			Task_CompileGame({
+			compileMod({
 				hxc_source: Path.join([project_path, projectConfig.MOD_HX_FOLDER]),
 				mod_assets: Path.join([project_path, projectConfig.MOD_CONTENT_FOLDER]),
 				fnfc_assets: Path.join([project_path, projectConfig.MOD_FNFC_FOLDER]),
-				export_mod_path: export_mod_path,
+				export_mod_path: Path.join([project_path, "export"]),
 				writeLine: writeLine
 			});
+			if(copyToGame){
+				writeLine("Copying to the V-Slice...");
+				FileManager.copyRec(Path.join([project_path, "export"]),export_mod_path);
+			}
 		});
 	}
 
-	static function Task_CompileGame(cfg:CompileTaskConfig) // baseGane_modDir, Mod_Directory
+	/**
+	 * Compiles the Funkin Compiler's project
+	 * @param cfg Configuration for the compilation
+	 */
+	static function compileMod(cfg:CompileTaskConfig) // baseGane_modDir, Mod_Directory
 	{
 		if (!FileManager.isManifestPresent(cfg.mod_assets)) {
 			Interaction.displayErrorAlert("Error", 'No manifest found in ${cfg.mod_assets}!');
 			return;
 		}
 		FileManager.deleteDirRecursively(cfg.export_mod_path);
-		copyTemplate(cfg.mod_assets, cfg.export_mod_path);
+		FileManager.copyRec(cfg.mod_assets, cfg.export_mod_path);
 		var fnfc = new Fnfc(cfg.fnfc_assets, cfg.export_mod_path, cfg.writeLine);
 		var hxc = new Hxc(cfg.hxc_source, cfg.export_mod_path, cfg.writeLine);
 		fnfc.processDirectory();
 		hxc.processDirectory();
 	}
 
-	private static function copyTemplate(mod_assets:String, export_mod_path:String) {
-		FileSystem.createDirectory(mod_assets);
-		FileManager.scanDirectory(mod_assets, s -> {
-			FileSystem.createDirectory(Path.join([export_mod_path, Path.directory(s)]));
-			File.copy('$mod_assets/$s', Path.join([export_mod_path, s]));
-		}, s -> {});
-	}
 }

@@ -14,17 +14,19 @@ import vscode.Task;
 import vscode.TaskScope;
 import vscode.CustomExecution;
 
+/**
+ * This class manages all tasks provided by this extension
+ */
 class TaskRegistry {
-	/**
-	 * Constructs a CustomExecution task object. The callback will be executed when the task is run, at which point the
-	 * extension should return the Pseudoterminal it will "run in". The task should wait to do further execution until
-	 * {@link Pseudoterminal.open} is called. Task cancellation should be handled using
-	 * {@link Pseudoterminal.close}. When the task is complete fire
-	 * {@link Pseudoterminal.onDidClose}.
-	 * @param callback The callback that will be called when the task is started by a user. Any ${} style variables that
-	 * were in the task definition will be resolved and passed into the callback as `resolvedDefinition`.
-	 */
+
 	// This configures the code for the task
+	/**
+	 * Creates a CustomExecution object for the "Compile current V-Slice mod"task.
+	 * 
+	 * Such execution can be used to run it in the VsCode's task environment
+	 * @param copyToGame Should this task also copy the compiled mod to V-Slice's "mods" folder
+	 * @return CustomExecution
+	 */
 	static function getModCompileTask():CustomExecution {
 		return new CustomExecution(resolvedDefinition -> new Promise((accept, reject) -> {
 			var manifest:FunkTaskDefinition = cast resolvedDefinition;
@@ -36,6 +38,9 @@ class TaskRegistry {
 
 			if (manifest.gamePath == null || manifest.gamePath == "")
 				manifest.gamePath = vscodeConfig.GAME_PATH;
+
+			if (manifest.copyToGame == null )
+				manifest.copyToGame = true;
 
 			trace(manifest);
 			trace(vscodeConfig.MOD_NAME);
@@ -52,8 +57,8 @@ class TaskRegistry {
 					var game_cwd = isGamePathRelative 
 						?  Path.join([full_project_path, manifest.gamePath]) 
 						:  Path.normalize(manifest.gamePath);
-
-					CompileTask.CompileCurrentMod(game_cwd, manifest.modName, struct.writeLine);
+					trace(manifest.copyToGame);
+					CompileTask.CompileCurrentMod(game_cwd, struct.writeLine, manifest.modName,manifest.copyToGame);
 				}));
 			}
 		}));
@@ -62,6 +67,7 @@ class TaskRegistry {
 	public function new(context:vscode.ExtensionContext) {
 		var defaultTask = new Task({type: "funk"}, TaskScope.Workspace, "Compile current V-Slice mod", "Funk", getModCompileTask());
 
+		//Register task provider
 		context.subscriptions.push(Vscode.tasks.registerTaskProvider("funk", {
 			resolveTask: TaskRegistry.resolveTask,
 			provideTasks: token -> {

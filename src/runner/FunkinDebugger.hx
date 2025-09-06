@@ -1,4 +1,6 @@
 package runner;
+
+import sys.FileSystem;
 import vscode.debugProtocol.DebugProtocol.InitializeRequestArguments;
 import vscode.debugProtocol.DebugProtocol.InitializeResponse;
 import vscode.debugAdapter.DebugSession;
@@ -47,6 +49,7 @@ class FunkinDebugger extends DebugSession  {
 		// response.body.supportsFunctionBreakpoints = true;
 		// response.body.supportsConfigurationDoneRequest = true;
 		// response.body.supportsCompletionsRequest = true;
+		response.body.supportsRestartRequest = true;
 		sendResponse(response);
 		postLaunchActions = [];
 	}
@@ -71,6 +74,12 @@ class FunkinDebugger extends DebugSession  {
 	}
 
 
+	override function restartRequest(response:RestartResponse, args:RestartArguments) {
+		// This is a flag for our helper mod
+		FileSystem.createDirectory(haxe.io.Path.join([launchArgs.cwd,".requested_reload"]));
+
+		super.restartRequest(response, args);
+	}
 	// Launch the BF!!!
 	override function launchRequest(response:LaunchResponse, args:LaunchRequestArguments) {
 		final args:FNFLaunchRequestArguments = cast args;
@@ -101,6 +110,7 @@ class FunkinDebugger extends DebugSession  {
 		final execName = args.execName;
 		final cmd_prefix = args.cmd_prefix;
 		spawnProcess('$cmd_prefix ./$execName',args.cwd,env);
+		DebugFiles.makeSupportMod(args.cwd); // This creates a support mod
 		executePostLaunchActions(function() {
 				sendEvent(new vscode.debugAdapter.DebugSession.InitializedEvent());
 				sendResponse(response);
@@ -114,6 +124,7 @@ class FunkinDebugger extends DebugSession  {
 
 		// });
 	}
+
 
 	public function spawnProcess(cmd:String,cwd:String,env:Null<haxe.DynamicAccess<String>>) {	
 		Sys.println(cwd+" >>> " + cmd);

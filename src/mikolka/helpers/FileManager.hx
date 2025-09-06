@@ -75,18 +75,11 @@ class FileManager {
 		}
 	}
 	public static function copyRec(from:String, to:String):Void {
-		function loop(src, dst) {
-			final fromPath = from + src;
-			final toPath = to + dst;
-			if (FileSystem.isDirectory(fromPath)) {
-				FileSystem.createDirectory(toPath);
-				for (file in FileSystem.readDirectory(fromPath))
-					loop(src + "/" + file, dst + "/" + file);
-			} else {
-				File.copy(fromPath, toPath);
-			}
-		}
-		loop("", "");
+		FileSystem.createDirectory(from);
+		FileManager.scanDirectory(from, s -> {
+			FileSystem.createDirectory(Path.join([to, Path.directory(s)]));
+			File.copy('$from/$s', Path.join([to, s]));
+		}, s -> {});
 	}
 
 }

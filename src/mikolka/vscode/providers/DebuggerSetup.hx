@@ -22,8 +22,14 @@ typedef FNFLaunchRequestArguments = DebugConfiguration & {
 	var trace:Bool; // if set to true sends trace messages as DebugSession.OutputEvents
 }
 
-class DebuggerSetup {
+/**
+ * Class responsible for configuring debugger for Friday Night Funkin'.
+ * This lets us capture logs and control it's process.
+ */
+class DebuggerSetup { //game_cwd:String, mod_name:String,
 	public function new(context:vscode.ExtensionContext) {
+
+		//register V-Slice debugger
 		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("funkin-run-game", {
 			resolveDebugConfiguration: (folder, debugConfiguration, ?token) -> {
 				var project_folder = folder?.uri.fsPath;
@@ -36,6 +42,10 @@ class DebuggerSetup {
 
 	}
 
+	/**
+	 * Manually starts debugging of the V-Slice Engine.
+	 * This method is rarely needed and preferably it should be ran with the "Run & Debug" configuration
+	 */
 	public function spawnFunkinGame() {
 		if (Vscode.debug.activeDebugSession != null)
 			return;
@@ -56,12 +66,20 @@ class DebuggerSetup {
 		});
 	}
 
+	/**
+	 * Fills in the configuration data with the default values,
+	 * but only where the user failed to do so.
+	 * @param project_game_folder The path to the current project's directory 
+	 * @param base The unsafe configuration provided by the user
+	 * @return FNFLaunchRequestArguments The arguments to launch a debugging session with
+	 */
 	public function requestStaticConfiguration(project_game_folder:String,base:Dynamic):FNFLaunchRequestArguments {
 		trace("AYO!!");
 		if(base.execName == null) base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
 		if(base.cmd_prefix == null) base.cmd_prefix = "";
 		if(base.args == null) base.args = [];
 		if(base.trace == null) base.trace = true;
+		if(base.attachDebugger == null) base.attachDebugger = true;
 		if(base.cwd == null) base.cwd = new VsCodeConfig().GAME_PATH;
 		trace(base.preLaunchTask);
 		if(base.preLaunchTask == Lib.undefined) base.preLaunchTask = "Funk: Compile current V-Slice mod";

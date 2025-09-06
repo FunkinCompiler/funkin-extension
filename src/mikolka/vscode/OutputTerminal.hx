@@ -13,6 +13,11 @@ typedef TerminalOptions = {
     writeLine:(String) -> Void
 }
 class OutputTerminal  {
+    /**
+     * Created a console to execute pseudo command in. This is needed in some contexts.
+     * @param action An action to run
+     * @return -> Void):Pseudoterminal The console wrapping this task.
+     */
     public static function makeTerminal(action:(TerminalOptions) -> Void):Pseudoterminal {
         var writeEmitter = new EventEmitter<String>();
         var exitEmitter = new EventEmitter<Int>();

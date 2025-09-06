@@ -6,6 +6,9 @@ import mikolka.helpers.LangStrings;
 import mikolka.config.VsCodeConfig;
 using StringTools;
 
+/**
+ * This class manages the startup of the Funkin compiler
+ */
 class StartupInit {
     public function new(context:vscode.ExtensionContext) {
 
