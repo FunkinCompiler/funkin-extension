@@ -11,7 +11,7 @@
     },
     "name": {
       "type": "string",
-      "description": "The version number for the Level data file format.",
+      "description": "The readable name for the Level, as displayed at the top right of the Story Menu.",
       "minLength": 1
     },
     "visible": {
@@ -39,12 +39,12 @@
           },
           "scale": {
             "type": "number",
-            "description": "A scale for this prop's sprite",
+            "description": "A scale for this prop's sprite.",
             "default": 1.0
           },
           "alpha": {
             "type": "number",
-            "description": "Controls visible should this prop be form 1 (completely visible) to 0 (invisible)",
+            "description": "Controls visible should this prop be form 1 (completely visible) to 0 (invisible).",
             "default": 1.0
           },
           "danceEvery": {
@@ -55,16 +55,16 @@
           "isPixel": {
             "type": "boolean",
             "default": false,
-            "description": "Controls whethever this prop should be treated as a pixel art (which disables anti-aliasing)"
+            "description": "Controls whethever this prop should be treated as a pixel art (which disables anti-aliasing)."
           },
           "offsets": {
             "type": "array",
-            "description": "An offset in which this prop should be placed in",
+            "description": "An offset in which this prop should be placed in.",
             "default": [0.0, 0.0]
           },
           "animations": {
             "type": "array",
-            "description": "A set of animations available for this prop (If empty, sprite will be static)",
+            "description": "A set of animations available for this prop (If empty, sprite will be static).",
             "uniqueItems": true,
             "items": {
               "required": ["name"],

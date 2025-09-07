@@ -5,6 +5,7 @@ import mikolka.helpers.FileManager;
 import sys.FileSystem;
 import sys.io.File;
 import haxe.io.Path;
+using StringTools;
 
 class Hxc {
 	// Once enabled strips "package" line at the beginning of each file
@@ -35,6 +36,9 @@ class Hxc {
 	}
 
 	public function processFile(file_name:String) {
+		if(!file_name.toLowerCase().endsWith(".hx"))	
+			return;
+		
 		var shard = Path.join([src_path, file_name]);
 
 		var filter:EReg = ~/package ([a-z.]+) *;/i;

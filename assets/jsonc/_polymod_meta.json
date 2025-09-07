@@ -15,6 +15,7 @@
     },
     "homepage": {
       "type": "string",
+      "format":"uri",
       "description": "A URL where users can learn more about your mod."
     },
     "metadata": {
@@ -40,10 +41,12 @@
           },
           "email": {
             "type": "string",
+            "format":"email",
             "description": "Email address of this author."
           },
           "url": {
             "type": "string",
+            "format":"uri",
             "description": "A link to this author's personal page. It might be simple cardd, or github profile or anything else!"
           }
         }
@@ -51,20 +54,22 @@
     },
     "dependencies": {
       "type": "object",
-      "description": "A list of mods that this mods depends on and and their versions. Without those present your mod won't be loaded."
+      "description": "A list of mods that this mods depends on and and their versions. Without those present, your mod won't be loaded."
     },
     "optionalDependencies": {
       "type": "object",
-      "description": "A list of mods that this mods can depend on and their versions. In case those are present they'll be loaded BEFORE your mod."
+      "description": "A list of mods that this mods can work with and their versions. In case those are present they'll be loaded BEFORE your mod."
     },
     "api_version": {
       "type": "string",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
       "description": "FNF's API version this mod makes use of.",
-      "default": "0.1.0",
-      "minLength": 1
+      "default": "0.7.4",
+      "minLength": 5
     },
     "mod_version": {
       "type": "string",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
       "description": "Current version of this mod (you can change this when exporting the mod).",
       "minLength": 1
     },

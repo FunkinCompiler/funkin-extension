@@ -1,5 +1,6 @@
 package runner;
 
+import runner.vslice.FunkinPaths;
 import sys.FileSystem;
 import vscode.debugProtocol.DebugProtocol.InitializeRequestArguments;
 import vscode.debugProtocol.DebugProtocol.InitializeResponse;
@@ -110,9 +111,7 @@ class FunkinDebugger extends DebugSession  {
 		final execName = args.execName;
 		final cmd_prefix = args.cmd_prefix;
 		
-		final executable_cwd = haxe.io.Path.directory(args.cwd).endsWith(".app") 
-				? haxe.io.Path.join([args.cwd,"Contents","MacOS"])
-				: args.cwd;
+		final executable_cwd = FunkinPaths.getExecutableFolderPath(args.cwd);
 		DebugFiles.makeSupportMod(args.cwd); // This creates a support mod
 		spawnProcess('$cmd_prefix ./$execName',executable_cwd,env);
 	

@@ -29,7 +29,7 @@
     "scale": {
       "type": "number",
       "default": 1,
-      "description": "Scale for this character (might be a little buggy)."
+      "description": "Specify the size of the character relative to the original size. For example, 2.0 makes the sprite twice as big (might be a little buggy)."
     },
     "healthIcon": {
       "type": "object",
@@ -83,17 +83,7 @@
         }
       }
     },
-    "singTime": {
-      "type": "number",
-      "default": 1.0,
-      "description": "The amount of time, in steps, for a character to keep singing after they let go of a note."
-    },
-    "startingAnimation": {
-      "type": "string",
-      "default": "idle",
-      "description": "The animation for the character to play when they are first loaded in.",
-      "minLength": 1
-    },
+
     "animations": {
       "type": "array",
       "description": "List of animations for this character.",
@@ -176,15 +166,31 @@
       "description": "Offset to apply to camera's position when focusing on this character.",
       "default": [0, 0]
     },
+    "isPixel": {
+      "type": "boolean",
+      "description": "Controls whethever this character should be treated as a pixel character (which disables anti-aliasing).",
+      "default": false
+    },
     "danceEvery": {
-      "description": "How often (in beats) should this character bop to the music",
+      "description": "How often (in beats) should this character bop to the music.",
       "default": 1,
       "type": "number"
     },
-    "isPixel": {
-      "type": "boolean",
-      "description": "Controls whethever this character should be treated as a pixel art (which disables anti-aliasing)",
-      "default": false
+    "flipX": {
+      "description": "Whether to flip the whole sprite horizontally in-game. Useful for characters that could also be played (Pico).",
+      "type":"boolean",
+      "default":false
+    },
+    "startingAnimation": {
+      "type": "string",
+      "default": "idle",
+      "description": "The animation for the character to play when they are first loaded in.",
+      "minLength": 1
+    },
+    "singTime": {
+      "type": "number",
+      "default": 1.0,
+      "description": "The amount of time, in steps, for a character to keep singing after they let go of a note."
     }
   },
   "required": ["version", "name", "animations"]

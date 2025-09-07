@@ -1,5 +1,6 @@
 package runner;
 
+import runner.vslice.FunkinPaths;
 import haxe.zip.Tools;
 import haxe.io.Path;
 import haxe.io.Input;
@@ -34,10 +35,8 @@ class DebugFiles {
     ".replace(" ","").replace("\n","");
 
 	public static function makeSupportMod(cwd_path:String) {
-        trace("mac: "+cwd_path);
-        var script_folder = Path.directory(cwd_path).endsWith(".app") 
-				? Path.join([cwd_path,"Contents","Resources", "mods", "debug"])
-				: Path.join([cwd_path, "mods", "debug"]);
+    trace("mac: "+cwd_path);
+    var script_folder = Path.join([FunkinPaths.getModFolderPath(cwd_path), "debug"]);
 
 		if (!FileSystem.exists(script_folder))
 			extractZip(new BytesInput(Base64.decode(BASE_ZIP)), script_folder);

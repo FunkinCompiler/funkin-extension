@@ -23,17 +23,18 @@ You are still able to manually extract necessary files, but it's recommended to 
 
 You can also create sub-directories for your songs. It doesn't have any other purpose than letting you structure your songs.
 
-## `source/mod` folder
+## `source` folder
 
 This folder houses all script files, that will be later compiled with the rest of the files in `mod_base``.
 
 The structure made in this folder will be replicated in the "scripts" folder of your mod merging with `mod_base/scripts` if you decide to put any scripts outside this template (like song events).
 
-It's recommended to put into `source/mod` folder all files from the "scripts" folder of your existing mod into this one (if you have any).
+It's recommended to put into `source` folder all files from the "scripts" folder of your existing mod into this one (if you have any).
 
 While doing so remember to:
 - change `.hxc` extension to `.hx`
-- add a `package` line to the beginning of them (your IDE should help you with that)
+- add a `package <mod_name>.<path>;` line to the beginning of them (your IDE should help you with that)
+- Make sure you don't put `package;` by accident somewhere
 
 ## Getting your funkin mod to **funk**
 

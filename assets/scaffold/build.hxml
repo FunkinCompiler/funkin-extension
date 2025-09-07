@@ -1,9 +1,9 @@
 # build.hxml
 
 # Project metadata
--main Main
+-main funkin.Main
 -cp source
--cp source/mod
+-cp source/*
 
 --cpp bin/cpp
 #--swf-version 10

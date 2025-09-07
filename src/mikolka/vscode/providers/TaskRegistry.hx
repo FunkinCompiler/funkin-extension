@@ -66,12 +66,13 @@ class TaskRegistry {
 
 	public function new(context:vscode.ExtensionContext) {
 		var defaultTask = new Task({type: "funk"}, TaskScope.Workspace, "Compile current V-Slice mod", "Funk", getModCompileTask());
+		var exportTask = new Task(cast {type: "funk", copyToGame:false}, TaskScope.Workspace, "Export current V-Slice mod", "Funk", getModCompileTask());
 
 		//Register task provider
 		context.subscriptions.push(Vscode.tasks.registerTaskProvider("funk", {
 			resolveTask: TaskRegistry.resolveTask,
 			provideTasks: token -> {
-				return [defaultTask];
+				return [defaultTask,exportTask];
 			}
 		}));
 	}

@@ -102,7 +102,7 @@ class SetupTask {
 	}
 
 	function installGrig(next:Void->Void) {
-		runSetupCommand("haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e --never --skip-dependencies",
+		runSetupCommand("haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e --never",
 			next);
 	}
 

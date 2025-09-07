@@ -89,31 +89,31 @@
 				"fileMatch": [
 					"**/_polymod_meta.json"
 				],
-				"url": "./assets/jsonc/manifest.json"
+				"url": "./assets/jsonc/_polymod_meta.json"
 			},
 			{
 				"fileMatch": [
 					"**/data/levels/*.json"
 				],
-				"url": "./assets/jsonc/levels.json"
+				"url": "./assets/jsonc/data/levels.json"
 			},
 			{
 				"fileMatch": [
 					"**/data/stages/*.json"
 				],
-				"url": "./assets/jsonc/stages.json"
+				"url": "./assets/jsonc/data/stages.json"
 			},
 			{
 				"fileMatch": [
 					"**/data/characters/*.json"
 				],
-				"url": "./assets/jsonc/chars.json"
+				"url": "./assets/jsonc/data/characters.json"
 			},
 			{
 				"fileMatch": [
 					"**/data/players/*.json"
 				],
-				"url": "./assets/jsonc/players.json"
+				"url": "./assets/jsonc/data/players.json"
 			}
 		],
 		"taskDefinitions": [
@@ -131,6 +131,11 @@
 					"gamePath": {
 						"type": "string",
 						"description": "THe path to your game. Only relative paths are supported for now."
+					},
+					"copyToGame": {
+						"type": "boolean",
+						"default":true,
+						"description": "If false, the mod will be only compiled in the 'export' folder without copying it oner to your V-Slice instance. Neat!"
 					}
 				}
 			}

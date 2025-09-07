@@ -1,5 +1,6 @@
 package mikolka.commands;
 
+import mikolka.helpers.FunkinPaths;
 import mikolka.config.FunkCfg;
 import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.helpers.LangStrings;
@@ -42,10 +43,8 @@ class CompileTask {
 		FileManager.getProjectPath(project_path -> {
 			var dirName = Path.withoutDirectory(game_cwd);
 			trace(dirName);
-			trace("Got path internal: "+Std.string([game_cwd, "mods", mod_name]));
-			var export_mod_path = dirName.endsWith(".app") 
-				? Path.join([game_cwd,"Contents","Resources", "mods", mod_name])
-				: Path.join([game_cwd, "mods", mod_name]);
+			var export_mod_path = Path.join([FunkinPaths.getModFolderPath(game_cwd), mod_name]);
+
 
 			var projectConfig = new FunkCfg(project_path);
 			compileMod({
