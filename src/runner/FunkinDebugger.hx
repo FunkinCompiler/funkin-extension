@@ -109,7 +109,12 @@ class FunkinDebugger extends DebugSession  {
 		final cwd = args.cwd;
 		final execName = args.execName;
 		final cmd_prefix = args.cmd_prefix;
-		spawnProcess('$cmd_prefix ./$execName',args.cwd,env);
+		
+		final executable_cwd = haxe.io.Path.directory(args.cwd).endsWith(".app") 
+				? haxe.io.Path.join([args.cwd,"Contents","MacOS"])
+				: args.cwd;
+		spawnProcess('$cmd_prefix ./$execName',executable_cwd,env);
+	
 		DebugFiles.makeSupportMod(args.cwd); // This creates a support mod
 		executePostLaunchActions(function() {
 				sendEvent(new vscode.debugAdapter.DebugSession.InitializedEvent());

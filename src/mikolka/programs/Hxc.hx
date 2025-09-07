@@ -9,7 +9,7 @@ import haxe.io.Path;
 class Hxc {
 	// Once enabled strips "package" line at the beginning of each file
 	// (you still need that line even if you disable that)
-	public static var stripPackage:Bool = true;
+	public static var stripPackage:Bool = false;
 
 	// Allows you to utilise haxe's safe casts, like "cast (obj,type)"
 	public static var convertCasts:Bool = true;

@@ -11,7 +11,7 @@ import mikolka.helpers.ZipTools;
 import mikolka.helpers.FileManager;
 import haxe.io.Path;
 import sys.FileSystem;
-import sys.io.File;
+using StringTools;
 
 typedef CompileTaskConfig = {
 	var mod_assets:String;
@@ -40,8 +40,12 @@ class CompileTask {
 			return;
 		}
 		FileManager.getProjectPath(project_path -> {
+			var dirName = Path.directory(game_cwd);
+			trace(dirName);
 			trace("Got path: "+Std.string([game_cwd, "mods", mod_name]));
-			var export_mod_path = Path.join([game_cwd, "mods", mod_name]);
+			var export_mod_path = dirName.endsWith(".app") 
+				? Path.join([game_cwd,"Contents","Resources", "mods", mod_name])
+				: Path.join([game_cwd, "mods", mod_name]);
 
 			var projectConfig = new FunkCfg(project_path);
 			compileMod({

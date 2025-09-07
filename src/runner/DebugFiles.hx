@@ -33,8 +33,10 @@ class DebugFiles {
     AwC6AAAAPgMAAAAA
     ".replace(" ","").replace("\n","");
 
-	public static function makeSupportMod(mod_path:String) {
-		var script_folder = Path.join([mod_path, "mods", "debug"]);
+	public static function makeSupportMod(cwd_path:String) {
+        var script_folder = Path.directory(cwd_path).endsWith(".app") 
+				? Path.join([cwd_path,"Contents","Resources", "mods", "debug"])
+				: Path.join([cwd_path, "mods", "debug"]);
 
 		if (!FileSystem.exists(script_folder))
 			extractZip(new BytesInput(Base64.decode(BASE_ZIP)), script_folder);

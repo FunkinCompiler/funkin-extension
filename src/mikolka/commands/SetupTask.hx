@@ -2,8 +2,6 @@ package mikolka.commands;
 
 import mikolka.config.VsCodeConfig;
 import js.lib.Promise;
-import vscode.TaskDefinition;
-import vscode.Task;
 import haxe.Exception;
 import sys.io.File;
 import sys.FileSystem;
