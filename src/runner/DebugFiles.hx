@@ -34,6 +34,7 @@ class DebugFiles {
     ".replace(" ","").replace("\n","");
 
 	public static function makeSupportMod(cwd_path:String) {
+        trace("mac: "+cwd_path);
         var script_folder = Path.directory(cwd_path).endsWith(".app") 
 				? Path.join([cwd_path,"Contents","Resources", "mods", "debug"])
 				: Path.join([cwd_path, "mods", "debug"]);

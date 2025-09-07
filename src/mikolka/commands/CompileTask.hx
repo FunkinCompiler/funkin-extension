@@ -40,9 +40,9 @@ class CompileTask {
 			return;
 		}
 		FileManager.getProjectPath(project_path -> {
-			var dirName = Path.directory(game_cwd);
+			var dirName = Path.withoutDirectory(game_cwd);
 			trace(dirName);
-			trace("Got path: "+Std.string([game_cwd, "mods", mod_name]));
+			trace("Got path internal: "+Std.string([game_cwd, "mods", mod_name]));
 			var export_mod_path = dirName.endsWith(".app") 
 				? Path.join([game_cwd,"Contents","Resources", "mods", mod_name])
 				: Path.join([game_cwd, "mods", mod_name]);
