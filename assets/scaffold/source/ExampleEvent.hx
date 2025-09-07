@@ -1,4 +1,4 @@
-package mod;
+package mikolka;
 
 import funkin.data.event.SongEventSchema;
 import funkin.play.event.SongEvent;

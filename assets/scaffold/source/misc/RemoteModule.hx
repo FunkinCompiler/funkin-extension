@@ -1,4 +1,4 @@
-package mod.misc;
+package mikolka.misc;
 
 import funkin.modding.module.Module;
 

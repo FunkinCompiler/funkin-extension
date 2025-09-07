@@ -1,4 +1,4 @@
-package mod;
+package mikolka;
 
 import haxe.Log;
 import funkin.modding.module.ScriptedModule;
