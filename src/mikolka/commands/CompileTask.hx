@@ -56,6 +56,7 @@ class CompileTask {
 			});
 			if(copyToGame){
 				writeLine("Copying to the V-Slice...");
+				FileManager.deleteDirRecursively(export_mod_path);
 				FileManager.copyRec(Path.join([project_path, "export"]),export_mod_path);
 			}
 		});

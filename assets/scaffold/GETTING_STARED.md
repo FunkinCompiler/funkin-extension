@@ -45,4 +45,5 @@ To see your mod in action head over to "Run and Debug" section of your IDE, whic
 - `Just run FNF` Starts up your engine (stopping this task will also stop the game. Useful in some cases)
 - `Compile & Run FNF mod` Runs `Compile Mod` and `Just run FNF` in one go.
 - `Funk: Compile current V-Slice mod` Exports your mod to a v-slice engine located. It'll be put in "funkinGame/mods/workbench" unless otherwise defined.
+- `Funk: Export current V-Slice mod` Exports your mod to the "export" folder. Useful for uploading to the gamebanana.
 
