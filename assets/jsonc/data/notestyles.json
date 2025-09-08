@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Data for the FNF notestyle. You can use this to change both strum notes, but also style of the receptor notes.",
+  "type": "object",
+  "definitions": {
+    "assetData": {
+      "required": ["assetPath", "data"],
+      "properties": {
+        "assetPath": {
+          "type": "string",
+          "description": "The main asset path to use for this asset."
+        },
+        "scale": {
+          "type": "number",
+          "default": 1.0,
+          "description": "Specify the size of the asset relative to the original size. For example, 2.0 makes the sprite twice as big."
+        },
+        "offsets": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "default": [0, 0],
+          "description": "Some animations may need their positions to be corrected relative to the idle animation. Use an array of two decimal values, the first for horizontal position and the second for vertical position."
+        },
+        "isPixel": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specify whether to display this asset as being pixel (disabling texture smoothing)."
+        },
+        "data": {
+              "type": "object",
+              "description": "Animation data for this type of assets.",
+              "properties": {
+                "enabled":{
+                    "type":"boolean",
+                    "default":true,
+                    "description": "Specifies whether to display the asset."
+                }
+              },
+              "additionalProperties":{
+                "$ref": "#/definitions/animationData"
+              }
+            }
+      }
+    },
+    "animationData": {
+      "description": "Animation data!",
+      "properties": {
+        "offsets": {
+          "type": "array",
+          "default": [0, 0],
+          "description": "Offset from this character's real position when playing this animation."
+        },
+        "flipY": {
+          "default": false,
+          "description": "Whethever to flip Y axis of this character when playing this animation.",
+          "type": "boolean"
+        },
+        "frameRate": {
+          "type": "number",
+          "default": 24,
+          "description": "How many frames to play of this animation in 1 second."
+        },
+        "prefix": {
+          "type": "string",
+          "description": "The animation name as specified by your spritesheet.",
+          "minLength": 1
+        },
+        "looped": {
+          "default": false,
+          "description": "Whethever this animation should repeat itself after finishing.",
+          "type": "boolean"
+        },
+        "flipX": {
+          "default": false,
+          "description": "Whethever to flip X axis of this character when playing this animation",
+          "type": "boolean"
+        },
+        "frameIndices": {
+          "type": "array",
+          "default": [],
+          "description": "A list of frame numbers to use for this animation. Empty list will use all frames."
+        }
+      }
+    }
+  },
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
+      "description": "The version number for the Note Style data file format.",
+      "default": "1.1.0",
+      "minLength": 5
+    },
+    "name": {
+      "type": "string",
+      "description": "The readable name for the note style, used in places like the Chart Editor.",
+      "minLength": 1
+    },
+    "author": {
+      "description": "The author of the note style, aka the artist who created the assets.",
+      "type": "string",
+      "minLength": 1
+    },
+    "fallback": {
+      "type": "string",
+      "default": "funkin",
+      "description": "The note style ID to use as a fallback note style. Any assets not included for this note style will use the parent's asset instead."
+    },
+    "assets": {
+      "type": "object",
+      "description": "A list of asset data for each of the assets for the note style.",
+      "properties": {
+        "note": {
+            "$ref": "#/definitions/assetData"
+        },
+        "noteStrumline": {
+            "$ref": "#/definitions/assetData"
+        },
+        "holdNote": {
+            "$ref": "#/definitions/assetData"
+        },
+        "noteSplash": {
+            "$ref": "#/definitions/assetData"
+        },
+        "holdNoteCover": {
+            "$ref": "#/definitions/assetData"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/assetData"
+      }
+    }
+  },
+  "required": ["version", "name", "assets"]
+}

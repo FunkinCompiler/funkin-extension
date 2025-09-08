@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A definition for the sticker packs used on certain transitions.",
+  "type": "object",
+  "properties": {
+    "version":{
+      "type": "string",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
+      "default":"1.0.0",
+      "description": "The version number for the Sticker Pack data file format.",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "The readable name for the sticker pack, used in places like the Chart Editor.",
+      "minLength": 1
+    },
+    "author": {
+      "description": "The author of the sticker pack, aka the artist who created the assets.",
+      "type": "string",
+      "minLength": 1
+    },
+    "stickers":{
+        "type":"array",
+        "description": "A list of all the paths for all the stickers to use, as strings."
+    }
+  }
+}

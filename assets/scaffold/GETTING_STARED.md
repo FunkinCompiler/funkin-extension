@@ -1,5 +1,7 @@
 # Getting started
 
+[Kade's V-Slice docs](https://thekade.net/funkin-cookbook/)
+
 There are many approaches you could take from this point on.
 Instead, I'll guide you through the most important parts of this template:
 

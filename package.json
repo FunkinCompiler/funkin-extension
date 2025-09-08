@@ -93,9 +93,21 @@
 			},
 			{
 				"fileMatch": [
+					"**/_merge/data/*.json"
+				],
+				"url": "./assets/jsonc/_merge.json"
+			},
+			{
+				"fileMatch": [
 					"**/data/levels/*.json"
 				],
 				"url": "./assets/jsonc/data/levels.json"
+			},
+			{
+				"fileMatch": [
+					"**/data/notestyles/*.json"
+				],
+				"url": "./assets/jsonc/data/notestyles.json"
 			},
 			{
 				"fileMatch": [
