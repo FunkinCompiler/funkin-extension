@@ -24,7 +24,7 @@ class DiagnosticRegistry {
 
         ~/^cpp.Lib/ => "Attaching binaried to FNF is disabled within mods",
         ~/^haxe.Unserializer/ => "Mods are not allowed to resolve classes on their own",
-        ~/^flixel.util.FlxSave/ => "Keoki said so",
+        ~/^flixel.util.FlxSave/ => "There was a one very scary method..",
         ~/^extension\.(.*)/ => "Android extensions are disabled within mods",
         ~/^lime.system.(JNI|CFFI|System)/ => "Attaching binaried to FNF is disabled within mods",
         ~/^openfl.Lib/ => "Mods are not allowed to resolve classes on their own",

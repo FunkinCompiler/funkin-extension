@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.4.0",
+	"version": "0.4.2",
 	"description": "A simple extension to both develop and compile mods made for the game \"Fridat Night Funkin'\" in a more comfortable environment than a notepad.",
 	"categories": [
 		"Programming Languages",
@@ -52,7 +52,7 @@
 					"funkinCompiler.gamePath": {
 						"description": "A path to your FNF V-Slice instance. It is recommended to use relative paths here, but absolute should also work.",
 						"type": "string",
-						"default": "../funkinGame/"
+						"default": ""
 					},
 					"funkinCompiler.modName": {
 						"description": "Name of the mod folder to compile your mod into.",

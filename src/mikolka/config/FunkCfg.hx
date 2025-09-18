@@ -7,9 +7,9 @@ using StringTools;
 
 class FunkCfg {
     private static var DEFAULT_MAP:Map<String,String> =[
-        "mod_fnfc_folder" => "fnfc_files",
+        "mod_fnfc_folder" => "assets/fnfc_files",
         "mod_hx_folder" => "source/",
-        "mod_content_folder" => "mod_base"
+        "mod_content_folder" => "assets/mod_base"
     ];
     
     private var map:Map<String,String>;

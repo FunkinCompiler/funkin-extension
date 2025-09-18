@@ -32,23 +32,13 @@ class SetupTask {
 	}
 
 	function pickHaxelibRepo(resolve:Any->Void, deny:String->Void) {
-		final options = {
-			placeHolder: "Select a folder to download haxelibs into...",
-
-		}
-		Vscode.window.showOpenDialog({
-					canSelectFolders: true,
-					canSelectFiles: false
-				}).then(folders -> {
-					if (folders != null && folders.length > 0) {
-						var path = folders[0].fsPath;
-
-						new VsCodeConfig().HAXELIB_PATH = path;
-						Process.setHaxelibPath(path);
-						testEnvironment(resolve,deny);
-					}
-					else deny("No haxelib folder was set");
-				});
+		var cfg = new VsCodeConfig();
+		trace("Request setup");
+		Interaction.requestDirectory("Select a folder to download haxelibs into...", cfg.HAXELIB_PATH, path -> {
+			cfg.HAXELIB_PATH = path;
+			Process.setHaxelibPath(path);
+			testEnvironment(resolve, deny);
+		}, deny.bind("No haxelib folder was set"));
 	}
 
 	function testEnvironment(resolve:Any->Void, deny:String->Void) {
@@ -102,12 +92,11 @@ class SetupTask {
 	}
 
 	function installGrig(next:Void->Void) {
-		runSetupCommand("haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e --never",
-			next);
+		runSetupCommand("haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e --never", next);
 	}
 
 	function installFunkin(next:Void->Void) {
-		runSetupCommand("haxelib git funkin https://github.com/FunkinCompiler/Funkin-lib.git c18d10026ed95381af10129c7132eb271db54a6e --always", next);
+		runSetupCommand("haxelib git funkin https://github.com/FunkinCompiler/Funkin-lib.git 45056a6a27f1ad0835a60e5ff01230abf9acc14a --always", next);
 	}
 
 	function finaliseSetup(haxelib_repo:String, resolve:Any->Void) {

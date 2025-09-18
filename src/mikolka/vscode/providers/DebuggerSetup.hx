@@ -1,5 +1,7 @@
 package mikolka.vscode.providers;
 
+import mikolka.helpers.FunkinPaths;
+import sys.FileSystem;
 import js.Lib;
 import mikolka.config.VsCodeConfig;
 import mikolka.helpers.FileManager;
@@ -26,20 +28,18 @@ typedef FNFLaunchRequestArguments = DebugConfiguration & {
  * Class responsible for configuring debugger for Friday Night Funkin'.
  * This lets us capture logs and control it's process.
  */
-class DebuggerSetup { //game_cwd:String, mod_name:String,
+class DebuggerSetup { // game_cwd:String, mod_name:String,
 	public function new(context:vscode.ExtensionContext) {
-
-		//register V-Slice debugger
+		// register V-Slice debugger
 		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("funkin-run-game", {
 			resolveDebugConfiguration: (folder, debugConfiguration, ?token) -> {
 				var project_folder = folder?.uri.fsPath;
-				if(project_folder == null){
+				if (project_folder == null) {
 					Interaction.displayError("Running FNF without a folder! This will likely fail!");
 				}
-				requestStaticConfiguration(project_folder,debugConfiguration);
+				requestStaticConfiguration(project_folder, debugConfiguration);
 			}
 		}, Initial));
-
 	}
 
 	/**
@@ -55,15 +55,32 @@ class DebuggerSetup { //game_cwd:String, mod_name:String,
 			request: "launch"
 		};
 		var folder = Vscode.workspace?.workspaceFolders[0];
-		if(folder == null){
-			Interaction.displayErrorAlert("Cannot start the game","You need to open a folder before starting it!");
+
+		if (folder == null) {
+			Interaction.displayErrorAlert("Cannot start the game", "You need to open a folder before starting it!");
 			return;
 		}
-		Vscode.debug.startDebugging(folder, config).then((success) -> {
-			if (!success) {
-				Vscode.window.showErrorMessage("Funkin failed to funk!", {modal: true});
-			}
-		});
+		var vscodeCfg = new VsCodeConfig();
+		var execDirPath = FunkinPaths.getExecutableFolderPath(vscodeCfg.GAME_PATH);
+		if (!FileSystem.exists(execDirPath)) {
+			Interaction.requestDirectory("", vscodeCfg.GAME_PATH, inputPath -> {
+				vscodeCfg.GAME_PATH = inputPath;
+
+				Vscode.debug.startDebugging(folder, config).then((success) -> {
+					if (!success) {
+						Vscode.window.showErrorMessage("Funkin failed to funk!", {modal: true});
+					}
+				});
+			}, () -> {
+				Interaction.displayError("Game startup have been cancelled!");
+			});
+		} else {
+			Vscode.debug.startDebugging(folder, config).then((success) -> {
+				if (!success) {
+					Vscode.window.showErrorMessage("Funkin failed to funk!", {modal: true});
+				}
+			});
+		}
 	}
 
 	/**
@@ -73,19 +90,27 @@ class DebuggerSetup { //game_cwd:String, mod_name:String,
 	 * @param base The unsafe configuration provided by the user
 	 * @return FNFLaunchRequestArguments The arguments to launch a debugging session with
 	 */
-	public function requestStaticConfiguration(project_game_folder:String,base:Dynamic):FNFLaunchRequestArguments {
+	public function requestStaticConfiguration(project_game_folder:String, base:Dynamic):FNFLaunchRequestArguments {
 		trace("AYO!!");
-		if(base.execName == null) base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
-		if(base.cmd_prefix == null) base.cmd_prefix = "";
-		if(base.args == null) base.args = [];
-		if(base.trace == null) base.trace = true;
-		if(base.attachDebugger == null) base.attachDebugger = true;
-		if(base.cwd == null) base.cwd = new VsCodeConfig().GAME_PATH;
+		if (base.execName == null)
+			base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
+		if (base.cmd_prefix == null)
+			base.cmd_prefix = "";
+		if (base.args == null)
+			base.args = [];
+		if (base.trace == null)
+			base.trace = true;
+		if (base.attachDebugger == null)
+			base.attachDebugger = true;
+		if (base.cwd == null)
+			base.cwd = new VsCodeConfig().GAME_PATH;
 		trace(base.preLaunchTask);
-		if(base.preLaunchTask == Lib.undefined) base.preLaunchTask = "Funk: Compile current V-Slice mod";
+		if (base.preLaunchTask == Lib.undefined)
+			base.preLaunchTask = "Funk: Compile current V-Slice mod";
 
-		var isCwdRelative = StringTools.startsWith(base.cwd,".");
-		if(isCwdRelative) base.cwd = Path.join([project_game_folder,base.cwd]);
+		var isCwdRelative = StringTools.startsWith(base.cwd, ".");
+		if (isCwdRelative)
+			base.cwd = Path.join([project_game_folder, base.cwd]);
 
 		trace(base);
 		return base;

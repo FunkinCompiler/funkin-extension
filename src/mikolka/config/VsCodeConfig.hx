@@ -12,7 +12,7 @@ class VsCodeConfig {
         return projectConfig.get("funkinCompiler.modName","workbench");
     }    
 
-    public var GAME_PATH(get,null):String;
+    public var GAME_PATH(get,set):String;
     function get_GAME_PATH():String {
         return projectConfig.get("funkinCompiler.gamePath","../funkinGame/");
     }
@@ -23,6 +23,10 @@ class VsCodeConfig {
     }
     function set_HAXELIB_PATH(value:String):String {
         projectConfig.update("funkinCompiler.haxelibPath",value,true);
+        return value;
+    }
+    function set_GAME_PATH(value:String):String {
+        projectConfig.update("funkinCompiler.gamePath",value,true);
         return value;
     }
 }
