@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "File defining an FNF album usable by the songs in freeplay",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version number for the Album data file format.",
+      "default": "1.0.0",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "A readable name for the album.",
+      "minLength": 1
+    },
+    "artists": {
+      "description": "The artists of the album, aka the ones who created the assets.",
+      "type": "array"
+    },
+    "albumArtAsset": {
+      "type": "string",
+      "description": "The asset path to the album art which will be displayed in Freeplay.",
+      "minLength": 1
+    },
+    "albumTitleAsset": {
+      "type": "string",
+      "description": "The asset path to the album title which will be displayed below the album art in Freeplay.",
+      "minLength": 1
+    },
+    "albumTitleOffsets": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "The global offset to the album's position, in pixels.",
+      "default": [0, 0]
+    },
+    "albumTitleAnimations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "required": ["name"],
+        "properties": {
+          "offsets": {
+            "type": "array",
+            "default": [0, 0],
+            "description": "Offset from the prop's real position when playing this animation."
+          },
+          "flipY": {
+            "default": false,
+            "description": "Whethever to flip Y axis of this prop when playing this animation.",
+            "type": "boolean"
+          },
+          "frameRate": {
+            "type": "number",
+            "default": 24,
+            "description": "How many frames to play of this animation in 1 second."
+          },
+          "prefix": {
+            "type": "string",
+            "description": "Prefix of all frames making up this animations. Optional for 'Packer' props.",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "A name of this prop's animation.",
+            "minLength": 1,
+            "enum": ["idle", "switch"]
+          },
+          "looped": {
+            "default": false,
+            "description": "Whethever this animation should repeat itself after it finishes.",
+            "type": "boolean"
+          },
+          "flipX": {
+            "default": false,
+            "description": "Whethever to flip X axis of this prop when playing this animation",
+            "type": "boolean"
+          },
+          "frameIndices": {
+            "type": "array",
+            "default": [],
+            "description": "A list of frame numbers to use for this animation. Empty list will use all available frames."
+          }
+        }
+      }
+    }
+  },
+  "required": ["name", "artists", "albumArtAsset", "albumTitleAsset"]
+}

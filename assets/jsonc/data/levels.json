@@ -7,6 +7,7 @@
       "type": "string",
       "description": "The version number for the Level data file format. This can control whethever certain features are available to you or if this file will load at all.",
       "default": "1.0.1",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
       "minLength": 1
     },
     "name": {

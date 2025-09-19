@@ -5,7 +5,9 @@
     "version": {
       "type": "string",
       "description": "The version number for the Playable Character data file format.",
-      "default": "1.0.0"
+      "default": "1.0.0",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
+      "minLength":1
     },
     "name": {
       "type": "string",

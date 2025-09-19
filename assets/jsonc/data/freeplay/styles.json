@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "File defining an FNF freeplay style usable by the freeplay.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version number for the Freeplay style data file format.",
+      "default": "1.0.0",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
+      "minLength": 1
+    },
+    "bgAsset": {
+      "type": "string",
+      "description": "Asset key for the image used as a background.",
+      "minLength": 1
+    },
+    "selectorAsset": {
+      "type": "string",
+      "description": "Asset key used by the difficulty arrows in the top-left corner of freeplay.",
+      "minLength": 1
+    },
+    "numbersAsset": {
+      "type": "string",
+      "description": "Asset key for the song highscore numbers shown at the top right of the freeplay.",
+      "minLength": 1
+    },
+    "capsuleAsset": {
+      "type": "string",
+      "description": "Asset key for the freeplay capsules.",
+      "minLength": 1
+    },
+    "capsuleTextColors": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Color data for the capsule text outline. The order goes as follows: [DESELECTED, SELECTED]"
+    }
+  },
+  "required": ["name", "bgAsset", "selectorAsset", "capsuleAsset","numbersAsset","capsuleTextColors","startDelay"]
+}
