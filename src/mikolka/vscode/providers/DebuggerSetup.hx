@@ -48,7 +48,7 @@ class DebuggerSetup { // game_cwd:String, mod_name:String,
 					var vscodeCfg = new VsCodeConfig();
 					Interaction.requestDirectory("Select FNF instance to launch", vscodeCfg.GAME_PATH, inputPath -> {
 						vscodeCfg.GAME_PATH = inputPath;
-						spawnFunkinGame();
+						Interaction.displayInformation("Path updated! Try launching the game again.");
 					}, () -> {
 						Interaction.displayError("Operation cancelled!");
 					});
