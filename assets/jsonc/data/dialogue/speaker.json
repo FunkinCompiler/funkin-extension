@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Data for the speaker used in dialogues",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The version number for the speaker file format.",
+      "default": "1.0.0",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "A readable name for the speaker.",
+      "minLength": 1
+    },
+    "assetPath": {
+      "description": "The path to the asset to use for the speaker's sprite.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "flipX": {
+      "default": false,
+      "description": "Whethever to flip X axis of this speaker.",
+      "type": "boolean"
+    },
+    "flipY": {
+      "default": false,
+      "description": "Whethever to flip Y axis of this speaker.",
+      "type": "boolean"
+    },
+    "isPixel": {
+      "default": false,
+      "description": "Whether to disable anti-aliasing for the dialogue box speaker.",
+      "type": "boolean"
+    },
+    "offsets": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "The global offset to the speaker's position, in pixels.",
+      "default": [
+        0,
+        0
+      ]
+    },
+    "scale": {
+      "default": 1,
+      "description": "The scale to apply to the sprite.",
+      "type": "number"
+    },
+    "animations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "offsets": {
+            "type": "array",
+            "default": [
+              0,
+              0
+            ],
+            "description": "Offset from the speaker's real position when playing this animation."
+          },
+          "flipY": {
+            "default": false,
+            "description": "Whethever to flip Y axis of this speaker when playing this animation.",
+            "type": "boolean"
+          },
+          "frameRate": {
+            "type": "number",
+            "default": 24,
+            "description": "How many frames to play of this animation in 1 second."
+          },
+          "prefix": {
+            "type": "string",
+            "description": "Prefix of all frames making up this animations. Optional for 'Packer' props.",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "A name of this speaker's animation.",
+            "minLength": 1
+          },
+          "looped": {
+            "default": false,
+            "description": "Whethever this animation should repeat itself after it finishes.",
+            "type": "boolean"
+          },
+          "flipX": {
+            "default": false,
+            "description": "Whethever to flip X axis of this speaker when playing this animation",
+            "type": "boolean"
+          },
+          "frameIndices": {
+            "type": "array",
+            "default": [],
+            "description": "A list of frame numbers to use for this animation. Empty list will use all available frames."
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "assetPath"
+  ]
+}

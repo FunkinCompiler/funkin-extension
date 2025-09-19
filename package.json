@@ -126,6 +126,24 @@
 					"**/data/players/*.json"
 				],
 				"url": "./assets/jsonc/data/players.json"
+			},
+			{
+				"fileMatch": [
+					"**/data/ui/freeplay/albums/*.json"
+				],
+				"url": "./assets/jsonc/freeplay/albums.json"
+			},
+			{
+				"fileMatch": [
+					"**/data/ui/freeplay/styles/*.json"
+				],
+				"url": "./assets/jsonc/freeplay/styles.json"
+			},
+			{
+				"fileMatch": [
+					"**/data/dialogue/speakers/*.json"
+				],
+				"url": "./assets/jsonc/dialogue/speaker.json"
 			}
 		],
 		"taskDefinitions": [

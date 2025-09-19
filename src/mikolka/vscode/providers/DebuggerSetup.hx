@@ -4,9 +4,7 @@ import mikolka.helpers.FunkinPaths;
 import sys.FileSystem;
 import js.Lib;
 import mikolka.config.VsCodeConfig;
-import mikolka.helpers.FileManager;
 import haxe.io.Path;
-import vscode.debugProtocol.DebugProtocol.LaunchRequestArguments;
 import vscode.DebugConfiguration;
 
 typedef FNFLaunchRequestArguments = DebugConfiguration & {
@@ -34,10 +32,28 @@ class DebuggerSetup { // game_cwd:String, mod_name:String,
 		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("funkin-run-game", {
 			resolveDebugConfiguration: (folder, debugConfiguration, ?token) -> {
 				var project_folder = folder?.uri.fsPath;
+
 				if (project_folder == null) {
 					Interaction.displayError("Running FNF without a folder! This will likely fail!");
 				}
-				requestStaticConfiguration(project_folder, debugConfiguration);
+				var fnfCgf:FNFLaunchRequestArguments = cast debugConfiguration;
+				var hasCwd = fnfCgf.cwd != null;
+
+				var debugConfig = requestStaticConfiguration(project_folder, debugConfiguration);
+				if (validateConfig(debugConfig))
+					return debugConfig;
+				else if (hasCwd)
+					return null;
+				else {
+					var vscodeCfg = new VsCodeConfig();
+					Interaction.requestDirectory("Select FNF instance to launch", vscodeCfg.GAME_PATH, inputPath -> {
+						vscodeCfg.GAME_PATH = inputPath;
+						spawnFunkinGame();
+					}, () -> {
+						Interaction.displayError("Operation cancelled!");
+					});
+					return js.Lib.undefined;
+				}
 			}
 		}, Initial));
 	}
@@ -60,27 +76,12 @@ class DebuggerSetup { // game_cwd:String, mod_name:String,
 			Interaction.displayErrorAlert("Cannot start the game", "You need to open a folder before starting it!");
 			return;
 		}
-		var vscodeCfg = new VsCodeConfig();
-		var execDirPath = FunkinPaths.getExecutableFolderPath(vscodeCfg.GAME_PATH);
-		if (!FileSystem.exists(execDirPath)) {
-			Interaction.requestDirectory("", vscodeCfg.GAME_PATH, inputPath -> {
-				vscodeCfg.GAME_PATH = inputPath;
 
-				Vscode.debug.startDebugging(folder, config).then((success) -> {
-					if (!success) {
-						Vscode.window.showErrorMessage("Funkin failed to funk!", {modal: true});
-					}
-				});
-			}, () -> {
-				Interaction.displayError("Game startup have been cancelled!");
-			});
-		} else {
-			Vscode.debug.startDebugging(folder, config).then((success) -> {
-				if (!success) {
-					Vscode.window.showErrorMessage("Funkin failed to funk!", {modal: true});
-				}
-			});
-		}
+		Vscode.debug.startDebugging(folder, config).then((success) -> {
+			if (!success) {
+				Vscode.window.showErrorMessage("Funkin failed to funk!", {modal: true});
+			}
+		});
 	}
 
 	/**
@@ -114,5 +115,10 @@ class DebuggerSetup { // game_cwd:String, mod_name:String,
 
 		trace(base);
 		return base;
+	}
+
+	private inline function validateConfig(cfg:FNFLaunchRequestArguments):Bool {
+		var execDirPath = Path.join([FunkinPaths.getExecutableFolderPath(cfg.cwd), cfg.execName]);
+		return FileSystem.exists(execDirPath);
 	}
 }

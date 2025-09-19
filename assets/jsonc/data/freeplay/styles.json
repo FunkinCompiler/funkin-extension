@@ -35,6 +35,10 @@
       "minItems": 2,
       "maxItems": 2,
       "description": "Color data for the capsule text outline. The order goes as follows: [DESELECTED, SELECTED]"
+    },
+    "startDelay": {
+      "type": "number",
+      "description": "Delay time after confirming a song selection, before entering PlayState."
     }
   },
   "required": ["name", "bgAsset", "selectorAsset", "capsuleAsset","numbersAsset","capsuleTextColors","startDelay"]
