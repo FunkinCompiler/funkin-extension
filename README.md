@@ -36,6 +36,8 @@ You can put your chars into a special ``fnfc_files`` folder and they'll be autom
     Lets you format your haxe code using `Ctr + Alt + L` shortcut. 
   - #### Type hints
     <img src="./readme-images/typeHint.png" alt="Highlighting fields will display their types." width="600"/>
+  - #### Blacklist detection
+    <img src="./readme-images/blacklist.png" alt="Why was it added??? Like, no one asked for it." width="600"/>
   - #### Static error checking
     <img src="./readme-images/staticError.png" alt="When you make an error, it'll likely be caught and displayed to you." width="600"/>
   - #### "Go to definition" function with Ctr+ click on function/class
@@ -55,13 +57,6 @@ You can put your chars into a special ``fnfc_files`` folder and they'll be autom
      
      turns into
     - *import funkin.modding.events.StateChangeScriptEvent;*
-
-  - #### Clean up package header `stripPackage`
-
-    Removes `package` line from all .hx files (at the beginning of the file)
-
-
-    NOTE: You still need to include it for Funkin compiler to work correctly.
 
   - #### Module.scriptCall() fix 
 
