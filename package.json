@@ -35,7 +35,8 @@
 		"nadako.vshaxe"
 	],
 	"activationEvents": [
-		"workspaceContains:./funk.cfg"
+		"workspaceContains:./funk.cfg",
+		"workspaceContains:./_polymod_meta.json"
 	],
 	"files": [
 		"bin",

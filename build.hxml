@@ -4,5 +4,6 @@
 -cp src/funkin-runner
 -D analyzer-optimize
 -lib vscode 
+-lib vshaxe
 -lib vscode-debugadapter 
 Main

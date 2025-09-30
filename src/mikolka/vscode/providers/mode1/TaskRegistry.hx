@@ -1,5 +1,7 @@
-package mikolka.vscode.providers;
+package mikolka.vscode.providers.mode1;
 
+import vscode.Disposable;
+import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.config.VsCodeConfig;
 import js.lib.Promise;
 import js.lib.Promise.Thenable;
@@ -17,7 +19,7 @@ import vscode.CustomExecution;
 /**
  * This class manages all tasks provided by this extension
  */
-class TaskRegistry {
+class TaskRegistry extends DisposableProvider {
 
 	// This configures the code for the task
 	/**
@@ -69,12 +71,13 @@ class TaskRegistry {
 		var exportTask = new Task(cast {type: "funk", copyToGame:false}, TaskScope.Workspace, "Export current V-Slice mod", "Funk", getModCompileTask());
 
 		//Register task provider
-		context.subscriptions.push(Vscode.tasks.registerTaskProvider("funk", {
+		var disposeHook = Vscode.tasks.registerTaskProvider("funk", {
 			resolveTask: TaskRegistry.resolveTask,
 			provideTasks: token -> {
 				return [defaultTask,exportTask];
 			}
-		}));
+		});
+		super(context,disposeHook);
 	}
 
 	/**

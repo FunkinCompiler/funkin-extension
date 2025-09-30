@@ -5,7 +5,7 @@ import js.lib.Promise;
 import haxe.Exception;
 import sys.io.File;
 import sys.FileSystem;
-import mikolka.vscode.Interaction;
+
 import mikolka.helpers.LangStrings;
 import mikolka.helpers.Process;
 

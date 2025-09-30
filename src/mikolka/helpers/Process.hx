@@ -1,7 +1,7 @@
 package mikolka.helpers;
 
 import js.node.ChildProcess;
-import mikolka.vscode.Interaction;
+import mikolka.vscode.ui.Interaction;
 
 class Process {
 	public static function checkCommand(execName:String,cwd:Null<String> = null,errTitle:String = "Error checking command"):Bool {

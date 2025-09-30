@@ -1,6 +1,6 @@
 package mikolka.programs;
 
-import mikolka.vscode.Interaction;
+import mikolka.vscode.ui.Interaction;
 import mikolka.helpers.FileManager;
 import sys.FileSystem;
 import sys.io.File;

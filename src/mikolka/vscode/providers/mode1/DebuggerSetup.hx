@@ -1,5 +1,7 @@
-package mikolka.vscode.providers;
+package mikolka.vscode.providers.mode1;
 
+import vscode.Disposable;
+import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.helpers.FunkinPaths;
 import sys.FileSystem;
 import js.Lib;
@@ -26,10 +28,11 @@ typedef FNFLaunchRequestArguments = DebugConfiguration & {
  * Class responsible for configuring debugger for Friday Night Funkin'.
  * This lets us capture logs and control it's process.
  */
-class DebuggerSetup { // game_cwd:String, mod_name:String,
+class DebuggerSetup extends DisposableProvider { 
+
 	public function new(context:vscode.ExtensionContext) {
 		// register V-Slice debugger
-		context.subscriptions.push(Vscode.debug.registerDebugConfigurationProvider("funkin-run-game", {
+		var debugProvider = Vscode.debug.registerDebugConfigurationProvider("funkin-run-game", {
 			resolveDebugConfiguration: (folder, debugConfiguration, ?token) -> {
 				var project_folder = folder?.uri.fsPath;
 
@@ -55,9 +58,9 @@ class DebuggerSetup { // game_cwd:String, mod_name:String,
 					return js.Lib.undefined;
 				}
 			}
-		}, Initial));
+		}, Initial);
+		super(context,debugProvider);
 	}
-
 	/**
 	 * Manually starts debugging of the V-Slice Engine.
 	 * This method is rarely needed and preferably it should be ran with the "Run & Debug" configuration

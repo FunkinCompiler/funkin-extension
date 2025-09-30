@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import mikolka.vscode.definitions.DisposableProvider;
 import vscode.Range;
 import vscode.Diagnostic;
 import vscode.DiagnosticCollection;
@@ -16,7 +17,7 @@ typedef ImportLine = {
 /**
  * This registry contains all code for checking problems in a source files
  */
-class DiagnosticRegistry {
+class DiagnosticRegistry extends DisposableProvider {
 	/**
 	 * This has all currently blacklisted classes from use
 	 **/
@@ -51,11 +52,16 @@ class DiagnosticRegistry {
 
 	public function new(context:vscode.ExtensionContext) {
 		problemsReporter = Vscode.languages.createDiagnosticCollection("Funkin");
-
-		Vscode.workspace.onDidOpenTextDocument(requestImportCheck);
-		Vscode.workspace.onDidSaveTextDocument(requestImportCheck);
+		super(context,
+			Vscode.workspace.onDidOpenTextDocument(requestImportCheck),
+			Vscode.workspace.onDidSaveTextDocument(requestImportCheck)
+		);
 	}
 
+	override function dispose() {
+		super.dispose();
+		problemsReporter.dispose();
+	}
 	/**
 	 * Request a given file to be checked against any known blacklisted imports
 	 * 

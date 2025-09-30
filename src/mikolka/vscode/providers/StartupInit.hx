@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import mikolka.vscode.definitions.DisposableProvider;
 import haxe.io.Path;
 import mikolka.helpers.Process;
 import mikolka.helpers.LangStrings;
@@ -9,9 +10,9 @@ using StringTools;
 /**
  * This class manages the startup of the Funkin compiler
  */
-class StartupInit {
+class StartupInit extends DisposableProvider {
     public function new(context:vscode.ExtensionContext) {
-
+        super(context);
     }
     public function runStartupChecks() {
         var cfg = new VsCodeConfig();

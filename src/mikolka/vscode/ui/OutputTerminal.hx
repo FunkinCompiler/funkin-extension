@@ -1,4 +1,4 @@
-package mikolka.vscode;
+package mikolka.vscode.ui;
 
 import js.lib.Promise.Thenable;
 import vscode.CancellationTokenSource;

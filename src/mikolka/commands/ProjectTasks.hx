@@ -1,7 +1,6 @@
 package mikolka.commands;
 
 import mikolka.helpers.FileManager;
-import mikolka.vscode.Interaction;
 
 class ProjectTasks {
 

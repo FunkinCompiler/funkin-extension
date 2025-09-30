@@ -35,17 +35,21 @@
 
 #This macros add some stuff for FNF
 #--macro include('funkin')
+
 --macro addMetadata('@:build(funkin.util.macro.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')
---macro include('haxe.ui.backend.flixel.components')
---macro include('haxe.ui.backend.flixel')
---macro include('haxe.ui.core')
---macro include('haxe.ui.components')
---macro include('haxe.ui.containers')
---macro include('haxe.ui.containers.dialogs')
---macro include('haxe.ui.containers.menus')
---macro include('haxe.ui.containers.properties')
---macro include('funkin')
+
+# --macro include('haxe.ui.backend.flixel.components')
+# --macro include('haxe.ui.backend.flixel')
+# --macro include('haxe.ui.core')
+# --macro include('haxe.ui.components')
+# --macro include('haxe.ui.containers')
+# --macro include('haxe.ui.containers.dialogs')
+# --macro include('haxe.ui.containers.menus')
+# --macro include('haxe.ui.containers.properties')
+# --macro include('funkin')
+
 -D haxeui_dont_impose_base_class
+
 --macro flixel.system.macros.FlxDefines.run()
 --remap flash:openfl
 # Defines

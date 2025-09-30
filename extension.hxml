@@ -4,5 +4,6 @@
 -D js-es=6
 -lib vscode 
 -lib vscode-debugadapter 
+-lib vshaxe
 -js bin/main.js 
 mikolka.Main

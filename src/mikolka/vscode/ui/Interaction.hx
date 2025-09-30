@@ -1,4 +1,4 @@
-package mikolka.vscode;
+package mikolka.vscode.ui;
 
 import vscode.Uri;
 import vscode.ThemeIcon;

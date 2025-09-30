@@ -1,13 +1,13 @@
 package mikolka.commands;
 
+import mikolka.vscode.providers.mode1.DebuggerSetup;
 import mikolka.helpers.FunkinPaths;
 import mikolka.config.FunkCfg;
-import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.helpers.LangStrings;
 import mikolka.programs.Hxc;
 import mikolka.programs.Fnfc;
 import mikolka.helpers.Process;
-import mikolka.vscode.Interaction;
+import mikolka.vscode.ui.Interaction;
 import mikolka.helpers.ZipTools;
 import mikolka.helpers.FileManager;
 import haxe.io.Path;
