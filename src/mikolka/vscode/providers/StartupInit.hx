@@ -36,7 +36,11 @@ class StartupInit extends DisposableProvider {
             });
             return;
         }
-        Vscode.window.showInformationMessage("Funkin Compiler is now running!");
+        if(Main.isMode2Active){
+            Vscode.window.showInformationMessage("Change the extension of scripts from '.hxc' to '.hx' to access autocompletion capabilities!");
+            Vscode.window.showInformationMessage("Funkin Compiler (mode 2) is running");
+        } 
+        else Vscode.window.showInformationMessage("Funkin Compiler is now running!");
         //
     }
 }

@@ -68,9 +68,11 @@ You can put your chars into a special ``fnfc_files`` folder and they'll be autom
 1. Install both Haxe and Git
 3. Install the extension.
 4. Run `Funkin compiler: Setup haxelib` command to install necessary dependencies (You will be asked to select a folder to install haxelibs into).
-5. Once done, open a new **empty** folder
-6. Run `Funkin compiler: Make new project` to scaffold template for your mod.
-7. Once done, you can customise some settings from ``funk.cfg`` file.
+
+### For mode 1 (recommended)
+
+5. Run `Funkin compiler: Make new project` to scaffold template for your mod.
+6. Once done, you can customise some settings from ``funk.cfg`` file.
 > Note: filepaths are based on your project's root dorectory
  - ``mod_content_folder`` Points to your mod's base folder.
  All the files here will copied first when compiling your mod.
@@ -79,6 +81,14 @@ You can put your chars into a special ``fnfc_files`` folder and they'll be autom
  - ``mod_fnfc_folder`` Points to the FNFC files of your mod.
  Those get properly integrated into your mod when compiling.
  This lets you easily edit the songs from the game itself.
+
+### For mode 2
+
+Just launch any V-Slice mod directory. There should be a special message about activation of this mode.
+
+**NOTE: You need to change the extension of scripts to .hx to access autocompletion.**
+
+**Make sure to change it back after!**
 
 ## How to migrate
 #### from 0.3.0 - 0.3.2 

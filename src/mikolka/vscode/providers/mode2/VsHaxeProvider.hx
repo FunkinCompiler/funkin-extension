@@ -15,7 +15,7 @@ class VsHaxeProvider extends DisposableProvider {
             trace(Vscode.extensions.getExtension("nadako.vshaxe").extensionPath);
             onVshaxeActive(context);
         });
-        checkVshaxePatch();
+        //checkVshaxePatch();
         super(context);
     }
 
