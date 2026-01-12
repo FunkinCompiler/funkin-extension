@@ -15,7 +15,10 @@ class CommandRegistry extends DisposableProvider {
         super(context,	
 			makeCommand("setup",context,() -> {
 				//var console = Out
-				var setup = new SetupTask((txt) -> commandOutput.appendLine(txt));
+				var setup = new SetupTask((txt) -> {
+					trace(txt);
+					commandOutput.appendLine(txt);
+				},context.asAbsolutePath("./assets/fullRerplace"));
 				commandOutput.show();
 
 				setup.task_setupEnvironment().then((_) ->{
