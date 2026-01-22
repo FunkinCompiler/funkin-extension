@@ -17,7 +17,8 @@
 -lib haxeui-core
 -lib haxeui-flixel
 -lib polymod
--lib flxanimate
+#-lib flxanimate
+-lib flixel-animate
 -lib funkin.vis
 -lib grig.audio
 -lib extension-admob

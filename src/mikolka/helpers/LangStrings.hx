@@ -16,10 +16,10 @@ class LangStrings {
     public static inline final STARTUP_SETUP_DIFFERENT_HAXELIB:String = 
         "Looks like you don't have Funkin Compiler's haxelib folder set. Would you like to set it now?";
         
-    public static inline final MSG_SETUP_CHECKING_GIT:String = "[SETUP] Checking git..";
+    public static inline final MSG_SETUP_CHECKING_CURL:String = "[SETUP] Checking curl..";
     public static inline final MSG_SETUP_CHECKING_HAXE:String = "[SETUP] Checking haxe..";
-    public static inline final SETUP_GIT_ERROR:String = 
-    "Git is absent on this system. You can install it from here: https://git-scm.com/";
+    public static inline final SETUP_CURL_ERROR:String = 
+    "You don't have 'curl' installed on your system! You need to install it before continue.";
     public static inline final SETUP_HAXE_ERROR:String = 
     "You don't have haxe???\nGet it from here: https://haxe.org/download/";
     public static inline final SETUP_HAXELIB_ERROR_TITLE:String = "Haxelib dependencies folder is not empty!";

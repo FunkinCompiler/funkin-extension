@@ -2,8 +2,8 @@ package mikolka.install;
 
 import haxe.io.Path;
 import haxe.io.Input;
-import sys.io.File;
 import sys.FileSystem;
+import sys.io.File;
 import mikolka.install.backend.TaskChips.ChipTask;
 import mikolka.install.backend.TaskChips;
 import mikolka.install.backend.HmmParser;
@@ -22,8 +22,11 @@ class FunkinLibrariesInstall {
 
 	// https://codeload.github.com/FunkinCrew/Funkin/zip/
 	public function installFunkin(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		installLibraryFromGithub("FunkinCrew/Funkin","668681250489b6a452ed20b915e51e4ba67a5073","funkin",() ->{
-			FileSystem.rename(Path.join([localCwd,"funkin","git","source"]),Path.join([localCwd,"funkin","git"]));
+		installLibraryFromGithub("FunkinCrew/Funkin","188870dbe61fb88b062f8480e37cf03eed3063b0","funkin",() ->{
+			trace("FNF resolved promise "+localCwd);
+			FileManager.moveRec(Path.join([localCwd,"funkin","git","source"]),Path.join([localCwd,"funkin","git"]));
+			FileSystem.rename(Path.join([localCwd,"funkin","git","Main.hx"]),Path.join([localCwd,"funkin","git","funkin","Main.hx"]));
+			trace("FNF done");
 			resolve();
 		},deny);
 	}
@@ -65,11 +68,13 @@ class FunkinLibrariesInstall {
 				deny('${Path.join([localCwd,libraryName])} has more than one file/dir. Something went wrong downloading ${libraryName}');
 			}
 			else{
+				trace("Extracting "+repoName);
 				var folderName = fsRead[0];
 				FileSystem.rename(Path.join([localCwd,libraryName,folderName]),Path.join([localCwd,libraryName,"git"]));
 				if(DEV_LIBRARIES.contains(libraryName)) 
 					File.saveContent(Path.join([localCwd,libraryName,".dev"]), Path.join([localCwd,libraryName,'git/src']));
 				else File.saveContent(Path.join([localCwd,libraryName,".current"]),"git");
+				trace("Installed "+repoName);
 				resolve();
 			}
 		});

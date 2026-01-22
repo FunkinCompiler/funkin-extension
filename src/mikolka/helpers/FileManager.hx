@@ -81,5 +81,12 @@ class FileManager {
 			File.copy('$from/$s', Path.join([to, s]));
 		}, s -> {});
 	}
+	public static function moveRec(from:String, to:String):Void {
+		FileSystem.createDirectory(from);
+		FileManager.scanDirectory(from, s -> {
+			FileSystem.createDirectory(Path.join([to, Path.directory(s)]));
+			FileSystem.rename('$from/$s', Path.join([to, s]));
+		}, s -> {});
+	}
 
 }

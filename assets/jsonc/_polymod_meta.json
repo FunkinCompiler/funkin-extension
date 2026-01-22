@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Manifest for your mod. Without it your mod won't be recognised my the game.",
+  "description": "Manifest for your mod. Without it your mod won't be recognised by the game.",
   "type": "object",
   "properties": {
     "title": {
@@ -64,7 +64,7 @@
       "type": "string",
       "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
       "description": "FNF's API version this mod makes use of.",
-      "default": "0.7.4",
+      "default": "0.8.1",
       "minLength": 5
     },
     "mod_version": {

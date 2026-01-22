@@ -10,9 +10,9 @@ class EnvironmentChecks {
 	var writeLine:String->Void;
 
 	public function checkGit(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		writeLine(LangStrings.MSG_SETUP_CHECKING_GIT);
-		if (!Process.checkCommand("git -v"))
-			deny(LangStrings.SETUP_GIT_ERROR);
+		writeLine(LangStrings.MSG_SETUP_CHECKING_CURL);
+		if (!Process.checkCommand("curl -V"))
+			deny(LangStrings.SETUP_CURL_ERROR);
 		else
 			resolve();
 	}

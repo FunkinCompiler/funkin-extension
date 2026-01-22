@@ -67,6 +67,10 @@ class FunkinPatchRules {
     ~/@:build\((.*)\)/gm => "// Build file: $1",
     ~/@:envField/gm => "",
     ~/public static final DISCORD_CLIENT_ID:Null<String>;/gm => "public static var DISCORD_CLIENT_ID:Null<String> = \"\";",
+    
+    // Spaghetti game patches
+    ~/variationSongId._asc._c.name/gm => "''",
+    ~/@:nullSafety(\([A-z]*\))?/gm => "",
 
     ~/class ChartEditorMetadataToolbox extends ChartEditorBaseToolbox\n{/gm => 
     "class ChartEditorMetadataToolbox extends ChartEditorBaseToolbox //Patched 
