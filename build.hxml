@@ -3,6 +3,7 @@
 -cp src/mikolka
 -cp src/funkin-runner
 -D analyzer-optimize
+-D haxe-next
 -lib vscode 
 -lib vshaxe
 -lib vscode-debugadapter 

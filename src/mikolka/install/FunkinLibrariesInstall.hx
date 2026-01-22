@@ -22,7 +22,10 @@ class FunkinLibrariesInstall {
 
 	// https://codeload.github.com/FunkinCrew/Funkin/zip/
 	public function installFunkin(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		installLibraryFromGithub("FunkinCrew/Funkin","668681250489b6a452ed20b915e51e4ba67a5073","funkin",resolve,deny);
+		installLibraryFromGithub("FunkinCrew/Funkin","668681250489b6a452ed20b915e51e4ba67a5073","funkin",() ->{
+			FileSystem.rename(Path.join([localCwd,"funkin","git","source"]),Path.join([localCwd,"funkin","git"]));
+			resolve();
+		},deny);
 	}
 
 	public function installLibrariesFromHmm(haxelib_repo:String):ChipTask {

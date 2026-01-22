@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.4.2",
+	"version": "0.5.0",
 	"description": "A simple extension to both develop and compile mods made for the game \"Fridat Night Funkin'\" in a more comfortable environment than a notepad.",
 	"categories": [
 		"Programming Languages",
@@ -165,7 +165,7 @@
 					},
 					"copyToGame": {
 						"type": "boolean",
-						"default":true,
+						"default": true,
 						"description": "If false, the mod will be only compiled in the 'export' folder without copying it oner to your V-Slice instance. Neat!"
 					}
 				}

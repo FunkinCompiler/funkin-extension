@@ -36,8 +36,6 @@
 #This macros add some stuff for FNF
 #--macro include('funkin')
 
---macro addMetadata('@:build(funkin.util.macro.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')
-
 # --macro include('haxe.ui.backend.flixel.components')
 # --macro include('haxe.ui.backend.flixel')
 # --macro include('haxe.ui.core')
@@ -50,7 +48,26 @@
 
 -D haxeui_dont_impose_base_class
 
---macro flixel.system.macros.FlxDefines.run()
+# * Experiment
+#  --macro flixel.system.macros.FlxDefines.run()
+-D FLX_TOUCH
+-D FLX_MOUSE
+-D FLX_MOUSE_ADVANCED
+-D FLX_POINTER_INPUT
+
+-D FLX_KEYBOARD
+-D FLX_GAMEPAD
+-D FLX_SOUND_SYSTEM
+-D FLX_SOUND_TRAY
+-D FLX_PITCH
+-D FLX_GAMEINPUT_API
+-D FLX_GYROSCOPE
+-D FLX_SAVE
+-D FLX_NO_HEALTH
+-D FLX_NO_DEBUG
+-D FLX_STANDARD_ASSETS_DIRECTORY
+###
+
 --remap flash:openfl
 # Defines
 
@@ -90,7 +107,6 @@
 -D NO_GITHUB_BUILD
 -D ANDROID_SDK=/home/mikolka/Android/Sdk/
 -D HXCPP_STACK_TRACE
--D FLX_NO_DEBUG
 -D POLYMOD_APPEND_FOLDER=_append
 -D FEATURE_PARTIAL_SOUNDS
 -D no-compilation

@@ -62,7 +62,7 @@ class SetupTask {
 		var obj = new FunkinLibrariesInstall(writeLine, haxelib_repo, "9908c8be32d154c3ab820315702bf60af80ac026");
 		var regexp = new FullReplaceTask(haxePatchesPath, haxelib_repo);
 		Interaction.requestConfirmation("DEBUG", "Do you want to skip lib install?", () -> {
-			ctx.appendManyTasks([CodePatcher.patchFnfCode, regexp.task]);
+			ctx.appendManyTasks([new CodePatcher(haxelib_repo).patchFnfCode, regexp.task]);
 			ctx.appendTask((__resolve, __deny, ctx) -> {
 				writeLine("[SETUP] Setup done!");
 				__resolve();
@@ -72,7 +72,7 @@ class SetupTask {
 			ctx.appendManyTasks([
 				obj.installFunkin,
 				obj.installLibrariesFromHmm(haxelib_repo),
-				CodePatcher.patchFnfCode,
+				new CodePatcher(haxelib_repo).patchFnfCode,
 				regexp.task
 			]);
 			ctx.appendTask((__resolve, __deny, ctx) -> {

@@ -2,6 +2,7 @@
 --macro include("mikolka")
 -D analyzer-optimize
 -D js-es=6
+-D haxe-next
 -lib vscode 
 -lib vscode-debugadapter 
 -lib vshaxe

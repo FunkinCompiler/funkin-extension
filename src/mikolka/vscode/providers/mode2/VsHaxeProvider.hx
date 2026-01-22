@@ -15,7 +15,7 @@ class VsHaxeProvider extends DisposableProvider {
             trace(Vscode.extensions.getExtension("nadako.vshaxe").extensionPath);
             onVshaxeActive(context);
         });
-        //checkVshaxePatch();
+        checkVshaxePatch();
         super(context);
     }
 
@@ -52,9 +52,8 @@ class VsHaxeProvider extends DisposableProvider {
                 File.copy(jsScriptPath,jsBakPath);
 
                 var vshaxeJsServerCode = File.getContent(jsScriptPath);
-                vshaxeJsServerCode = vshaxeJsServerCode.replace(
-                    'function Lt(e){return e.endsWith(".hx")}',
-                    'function Lt(e){return e.endsWith(".hx") || e.endsWith(".hxc")}');
+                vshaxeJsServerCode = ~/function ([A-Z][a-z])\(e\){return e\.endsWith\("\.hx"\)/g
+                    .replace(vshaxeJsServerCode,'function $1(e){return e.endsWith(".hx") || e.endsWith(".hxc")}');
 
                 File.saveContent(jsScriptPath,vshaxeJsServerCode);
                 Vscode.commands.executeCommand("workbench.action.reloadWindow");
