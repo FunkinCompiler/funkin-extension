@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Song Chart Data",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "generatedBy": { "type": "string" },
+    "scrollSpeed": {
+      "type": "object",
+      "additionalProperties": { "type": "number" },
+      "description": "Key is difficulty ID (e.g. 'hard'), value is speed multiplier."
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t": { "type": "number", "description": "Timestamp" },
+          "e": { "type": "string", "description": "Event Kind (e.g. FocusCamera)" },
+          "v": { "description": "Event Value (Dynamic)" }
+        },
+        "required": ["t", "e"]
+      }
+    },
+    "notes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "t": { "type": "number", "description": "Time" },
+            "d": { "type": "integer", "description": "Data (Direction/Strumline)" },
+            "l": { "type": "number", "default": 0, "description": "Length (Sustain)" },
+            "k": { "type": ["string", "null"], "description": "Note Kind" }
+          },
+          "required": ["t", "d"]
+        }
+      },
+      "description": "Key is difficulty ID (e.g. 'normal')."
+    }
+  },
+  "required": ["notes"]
+}

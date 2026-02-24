@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Song Metadata",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "songName": { "type": "string", "default": "Unknown" },
+    "artist": { "type": "string", "default": "Unknown" },
+    "charter": { "type": ["string", "null"] },
+    "divisions": { "type": "integer", "default": 96 },
+    "looped": { "type": "boolean", "default": false },
+    "generatedBy": { "type": "string" },
+    "timeFormat": { "enum": ["ms", "ticks", "float"], "default": "ms" },
+    "offsets": {
+      "type": "object",
+      "properties": {
+        "instrumental": { "type": "number", "default": 0 },
+        "altInstrumentals": { "type": "object", "additionalProperties": { "type": "number" } },
+        "vocals": { "type": "object", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "playData": {
+      "type": "object",
+      "properties": {
+        "songVariations": { "type": "array", "items": { "type": "string" } },
+        "difficulties": { "type": "array", "items": { "type": "string" } },
+        "stage": { "type": "string" },
+        "noteStyle": { "type": "string" },
+        "previewStart": { "type": "integer", "default": 0 },
+        "previewEnd": { "type": "integer", "default": 15000 },
+        "characters": {
+          "type": "object",
+          "properties": {
+            "player": { "type": "string" },
+            "opponent": { "type": "string" },
+            "girlfriend": { "type": "string" },
+            "instrumental": { "type": "string" }
+          }
+        }
+      }
+    },
+    "timeChanges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t": { "type": "number", "description": "Timestamp" },
+          "bpm": { "type": "number" },
+          "n": { "type": "integer", "default": 4, "description": "Time Sig Numerator" },
+          "d": { "type": "integer", "default": 4, "description": "Time Sig Denominator" },
+          "bt": { "type": "array", "items": { "type": "integer" }, "default": [4, 4, 4, 4] }
+        },
+        "required": ["t", "bpm"]
+      }
+    }
+  },
+  "required": ["songName", "playData", "timeChanges"]
+}
