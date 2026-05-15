@@ -1,4 +1,4 @@
-package mikolka.vscode.providers.mode2;
+package mikolka.vscode.providers;
 
 import sys.FileSystem;
 import haxe.io.Path;
@@ -9,22 +9,29 @@ using StringTools;
 
 class VsHaxeProvider extends DisposableProvider {
     public var haxeApi:Vshaxe;
+    private var haveIAskedAboutHxc:Bool = false;
     public function new(context:vscode.ExtensionContext) {
         
         Vscode.extensions.getExtension("nadako.vshaxe").activate().then((x) ->{
             trace(Vscode.extensions.getExtension("nadako.vshaxe").extensionPath);
             onVshaxeActive(context);
         });
-        checkVshaxePatch();
+        
+        addDisposable(Vscode.window.onDidChangeActiveTextEditor(e ->{
+            if(e.document.fileName.endsWith(".hxc") && !haveIAskedAboutHxc){
+                haveIAskedAboutHxc = true;
+                checkVshaxePatch();
+            }
+        }));
         super(context);
     }
 
     private function onVshaxeActive(context:vscode.ExtensionContext) {
         haxeApi = Vscode.extensions.getExtension("nadako.vshaxe").exports;
         var cancelHook = haxeApi.registerDisplayArgumentsProvider("Funkin",{
-            description: "Activates Autocompletion within compiled FNF Mods (Mode 2)",
+            description: "Activates Autocompletion using FNF source code",
             activate: provideArguments -> {
-                var hxml = File.getContent(context.asAbsolutePath("assets/scaffold/build.hxml"));
+                var hxml = File.getContent(context.asAbsolutePath("assets/funkin-index.hxml"));
                 provideArguments(haxeApi.parseHxmlToArguments(hxml));
             },
             deactivate: () -> {}
@@ -43,7 +50,7 @@ class VsHaxeProvider extends DisposableProvider {
         
         if(FileSystem.exists(jsBakPath)) return;
         Interaction.requestConfirmation(
-            "Funkin Compiler Setup (mode 2)",
+            "Funkin Compiler",
             "Looks like you don't have a patch applied to 'vshaxe language server' yet!\n"+
             "The program will now add support for .hxc files to it.\n\nDo you want to proceed?",
             () -> {

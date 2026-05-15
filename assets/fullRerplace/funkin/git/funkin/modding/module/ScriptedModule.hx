@@ -17,6 +17,15 @@ class ScriptedModule extends Module {
   public static function init(className:String,val2:String = ''):ScriptedModule {
     return null;
   }
+  /**
+   * Initializes a scripted class instance using the given scripted class name and constructor arguments.
+   * @param className Name of the target class extending ScriptedModule
+   * @param val2 constructor arguments?
+   * @return ScriptedModule
+   */
+  public static function scriptInit(className:String,val2:String = ''):ScriptedModule {
+    return null;
+  }
 	/**
 	 * Returns the value of a custom field of the scripted class, by the given name.
 	 	 *

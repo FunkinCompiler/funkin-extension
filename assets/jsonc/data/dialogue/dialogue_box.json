@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dialogue Box Data",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Semantic version for dialogue box data."
+    },
+    "name": {
+      "type": "string",
+      "description": "A human readable name for the dialogue box type."
+    },
+    "assetPath": {
+      "type": "string",
+      "description": "The asset path for the sprite to use (static or spritesheet)."
+    },
+    "flipX": { "type": "boolean", "default": false },
+    "flipY": { "type": "boolean", "default": false },
+    "isPixel": { "type": "boolean", "default": false },
+    "scale": { "type": "number", "default": 1.0 },
+    "offsets": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "default": [0, 0]
+    },
+    "text": {
+      "type": "object",
+      "description": "Info about how to display text in the dialogue box.",
+      "properties": {
+        "offsets": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2,
+          "default": [0, 0]
+        },
+        "width": { "type": "integer", "default": 300 },
+        "size": { "type": "integer", "default": 32 },
+        "color": {
+          "type": "string",
+          "format": "color",
+          "default": "#000000",
+          "description": "Hex color string (e.g. #FF0000)"
+        },
+        "fontFamily": { "type": "string", "default": "Arial" },
+        "shadowColor": { "type": "string", "description": "Color for the text shadow. Use 'transparent' to disable." },
+        "shadowWidth": { "type": "integer", "default": 0 }
+      },
+      "required": ["shadowColor"]
+    },
+    "animations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "prefix": { "type": "string" },
+          "offsets": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+          "fps": { "type": "integer", "default": 24 },
+          "loop": { "type": "boolean", "default": false }
+        },
+        "required": ["name", "prefix"]
+      }
+    }
+  },
+  "required": ["name", "assetPath", "text"]
+}

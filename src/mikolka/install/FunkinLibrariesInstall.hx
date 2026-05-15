@@ -22,7 +22,7 @@ class FunkinLibrariesInstall {
 
 	// https://codeload.github.com/FunkinCrew/Funkin/zip/
 	public function installFunkin(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		installLibraryFromGithub("FunkinCrew/Funkin","188870dbe61fb88b062f8480e37cf03eed3063b0","funkin",() ->{
+		installLibraryFromGithub("FunkinCrew/Funkin","bdedc0aad2b93b3a7787357313ba662ba8d3173f","funkin",() ->{
 			trace("FNF resolved promise "+localCwd);
 			FileManager.moveRec(Path.join([localCwd,"funkin","git","source"]),Path.join([localCwd,"funkin","git"]));
 			FileSystem.rename(Path.join([localCwd,"funkin","git","Main.hx"]),Path.join([localCwd,"funkin","git","funkin","Main.hx"]));

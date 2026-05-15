@@ -36,7 +36,8 @@
 	],
 	"activationEvents": [
 		"workspaceContains:./funk.cfg",
-		"workspaceContains:./_polymod_meta.json"
+		"workspaceContains:./_polymod_meta.json",
+		"workspaceContains:./exclude/data/credits.json"
 	],
 	"files": [
 		"bin",
@@ -127,6 +128,17 @@
 					"**/data/players/*.json"
 				],
 				"url": "./assets/jsonc/data/players.json"
+			},			
+			{
+				"fileMatch": [
+					"**/data/songs/*/*-chart*.json"
+				],
+				"url": "./assets/jsonc/data/songs/chart.json"
+			},			{
+				"fileMatch": [
+					"**/data/songs/*/*-metadata*.json"
+				],
+				"url": "./assets/jsonc/data/songs/metadata.json"
 			},
 			{
 				"fileMatch": [
@@ -142,9 +154,33 @@
 			},
 			{
 				"fileMatch": [
+					"**/data/stickerpacks/*.json"
+				],
+				"url": "./assets/jsonc/data/stickerpacks.json"
+			},
+			{
+				"fileMatch": [
 					"**/data/dialogue/speakers/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/speaker.json"
+			},			
+			{
+				"fileMatch": [
+					"**/data/dialogue/boxes/*.json"
+				],
+				"url": "./assets/jsonc/data/dialogue/dialogue_box.json"
+			},			
+			{
+				"fileMatch": [
+					"**/data/dialogue/conversations/*.json"
+				],
+				"url": "./assets/jsonc/data/dialogue/conversation.json"
+			},
+			{
+				"fileMatch": [
+					"**/music/*/*.json"
+				],
+				"url": "./assets/jsonc/music/music-metadata.json"
 			}
 		],
 		"taskDefinitions": [
@@ -238,5 +274,8 @@
 	},
 	"dependencies": {
 		"vscode-debugadapter": "^1.51.0"
-	}
+	},
+	"extensionPack": [
+		"gert7.srt-subrip"
+	]
 }

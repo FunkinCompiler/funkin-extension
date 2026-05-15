@@ -59,9 +59,7 @@
             "description": "Controls whethever this prop should be treated as a pixel art (which disables anti-aliasing)."
           },
           "offsets": {
-            "type": "array",
-            "description": "An offset in which this prop should be placed in.",
-            "default": [0.0, 0.0]
+            "$ref": "../common.json#/$defs/offset2D" 
           },
           "animations": {
             "type": "array",
@@ -73,7 +71,7 @@
                 "offsets": {
                   "type": "array",
                   "default": [0, 0],
-                  "description": "Offset from the prop's real position when playing this animation"
+                  "description": "Offset from the prop's real position when playing this animation."
                 },
                 "flipY": {
                   "default": false,
@@ -103,7 +101,7 @@
                 },
                 "flipX": {
                   "default": false,
-                  "description": "Whethever to flip X axis of this prop when playing this animation",
+                  "description": "Whethever to flip X axis of this prop when playing this animation.",
                   "type": "boolean"
                 },
                 "frameIndices": {

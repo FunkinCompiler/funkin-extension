@@ -5,7 +5,7 @@ import vscode.Disposable;
 import mikolka.vscode.providers.StartupInit;
 import mikolka.vscode.providers.mode1.TaskRegistry;
 import mikolka.vscode.providers.mode1.DebuggerSetup;
-import mikolka.vscode.providers.mode2.VsHaxeProvider;
+import mikolka.vscode.providers.VsHaxeProvider;
 import mikolka.vscode.providers.ComandRegistry;
 import mikolka.vscode.providers.DiagnosticRegistry;
 
@@ -39,8 +39,9 @@ class Main {
 
 		var diagnostics = new DiagnosticRegistry(context);
 		var startup = new StartupInit(context);
+		var haxeIntegration = new VsHaxeProvider(context);
 		startup.runStartupChecks();
-		return [diagnostics, startup];
+		return [diagnostics, startup,haxeIntegration];
 	}
 
 	static function activateMode1(context:vscode.ExtensionContext):Array<DisposableProvider> {
@@ -52,8 +53,7 @@ class Main {
 
 	static function activateMode2(context:vscode.ExtensionContext):Array<DisposableProvider> {
 		trace("Mode2");
-		var haxeIntegration = new VsHaxeProvider(context);
-		return [haxeIntegration];
+		return [];
 	}
 
 	private static function registerModeChecks(context:vscode.ExtensionContext) {

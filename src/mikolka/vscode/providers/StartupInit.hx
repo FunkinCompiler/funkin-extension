@@ -36,10 +36,7 @@ class StartupInit extends DisposableProvider {
             });
             return;
         }
-        if(Main.isMode2Active){
-            Vscode.window.showInformationMessage("Funkin Compiler (mode 2) is running");
-        } 
-        else Vscode.window.showInformationMessage("Funkin Compiler is now running!");
+        Vscode.window.showInformationMessage("Funkin Compiler is now running!");
         //
     }
 }

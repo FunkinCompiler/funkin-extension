@@ -15,14 +15,18 @@
       "description": "The readable name for the sticker pack, used in places like the Chart Editor.",
       "minLength": 1
     },
-    "author": {
+    "artist": {
       "description": "The author of the sticker pack, aka the artist who created the assets.",
       "type": "string",
       "minLength": 1
     },
     "stickers":{
         "type":"array",
-        "description": "A list of all the paths for all the stickers to use, as strings."
+        "description": "A list of all the paths for all the stickers to use, as strings.",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1
     }
   }
 }

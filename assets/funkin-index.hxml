@@ -13,9 +13,9 @@
 -lib newgrounds
 -lib flixel-addons
 -lib hxdiscord_rpc
--lib hscript
 -lib haxeui-core
 -lib haxeui-flixel
+-lib polymod
 -lib polymod
 #-lib flxanimate
 -lib flixel-animate
@@ -106,7 +106,6 @@
 -D FEATURE_FUNKVIS
 -D FEATURE_FILE_DROP
 -D NO_GITHUB_BUILD
--D ANDROID_SDK=/home/mikolka/Android/Sdk/
 -D HXCPP_STACK_TRACE
 -D POLYMOD_APPEND_FOLDER=_append
 -D FEATURE_PARTIAL_SOUNDS

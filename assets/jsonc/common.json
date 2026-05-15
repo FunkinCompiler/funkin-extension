@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Common Definitions",
+  "$defs": {
+    "offset2D": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "default": [0, 0],
+      "description": "2D offset as [x, y] coordinates in pixels"
+    },
+
+    "scroll2D": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "default": [1, 1],
+      "description": "Parallax scroll factors as [x, y]"
+    },
+
+    "animation": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Animation identifier" },
+        "prefix": { "type": "string", "description": "Frame prefix in the spritesheet" },
+        "offsets": { "$ref": "#/$defs/offset2D" },
+        "fps": { "type": "integer", "default": 24 },
+        "loop": { "type": "boolean", "default": false }
+      },
+      "required": ["name", "prefix"]
+    },
+
+    "timeChange": {
+      "type": "object",
+      "properties": {
+        "t": { "type": "number", "description": "Timestamp (ms/ticks/float)" },
+        "bpm": { "type": "number", "description": "Beats Per Minute" },
+        "n": { "type": "integer", "default": 4, "description": "Time Signature Numerator" },
+        "d": { "type": "integer", "default": 4, "description": "Time Signature Denominator" },
+        "bt": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "default": [4, 4, 4, 4],
+          "description": "Beat Tuplets"
+        }
+      },
+      "required": ["t", "bpm"]
+    }
+  }
+}

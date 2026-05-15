@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Song Music Data",
+  "description": "Metadata for music tracks (like menus) that require timing but no gameplay data.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Semantic versioning string for the music data format."
+    },
+    "songName": {
+      "type": "string",
+      "default": "Unknown"
+    },
+    "artist": {
+      "type": "string",
+      "default": "Unknown"
+    },
+    "divisions": {
+      "type": ["integer", "null"],
+      "default": 96
+    },
+    "looped": {
+      "type": ["boolean", "null"],
+      "default": false
+    },
+    "generatedBy": {
+      "type": "string"
+    },
+    "timeFormat": {
+      "type": "string",
+      "enum": ["ms", "ticks", "float"],
+      "default": "ms"
+    },
+    "timeChanges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t": { "type": "number", "description": "Timestamp (ms/ticks/float)" },
+          "bpm": { "type": "number", "description": "Beats Per Minute" },
+          "n": { "type": "integer", "default": 4, "description": "Time Signature Numerator" },
+          "d": { "type": "integer", "default": 4, "description": "Time Signature Denominator" },
+          "bt": {
+            "type": "array",
+            "items": { "type": "integer" },
+            "default": [4, 4, 4, 4],
+            "description": "Beat Tuples"
+          }
+        },
+        "required": ["t", "bpm"]
+      }
+    }
+  },
+  "required": ["version", "songName", "artist", "timeFormat", "timeChanges"]
+}

@@ -3,17 +3,26 @@ package mikolka.install.backend;
 class FunkinPatchRules {
     public static var BLACKLIST:Array<String> = [ "../funkin/play/notes/notekind/NoteKind.hx"]; //"../funkin/ui/debug",
     public static final FUNKIN_REGEX:Map<EReg, String> = [
-    ~/@:hscriptClass\nclass +(.*) +extends +(.*) +implements .* +{}/g => "class $1 extends $2 {
+    ~/@:hscriptClass\nclass +(.*) +extends +(.*) +implements .*[ \n]+{\s*}/g => "class $1 extends $2 {
   //! mock calls
   //* real implementations are handled by polymod
 
   /**
    * Initializes a scripted class instance using the given scripted class name and constructor arguments.
    * @param className Name of the target class extending $1 type
-   * @param args List of argument of a scripted constructor. olny the first one seems to work?
+   * @param args List of argument of a scripted constructor. only the first one seems to work?
    * @return $1
    */
   public static function init(className:String,...args:Any):$1 {
+    return null;
+  }  
+  /**
+   * Initializes a scripted class instance using the given scripted class name and constructor arguments.
+   * @param className Name of the target class extending $1 type
+   * @param args List of argument of a scripted constructor. only the first one seems to work?
+   * @return $1
+   */
+  public static function scriptInit(className:String,...args:Any):$1 {
     return null;
   }
   /**
