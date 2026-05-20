@@ -195,8 +195,8 @@ class CFFI
 
 	public static function loadPrime(library:String, method:String, signature:String, lazy:Bool = false):Dynamic
 	{
-		return cpp.Prime.load(library, method, signature, lazy);
-
+		//return cpp.Prime.load(library, method, signature, lazy);
+		return null;
 	}
 
 	@:dox(hide) #if !hl inline #end public static function stringValue(#if hl value:hl.Bytes #else value:String #end):String

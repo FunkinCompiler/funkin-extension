@@ -7,5 +7,5 @@
 -lib vscode 
 -lib vshaxe
 -lib vscode-debugadapter 
--D COMPILER_DEBUG_INSTALL
+# -D COMPILER_DEBUG_INSTALL
 Main
