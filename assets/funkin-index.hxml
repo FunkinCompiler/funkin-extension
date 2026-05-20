@@ -5,6 +5,8 @@
 -cp source
 -cp source/*
 
+--haxelib-global
+
 --cpp bin/cpp
 #--swf-version 10
 

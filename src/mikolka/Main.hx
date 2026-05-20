@@ -1,5 +1,6 @@
 package mikolka;
 
+import mikolka.helpers.ModeManager.FilePatternMode;
 import mikolka.vscode.definitions.DisposableProvider;
 import vscode.Disposable;
 import mikolka.vscode.providers.StartupInit;
@@ -10,93 +11,55 @@ import mikolka.vscode.providers.ComandRegistry;
 import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
 class Main {
-	public static var isMode2Active(get, never):Bool;
-
-	public static function get_isMode2Active() {
-		return mode2Providers != null;
-	}
-
-	public static var isMode1Active(get, never):Bool;
-
-	public static function get_isMode1Active() {
-		return mode1Providers != null;
-	}
-
-	public static var mode2Providers:Null<Array<DisposableProvider>> = null;
-	public static var mode1Providers:Null<Array<DisposableProvider>> = null;
-	public static var globalProviders:Null<Array<DisposableProvider>> = null;
+	public static final FUNK_PROJECT = "mode1";
+	public static final VSLICE_MOD = "mode2";
+	public static final FUNKIN_ASSETS = "mode3";
+	public static var modules:ModeManager;
 
 	@:expose("activate")
 	static function activate(context:vscode.ExtensionContext) {
 		trace("Active");
-		var registry = new CommandRegistry(context);
+		modules = new ModeManager();
+		modules.registerMode(new FilePatternMode(
+			FUNK_PROJECT,
+			"funk.cfg",
+			context -> {
+				trace("Mode1 activate");
+				var tasks = new TaskRegistry(context);
+				return [tasks];
+			},
+			providers -> trace("Mode1 deactivated")
+		));
 
-		registerModeChecks(context);
-		scanForModeChanges(context);
-	}
-
-	static function activateGlobal(context:vscode.ExtensionContext):Array<DisposableProvider> {
-
-		var diagnostics = new DiagnosticRegistry(context);
-		var startup = new StartupInit(context);
-		var haxeIntegration = new VsHaxeProvider(context);
-		var debugger = new DebuggerSetup(context);
-		startup.runStartupChecks();
-		return [diagnostics, startup,haxeIntegration,debugger];
-	}
-
-	static function activateMode1(context:vscode.ExtensionContext):Array<DisposableProvider> {
-		trace("Mode1");
-		var tasks = new TaskRegistry(context);
-		
-		return [tasks];
-	}
-
-	static function activateMode2(context:vscode.ExtensionContext):Array<DisposableProvider> {
-		trace("Mode2");
-		return [];
-	}
-
-	private static function registerModeChecks(context:vscode.ExtensionContext) {
-		Vscode.workspace.onDidChangeWorkspaceFolders(e -> {
-			scanForModeChanges(context);
-		});
-	}
-	private static function scanForModeChanges(context:vscode.ExtensionContext) {
-		Vscode.workspace.findFiles("_polymod_meta.json").then(s -> {
-			trace(s);
-				if (s.length > 0 && !isMode2Active)
-					mode2Providers = activateMode2(context);
-				else if (isMode2Active) {
-					for (x in mode2Providers) {
-						x.dispose();
-					}
-					mode2Providers = null;
-				};
-				chackGlobalHook(context);
-			});
-		
-			Vscode.workspace.findFiles("funk.cfg").then(s -> {
-				trace(s);
-				if (s.length > 0 && !isMode1Active)
-					mode1Providers = activateMode1(context);
-				else if (isMode1Active) {
-					for (x in mode1Providers) {
-						x.dispose();
-					}
-					mode1Providers = null;
-				};
-				chackGlobalHook(context);
-			});
-			
-	}
-	private static function chackGlobalHook(context:vscode.ExtensionContext){
-		if ((isMode2Active || isMode1Active) && globalProviders == null) {
-				globalProviders = activateGlobal(context);
-			} else if ((!isMode2Active && !isMode1Active) && globalProviders != null) {
-				for (x in globalProviders)
-					x.dispose();
-				globalProviders = null;
+		// Mode2
+		modules.registerMode(new FilePatternMode(
+			VSLICE_MOD,
+			"_polymod_meta.json",
+			context -> {
+				trace("Mode2 activate");
+				// return providers for mode2 as you add them
+				return [];
 			}
+		));		
+		modules.registerMode(new FilePatternMode(
+			FUNKIN_ASSETS,
+			"exclude/data/credits.json",
+			context -> {
+				trace("Mode3 activate");
+				// return providers for mode2 as you add them
+				return [];
+			}
+		));
+		modules.activateGlobal = context -> {
+			var diagnostics = new DiagnosticRegistry(context);
+			var startup = new StartupInit(context);
+			var haxeIntegration = new VsHaxeProvider(context);
+			var debugger = new DebuggerSetup(context);
+			startup.runStartupChecks();
+			return [diagnostics, startup,haxeIntegration,debugger];
+		}
+
+		var command = new CommandRegistry(context);
+		modules.scanForModeChanges(context);
 	}
 }

@@ -47,47 +47,22 @@ class FilePatternMode implements IMode {
 }
 
 class ModeManager {
-	public static var isModeActive(get, never):Bool;
-	public static function get_isModeActive() return _activeModes.keys().length > 0;
+	public var isModeActive(get, never):Bool;
+	public function get_isModeActive() return mapLength(_activeModes) > 0;
 
-	private static var _modes:Map<String, IMode> = new Map();
-	private static var _activeModes:Map<String, Array<DisposableProvider>> = new Map();
-	private static var _globalProviders:Null<Array<DisposableProvider>> = null;
+	private var _modes:Map<String, IMode> = new Map();
+	private var _activeModes:Map<String, Array<DisposableProvider>> = new Map();
+	private var _globalProviders:Null<Array<DisposableProvider>> = null;
 
-	public function new() {
+    public function new() {
         
     }
 
-	public static function registerMode(mode:IMode):Void {
+	public function registerMode(mode:IMode):Void {
 		_modes.set(mode.id(), mode);
 	}
 
-	function registerDefaultModes():Void {
-		// Mode1
-		registerMode(new FilePatternMode(
-			"mode1",
-			"funk.cfg",
-			context -> {
-				trace("Mode1 activate");
-				var tasks = new TaskRegistry(context);
-				return [tasks];
-			},
-			providers -> trace("Mode1 deactivated")
-		));
-
-		// Mode2
-		registerMode(new FilePatternMode(
-			"mode2",
-			"_polymod_meta.json",
-			context -> {
-				trace("Mode2 activate");
-				// return providers for mode2 as you add them
-				return [];
-			}
-		));
-	}
-
-	function scanForModeChanges(context:vscode.ExtensionContext):Void {
+	public function scanForModeChanges(context:vscode.ExtensionContext):Void {
 		for (modeId in _modes.keys()) {
 			var mode = _modes.get(modeId);
 			mode.detector()(context).then(files -> {
@@ -107,20 +82,22 @@ class ModeManager {
 	}
 
 	function _checkGlobalHook(context:vscode.ExtensionContext):Void {
-		if ((_activeModes.keys().length > 0) && _globalProviders == null) {
+		if ((mapLength(_activeModes) > 0) && _globalProviders == null) {
 			_globalProviders = activateGlobal(context);
-		} else if ((_activeModes.keys().length == 0) && _globalProviders != null) {
+		} else if ((mapLength(_activeModes) == 0) && _globalProviders != null) {
 			for (x in _globalProviders) x.dispose();
 			_globalProviders = null;
 		}
 	}
+    function mapLength(it:Map<Any,Any>):Int {
+        var i = 0;
+        for (x in it.keys()){
+            i = i+1;
+        }
+        return i;
+    }
 
-	static function activateGlobal(context:vscode.ExtensionContext):Array<DisposableProvider> {
-		var diagnostics = new DiagnosticRegistry(context);
-		var startup = new StartupInit(context);
-		var haxeIntegration = new VsHaxeProvider(context);
-		var debugger = new DebuggerSetup(context);
-		startup.runStartupChecks();
-		return [diagnostics, startup, haxeIntegration, debugger];
+	public dynamic function activateGlobal(context:vscode.ExtensionContext):Array<DisposableProvider> {
+        return [];
 	}
 }

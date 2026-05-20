@@ -11,19 +11,17 @@ class VsHaxeProvider extends DisposableProvider {
     public var haxeApi:Vshaxe;
     private var haveIAskedAboutHxc:Bool = false;
     public function new(context:vscode.ExtensionContext) {
-        
         Vscode.extensions.getExtension("nadako.vshaxe").activate().then((x) ->{
             trace(Vscode.extensions.getExtension("nadako.vshaxe").extensionPath);
             onVshaxeActive(context);
         });
-        
-        addDisposable(Vscode.window.onDidChangeActiveTextEditor(e ->{
+
+        super(context,Vscode.window.onDidChangeActiveTextEditor(e ->{
             if(e.document.fileName.endsWith(".hxc") && !haveIAskedAboutHxc){
                 haveIAskedAboutHxc = true;
                 checkVshaxePatch();
             }
         }));
-        super(context);
     }
 
     private function onVshaxeActive(context:vscode.ExtensionContext) {
@@ -60,7 +58,7 @@ class VsHaxeProvider extends DisposableProvider {
                 File.copy(jsScriptPath,jsBakPath);
 
                 var vshaxeJsServerCode = File.getContent(jsScriptPath);
-                vshaxeJsServerCode = ~/function ([A-Z][a-z])\(e\){return e\.endsWith\("\.hx"\)/g
+                vshaxeJsServerCode = ~/function ([A-Z][a-z])\(e\){return e\.endsWith\("\.hx"\)}/g
                     .replace(vshaxeJsServerCode,'function $1(e){return e.endsWith(".hx") || e.endsWith(".hxc")}');
 
                 File.saveContent(jsScriptPath,vshaxeJsServerCode);
