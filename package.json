@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.6.0-rc1",
+	"version": "0.6.0",
 	"description": "A simple extension to develop mods and content made for the game \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
 	"categories": [
 		"Programming Languages",
