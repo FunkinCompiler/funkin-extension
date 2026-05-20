@@ -7,7 +7,7 @@ import mikolka.vscode.providers.mode1.TaskRegistry;
 import mikolka.vscode.providers.mode1.DebuggerSetup;
 import mikolka.vscode.providers.VsHaxeProvider;
 import mikolka.vscode.providers.ComandRegistry;
-import mikolka.vscode.providers.DiagnosticRegistry;
+import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
 class Main {
 	public static var isMode2Active(get, never):Bool;
@@ -40,15 +40,16 @@ class Main {
 		var diagnostics = new DiagnosticRegistry(context);
 		var startup = new StartupInit(context);
 		var haxeIntegration = new VsHaxeProvider(context);
+		var debugger = new DebuggerSetup(context);
 		startup.runStartupChecks();
-		return [diagnostics, startup,haxeIntegration];
+		return [diagnostics, startup,haxeIntegration,debugger];
 	}
 
 	static function activateMode1(context:vscode.ExtensionContext):Array<DisposableProvider> {
 		trace("Mode1");
 		var tasks = new TaskRegistry(context);
-		var debugger = new DebuggerSetup(context);
-		return [tasks, debugger];
+		
+		return [tasks];
 	}
 
 	static function activateMode2(context:vscode.ExtensionContext):Array<DisposableProvider> {
@@ -74,6 +75,7 @@ class Main {
 				};
 				chackGlobalHook(context);
 			});
+		
 			Vscode.workspace.findFiles("funk.cfg").then(s -> {
 				trace(s);
 				if (s.length > 0 && !isMode1Active)

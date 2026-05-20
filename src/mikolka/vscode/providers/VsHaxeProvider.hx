@@ -28,6 +28,7 @@ class VsHaxeProvider extends DisposableProvider {
 
     private function onVshaxeActive(context:vscode.ExtensionContext) {
         haxeApi = Vscode.extensions.getExtension("nadako.vshaxe").exports;
+
         var cancelHook = haxeApi.registerDisplayArgumentsProvider("Funkin",{
             description: "Activates Autocompletion using FNF source code",
             activate: provideArguments -> {

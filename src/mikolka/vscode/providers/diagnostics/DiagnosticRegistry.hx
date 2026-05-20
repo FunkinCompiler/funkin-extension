@@ -1,5 +1,6 @@
-package mikolka.vscode.providers;
+package mikolka.vscode.providers.diagnostics;
 
+import haxe.io.Path;
 import mikolka.vscode.definitions.DisposableProvider;
 import vscode.Range;
 import vscode.Diagnostic;
@@ -8,11 +9,6 @@ import vscode.TextDocument;
 
 using StringTools;
 
-typedef ImportLine = {
-	var line:String;
-	var importName:String;
-	var position:Int;
-}
 
 /**
  * This registry contains all code for checking problems in a source files
@@ -72,9 +68,18 @@ class DiagnosticRegistry extends DisposableProvider {
 		if (file.languageId != "haxe")
 			return;
 		var text = file.getText();
+		var textMetadata = new SourceFileAnalyst(text);
 		var warnings = new Array<Diagnostic>();
+	
+		var fileName = Path.withoutDirectory(file.fileName);
+		if(fileName.charCodeAt(0)>=97 && fileName.charCodeAt(0)<=122 && textMetadata.classNameRange != null){
+			
+			warnings.push(new Diagnostic(textMetadata.classNameRange, 
+				'Haxe source file should start with an capital letter!', Warning));
+		}
 
-		for (importLine in getImports(text)) {
+
+		for (importLine in textMetadata.importLines) {
 			var warningMsg = findBlacklistClause(importLine.importName);
 			if (warningMsg == null)
 				continue;
@@ -91,30 +96,5 @@ class DiagnosticRegistry extends DisposableProvider {
 				return importRegex[x];
 		}
 		return null;
-	}
-
-	/**
-	 * @see https://code.haxe.org/category/beginner/regular-expressions.html
-	 */
-	function getImports(input:String):Array<ImportLine> {
-		var matches:Array<ImportLine> = [];
-		var lines = input.split("\n");
-		var lineCounter = 0;
-		for (line in lines) {
-			var importLine = line.trim();
-			if (importLine.startsWith("import ")) {
-				final importRegex:EReg = ~/import +([a-zA-z.]*) *;/gm;
-				if (importRegex.match(importLine)) {
-					matches.push({
-						line: line,
-						position: lineCounter,
-						importName: importRegex.matched(1)
-					});
-				}
-			} else if (importLine.contains("class "))
-				break;
-			lineCounter++;
-		}
-		return matches;
 	}
 }
