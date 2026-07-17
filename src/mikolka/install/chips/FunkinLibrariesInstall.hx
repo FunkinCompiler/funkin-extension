@@ -1,5 +1,6 @@
 package mikolka.install.chips;
 
+import js.node.Os;
 import haxe.io.Path;
 import haxe.io.Input;
 import sys.FileSystem;
@@ -60,7 +61,10 @@ class FunkinLibrariesInstall {
 		runSetupCommand('haxelib install ${libraryName} ${version} --always --quiet --skip-dependencies', resolve);
 	}
 	function installLibraryFromGithub(repoName:String,commitHash:String,libraryName:String,resolve:Void->Void, deny:String->Void) {
-		runSetupCommand('curl -o temp.zip -A "Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0" "https://codeload.github.com/${repoName}/zip/${commitHash}"',() -> {
+		// Doing this through Node's OS type because I'm not sure if Haxe's one will work on the VSCode extension.
+		final isLinux:Bool = Os.type() == 'Linux';
+
+		runSetupCommand('curl -o temp.zip ${isLinux ? '-A "Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0"' : ''} "https://codeload.github.com/${repoName}/zip/${commitHash}"',() -> {
 			ZipTools.extractZip(File.read(Path.join([localCwd,"temp.zip"])),Path.join([localCwd,libraryName]));
 			FileSystem.deleteFile(Path.join([localCwd,"temp.zip"]));
 
