@@ -120,22 +120,22 @@
             "pattern": "[a-zA-z]+",
             "description": "A name of this character's animation.",
             "minLength": 1,
-            "enum": [
-              "idle",
-              "danceLeft",
-              "danceRight",
-              "singLEFT",
-              "singDOWN",
-              "singUP",
-              "singRIGHT",
-              "singLEFTmiss",
-              "singDOWNmiss",
-              "singUPmiss",
-              "singRIGHTmiss",
-              "fakeoutDeath",
-              "firstDeath",
-              "deathLoop",
-              "deathConfirm"
+            "defaultSnippets": [
+              { "body": "idle" },
+              { "body": "danceLeft" },
+              { "body": "danceRight" },
+              { "body": "singLEFT" },
+              { "body": "singDOWN" },
+              { "body": "singUP" },
+              { "body": "singRIGHT" },
+              { "body": "singLEFTmiss" },
+              { "body": "singDOWNmiss" },
+              { "body": "singUPmiss" },
+              { "body": "singRIGHTmiss" },
+              { "body": "fakeoutDeath" },
+              { "body": "firstDeath" },
+              { "body": "deathLoop" },
+              { "body": "deathConfirm" }
             ]
           },
           "looped": {

@@ -174,7 +174,7 @@
 				"fileMatch": [
 					"!**/_merge/**/*.json",
 					"**/data/songs/*/*-metadata*.json",
-					"**/songs/*/*-metadata*.json"
+					"**/gameplay/songs/*/*-metadata*.json"
 				],
 				"url": "./assets/jsonc/data/songs/metadata.json"
 			},
@@ -226,7 +226,10 @@
 			},
 			{
 				"fileMatch": [
-					"**/*-metadata.json"
+					"**/*-metadata.json",
+					"!**/_merge/**/*.json",
+					"!**/data/songs/*/*-metadata*.json",
+					"!**/gameplay/songs/*/*-metadata*.json"
 				],
 				"url": "./assets/jsonc/music/music-metadata.json"
 			}
