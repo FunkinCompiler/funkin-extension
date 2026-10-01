@@ -76,4 +76,8 @@ class Language {
     public static inline final SELECT_FUNKIN_PACKAGE_TO_USE:String = "Select Funkin package to use";
     public static inline final SELECT_HAXELIB_FOLDER:String = "Select haxelib folder";
     public static inline final SELECT_FCPKG_FILE:String = "Select .fcpkg file";
+
+    public static inline final CPPIA_GENERATING_REFERENCE:String = "Generating export classes for CPPIA";
+    public static inline final CPPIA_NOT_SUPPORTED:String = "CPPIA scripting doesn't seem to be supported for this version.";
+    public static inline final CPPIA_FAILED_TO_GENERATE:String = "CPPIA couldn't generated an SDK required for compilation.";
 }

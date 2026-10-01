@@ -18,7 +18,7 @@ typedef SyntaxChip = {
 class HaxeSyntaxParser {
     public static function exportTokens(tokens:Array<SyntaxChip>) {
         var json_tokens = [];
-        for (tk in tokens){
+        tokens.forEach(tk -> {
             var type_str = switch(tk.type){
                 case Variable: "Var";
                 case Assign: "Ass";
@@ -31,7 +31,7 @@ class HaxeSyntaxParser {
                 "type": type_str,
                 "value":tk.value
             });
-        }
+        });
         return Json.stringify(json_tokens);
     }
     public static function parseExecCommand(command:String):Array<SyntaxChip> {

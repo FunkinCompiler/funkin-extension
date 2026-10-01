@@ -33,7 +33,7 @@ class DebugServer {
     }
 
     private function onConnected(socket:Socket) {
-        if(socket != null || socket != Lib.undefined){
+        if(!socket.isNull()){
             trace("Closing previous debug session...");
             connectedDebugger?.close();
             connectedDebugger = null;

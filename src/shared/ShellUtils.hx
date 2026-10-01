@@ -7,8 +7,20 @@ import js.Syntax;
 #end
 
 class ShellUtils {
+	/**
+		Escaped this string to prevent spaces being interpreted as separate arguments.
+		
+		Useful for shell commands/arguments.
+	**/
 	public inline static function shellPath(value:String) {
 		return '"$value"';
+	}
+
+	public static function isNull(value:Dynamic):Bool{
+		return value == null || value == js.Lib.undefined;
+	}
+	public static function isEmpty(value:String):Bool{
+		return value == null || value == js.Lib.undefined || value == "";
 	}
 	/**
 		Enumerate every element in an array. 

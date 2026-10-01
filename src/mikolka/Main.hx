@@ -1,5 +1,6 @@
 package mikolka;
 
+import mikolka.vscode.providers.tasks.CppiaMakeTask;
 import thx.semver.Version;
 import mikolka.vscode.providers.tasks.PCCopyTask;
 import mikolka.vscode.providers.DebuggerSetup;
@@ -14,6 +15,9 @@ class Main {
 
 	public static final INSTALL_VERSION:Version = Version.stringToVersion("1.1.0");
 	public static final MANIFEST_VERSION:String = "1.1.0";
+
+	public static final HAXE_VERSION:String = "v1.1";
+    public static final HAXE_GITHUB_TAG:String = "4.3.7-2";
 
 	public static final VSLICE_MOD = "mode2";
 	public static final FUNKIN_ASSETS = "mode3";
@@ -52,6 +56,7 @@ class Main {
 			startup,
 			new HaxelibsFolderCommand(context),
 			new NewCommand(context),
+			new CppiaMakeTask(context),
 			new SetHaxelibCommand(context),
 			new SetupCommand(context),
 			

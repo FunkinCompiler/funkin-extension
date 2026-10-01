@@ -13,6 +13,7 @@ typedef Metadata = {
     version:String,
     description:String,
     hxmlFile:Null<String>,
+    cppiaHxmlFile:Null<String>,
     importBlacklist:DynamicAccess<String>
 }
 
@@ -30,6 +31,7 @@ class MetadataParser {
             version: Main.MANIFEST_VERSION,
             description: "No description",
             hxmlFile:null,
+            cppiaHxmlFile: null,
             importBlacklist: new DynamicAccess<String>()
         };
         try{

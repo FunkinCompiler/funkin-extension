@@ -1,82 +1,61 @@
 package mikolka.helpers;
 
-import sys.io.File;
-import sys.FileSystem;
 import haxe.io.Path;
+import mikolka.install.backend.HaxeDownload;
 
 class HaxeHelper {
-	static var haxeApi:Vshaxe = null;
-    public static final HAXE_VERSION:String = "v1.1";
-    public static final HAXE_GITHUB_TAG:String = "4.3.7-2";
+	static var store:ExternalStorageTools;
 
-    public static function getHaxelibExecutable():String {
-        if(haxeApi == null) return "haxelib";
-        else return haxeApi.haxelibExecutable.configuration.executable.shellPath();
-    }
-    public static function activate(onComplete:Void->Void) {
-        Vscode.extensions.getExtension("nadako.vshaxe").activate().then((x) -> {
-            haxeApi = Vscode.extensions.getExtension("nadako.vshaxe").exports;
+	public static function getHaxelibExecutable():String {
+		var haxelib_file = Sys.systemName() == "Windows" ? "haxelib.exe" : "haxelib";
+		return Path.join([store.getCustomHaxeRootPath(), haxelib_file]);
+	}
+
+	public static function getHaxeExecutable():String {
+		var haxe_file = Sys.systemName() == "Windows" ? "haxe.exe" : "haxe";
+		return Path.join([store.getCustomHaxeRootPath(), haxe_file]);
+	}
+
+	public static function getHaxeStd():String {
+		return Path.join([store.getCustomHaxeRootPath(), "std"]);
+	}
+
+	public static function activate(context:vscode.ExtensionContext, onComplete:Void->Void) {
+		var ext = Vscode.extensions.getExtension("nadako.vshaxe");
+		store = context.getGlobalStore();
+		if (!ext.isActive) {
+			ext.activate().then((x) -> {
+				onComplete();
+			});
+		} else
 			onComplete();
-		});
-    }
-    static var installationStarted:Bool = false;
+	}
 
-	public static function checkVshaxeHaxelib(context:vscode.ExtensionContext, onValid:Void->Void, onError:String->Void) {
-		var store = context.getGlobalStore();
+	static var installationStarted:Bool = false;
+
+	public static function checkVshaxeHaxelib(onValid:Void->Void, onError:String->Void) {
 		var current_version = store.getHaxeVersion();
-		if (current_version != HAXE_VERSION && current_version != null) {
+		if (current_version != Main.HAXE_VERSION && current_version != null) {
 			store.clearCustomHaxe();
 			current_version = null;
 		}
 
 		if (current_version == null) {
-            if(installationStarted){
+			if (installationStarted) {
 				onError(Language.HAXE_INSTALL_PENDING);
-                return;
-            }
-            installationStarted = true;
-			Interaction.displayInformation(Language.FUNKIN_IDE_HAXE_INSTALL_STARTED);
-			var system_part:Null<String> = switch (Sys.systemName()) {
-				case "Windows": "windows-x64";
-				case "Linux": "linux-x64";
-				case "Mac": "mac-arm";
-				case _: null;
-			};
-			if (system_part == null) {
-				onError(Language.HAXE_INSTALL_UNKNOWN_OS);
-                installationStarted = false;
 				return;
 			}
-			var target_file = Path.join([store.getTempPath(), "haxe.zip"]);
-			var curl_out = new StringBuf();
-			Process.runCurl('https://github.com/FunkinCompiler/haxe-bin/releases/download/${HAXE_GITHUB_TAG}/${system_part}.zip', target_file, null, s -> {
-				curl_out.add(s);
-			}, () -> {
-				if (!FileSystem.exists(target_file)) {
-					onError(Language.failedToDownloadCustomHaxe(curl_out.toString()));
-                    installationStarted = false;
-					return;
-				}
-				ZipTools.extractZip(File.read(target_file), store.getCustomHaxeRootPath());
-                if(Sys.systemName() != "Windows") {
-                    var success = Process.checkCommand('chmod +x "${Path.join([store.getCustomHaxeRootPath(),"haxe"])}"',null);
-                    success = success && Process.checkCommand('chmod +x "${Path.join([store.getCustomHaxeRootPath(),"haxelib"])}"',null);
-                    if(!success) {
-						onError(Language.HAXE_INSTALL_MAKE_EXECUTABLE_FAILED);
-                        installationStarted = false;
-						return;
-					}
-                }
-				store.setHaxeVersion(HAXE_VERSION);
-				store.clearTempPath();
-                installationStarted = false;
-                onValid();
+			installationStarted = true;
+			HaxeDownload.installHaxe(store, () -> {
+				installationStarted = false;
+				onValid();
+			}, s -> {
+				installationStarted = false;
+				onError(s);
 			});
-            return;
+			return;
 		}
-        installationStarted = false;
+		installationStarted = false;
 		onValid();
 	}
-
-
 }

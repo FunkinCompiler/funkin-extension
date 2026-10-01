@@ -63,7 +63,7 @@ class FunkinLibrariesInstall {
 		var args = ["install",libraryName,version,"--always","--quiet","--skip-dependencies"];
 		writeLine("   > haxelib " + args.join(" "));
 		var cwd = localCwd ?? Sys.getCwd();
-		Process.runCommand("haxelib",args, cwd, writeLine, resolve);
+		Process.runCommand(HaxeHelper.getHaxelibExecutable(),args, cwd, writeLine, resolve);
 	}
 	function installLibraryFromGithub(repoName:String,commitHash:String,libraryName:String,resolve:Void->Void, deny:String->Void) {
 		runCurlCommand('https://codeload.github.com/${repoName}/zip/${commitHash}','temp.zip',() -> {

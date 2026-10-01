@@ -99,16 +99,16 @@ class DebuggerSetup extends DisposableProvider {
 		}
 		if (base.cmd_prefix == null)
 			base.cmd_prefix = "";
-		if (base.args == null)
+		if (base.args.isNull())
 			base.args = [];
-		if (base.trace == null)
+		if (base.trace.isNull())
 			base.trace = VsCodeConfig.instance.DEBUG;
 		if (base.attachDebugger == null)
 			base.attachDebugger = true;		
-		if (base.cwd == null)
+		if (base.cwd.isNull())
 			base.cwd = VsCodeConfig.instance.GAME_PATH;
 		trace(base.preLaunchTask);
-		if (base.preLaunchTask == Lib.undefined)
+		if (base.preLaunchTask.isNull())
 			base.preLaunchTask = "";
 
 		var isCwdRelative = StringTools.startsWith(base.cwd, ".");

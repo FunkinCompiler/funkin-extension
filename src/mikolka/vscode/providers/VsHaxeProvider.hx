@@ -16,14 +16,14 @@ class VsHaxeProvider extends DisposableProvider {
 	private var haveIAskedAboutHxc:Bool = false;
 
 	public function new(context:vscode.ExtensionContext) {
-		HaxeHelper.activate(onVshaxeActive.bind(context));
-
+		
 		super(context, Vscode.window.onDidChangeActiveTextEditor(e -> {
 			if (e.document.fileName.endsWith(".hxc") && !haveIAskedAboutHxc) {
 				haveIAskedAboutHxc = true;
 				checkVshaxePatch();
 			}
 		}));
+		HaxeHelper.activate(context,onVshaxeActive.bind(context));
 	}
 
 	private function onVshaxeActive(context:vscode.ExtensionContext) {
@@ -37,23 +37,19 @@ class VsHaxeProvider extends DisposableProvider {
 				if (VsCodeConfig.instance.DEBUG)
 					trace(hxml_path);
 				var hxml = File.getContent(hxml_path);
-				provideArguments(haxeApi.parseHxmlToArguments(hxml));
+				provideArguments(haxeApi.parseHxmlToArguments(hxml).filterInto(s -> !s.contains("--macro")));
 			},
 			deactivate: () -> {}
 		}));
 		addDisposable(haxeApi.registerHaxeInstallationProvider("Funkin IDE Haxe", {
 			activate: provideInstallation -> {
-				HaxeHelper.checkVshaxeHaxelib(context, () -> {
-					var haxe_file = Sys.systemName() == "Windows" ? "haxe.exe" : "haxe";
-					var haxelib_file = Sys.systemName() == "Windows" ? "haxelib.exe" : "haxelib";
-
-					var haxelib_path = Path.join([context.getGlobalStore().getCustomHaxeRootPath(), haxelib_file]);
+				HaxeHelper.checkVshaxeHaxelib(() -> {
 					provideInstallation({
-						haxeExecutable: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), haxe_file]),
-						standardLibraryPath: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), "std"]),
-						haxelibExecutable: haxelib_path
+						haxeExecutable: HaxeHelper.getHaxeExecutable(),
+						standardLibraryPath: HaxeHelper.getHaxeStd(),
+						haxelibExecutable: HaxeHelper.getHaxelibExecutable()
 					});
-					checkCurrentHaxelib(haxelib_path);
+					checkCurrentHaxelib();
 				}, error -> {
 					Interaction.displayError(error);
 					provideInstallation({});
@@ -63,8 +59,9 @@ class VsHaxeProvider extends DisposableProvider {
 		}));
 	}
 
-	private function checkCurrentHaxelib(haxelib_exec:String) {
-		var haxelib_repo = Path.removeTrailingSlashes(Process.resolveCommand('${haxelib_exec.shellPath()} config').replace("\n", ""));
+	private function checkCurrentHaxelib() {
+		var haxelib_repo = Path.removeTrailingSlashes(Process.resolveCommand(
+			'${HaxeHelper.getHaxeExecutable().shellPath()} config').replace("\n", ""));
 		var user_repo = Path.removeTrailingSlashes(VsCodeConfig.instance.HAXELIB_PATH);
 
 		if (haxelib_repo != user_repo) {

@@ -1,7 +1,10 @@
 package mikolka.vscode.providers.tasks;
 
+import sys.FileSystem;
+import mikolka.install.backend.Cppia;
+import mikolka.install.backend.Cppia.CppiaMake;
+import mikolka.vscode.definitions.tasks.CppiaTaskDefinitions;
 import js.Lib;
-import mikolka.vscode.definitions.tasks.AdbCopyTaskDefinition;
 import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.config.VsCodeConfig;
 import js.lib.Promise;
@@ -15,9 +18,9 @@ import vscode.CustomExecution;
 /**
  * This class manages all tasks provided by this extension
  */
-class AdbTask extends DisposableProvider {
+class CppiaMakeTask extends DisposableProvider {
 	// This configures the code for the task
-
+	static var tools:ExternalStorageTools;
 	/**
 	 * Creates a CustomExecution object for the "Compile current V-Slice mod"task.
 	 * 
@@ -27,53 +30,46 @@ class AdbTask extends DisposableProvider {
 	 */
 	static function getTask():CustomExecution {
 		return new CustomExecution(resolvedDefinition -> new Promise((accept, reject) -> {
-			var manifest:AdbCopyTaskDefinition = cast resolvedDefinition;
-
-			var packageName = manifest.packageName;
-			var modName = manifest.modName;
-
-			// Pulling the config in case the tasks missed those
-			var vscodeConfig = VsCodeConfig.instance;
-
-
-			if (packageName.isEmpty())
-				packageName = "me.funkin.fnf";
-
+			var manifest:CppiaTaskDefinitions = cast resolvedDefinition;
 			if (Vscode.workspace.workspaceFolders == null || Vscode.workspace.workspaceFolders.length == 0) {
 				reject("No folder seems to be opened! This is not supported!");
 			} else {
 				var full_project_path = Vscode.workspace.workspaceFolders[0].uri.fsPath;
+				var compileConfig:CppiaMake = {
+					sourcePath: Path.join([full_project_path,manifest.sourcePath]),
+					classesToCompile: manifest.classesToCompile,
+					cppiaOutFile: Path.join([full_project_path,manifest.cppiaOutFile])
+				};
 
-				if (modName.isEmpty())
-					modName = Path.withoutDirectory(full_project_path);
+				// Pulling the config in case the tasks missed those
+				var vscodeConfig = VsCodeConfig.instance;
 
+				if (compileConfig.classesToCompile.isNull())
+					compileConfig.classesToCompile = Cppia.buildClassNames(compileConfig.sourcePath);
+				if(!FileSystem.exists(Path.join([VsCodeConfig.instance.HAXELIB_PATH, "export_classes.info"]))) 
+					Cppia.compileExportClasses();
+
+				var hxml_path = Cppia.makeCppiaHxml(tools,compileConfig);
+				if(hxml_path == null){
+					reject(Language.CPPIA_NOT_SUPPORTED);
+					return;
+				}
 				accept(OutputTerminal.makeTerminal(struct -> {
-					trace("Getting cwd:");
-					if (AdbServer.isAdbReady()) {
-						var status = AdbServer.assureModsFolderIsWritable(packageName);
-						if (status == null)
-								Interaction.displayErrorAlert(Language.FNF_MOBILE_ERROR_TITLE,
-									Language.FNF_MOBILE_MODS_NOT_ACCESSIBLE);
-						else {
-							if (status)
-										Interaction.displayInformation(Language.FNF_MOBILE_MODS_RECREATED);
-							AdbServer.pushFiles(full_project_path, Path.join([AdbServer.getModsPath(packageName), modName]), true, struct.writeLine,
-								struct.onComplete);
-						}
-					}
+					var out = Process.spawnSyncProcess(HaxeHelper.getHaxeExecutable(),
+						[hxml_path.shellPath()]);
+						struct.writeLine(out);
 				}));
 			}
 		}));
 	}
 
 	public function new(context:vscode.ExtensionContext) {
-		var defaultTask = new Task({type: "funk-mobile"}, TaskScope.Workspace, "Copy this V-Slice mod to mobile", "Funk ADB", getTask());
-
 		// Register task provider
-		var disposeHook = Vscode.tasks.registerTaskProvider("funk-mobile", {
-			resolveTask: AdbTask.resolveTask,
+		tools = context.getGlobalStore();
+		var disposeHook = Vscode.tasks.registerTaskProvider("funk-cppia-make", {
+			resolveTask: CppiaMakeTask.resolveTask,
 			provideTasks: token -> {
-				return [defaultTask];
+				return [];
 			}
 		});
 		super(context, disposeHook);
@@ -82,7 +78,7 @@ class AdbTask extends DisposableProvider {
 	static function resolveTask(task:Task, token:CancellationToken):ProviderResult<Task> {
 		trace("Resolving partial task");
 		if (task.execution.isNull()) {
-			var completeTask = new Task(task.definition, TaskScope.Workspace, "Copy this V-Slice mod to mobile", "Funk ADB", getTask(), null);
+			var completeTask = new Task(task.definition, TaskScope.Workspace, "Compile Funkin CPPIA script", "Funk Cppia", getTask(), null);
 			return completeTask;
 		}
 		return task;

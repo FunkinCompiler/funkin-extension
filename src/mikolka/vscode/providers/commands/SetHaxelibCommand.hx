@@ -7,6 +7,8 @@ import mikolka.config.MetadataParser;
 import mikolka.vscode.ui.ListPicker.ListItem;
 import haxe.io.Path;
 
+using StringTools;
+
 class SetHaxelibCommand extends DisposableCommand {
 	var fcpkg:ExternalStorageTools;
 	var ctx:vscode.ExtensionContext;
@@ -31,7 +33,7 @@ class SetHaxelibCommand extends DisposableCommand {
 					label: Language.USE_PREVIOUS,
 					id: "last",
 					onSelect: setConfigHaxelib,
-					detail: cfg.HAXELIB_PATH
+					detail: cfg.HAXELIB_PATH.replace(ctx.globalStorageUri.fsPath,"~")
 				});
 			if (cfg.DEBUG)
 				trace(base_list);
@@ -48,11 +50,12 @@ class SetHaxelibCommand extends DisposableCommand {
 			} catch (x:Exception) {
 				trace(x.details());
 			}
+
 			var x:ListItem = {
 				id: folder_name,
 				label: meta?.name ?? folder_name,
 				description: meta?.description,
-				detail: full_path
+				detail: full_path.replace(ctx.globalStorageUri.fsPath,"~")
 			};
 			return x;
 		});
@@ -68,7 +71,7 @@ class SetHaxelibCommand extends DisposableCommand {
 	}
 
 	function setHaxelibPath(full_path:String) {
-		HaxeHelper.checkVshaxeHaxelib(ctx, () -> {
+		HaxeHelper.checkVshaxeHaxelib(() -> {
 			var result = Process.setHaxelibPath(full_path);
 			if (!result)
 				Interaction.displayError(Language.FAILED_TO_SET_HAXELIB_PATH);

@@ -1,8 +1,8 @@
 {
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
-	"displayName": "Funkin IDE",
-	"version": "0.8.2",
+	"displayName": "Funkin Compiler IDE",
+	"version": "0.8.3",
 	"description": "A complete environment for making \"Friday Night Funkin'\" (V-Slice) mods!",
 	"categories": [
 		"Programming Languages",
@@ -50,6 +50,7 @@
 	],
 	"main": "bin/main.js",
 	"contributes": {
+		
 		"configuration": [
 			{
 				"title": "Funkin IDE",
@@ -248,6 +249,27 @@
 				}
 			},
 			{
+				"type": "funk-cppia-make",
+				"required": ["sourcePath","cppiaOutFile"],
+				"properties": {
+					"sourcePath": {
+						"type": "string",
+						"description": "The folder containing source files to make a cppia script"
+					},
+					"cppiaOutFile": {
+						"type": "string",
+						"description": "The relative path of the output file."
+					},					
+					"classesToCompile": {
+						"type": "array",
+						"items": {
+							"type":"string"
+						},
+						"description": "List of classes to compile into the CPPIA"
+					}
+				}
+			},
+			{
 				"type": "funk-pc",
 				"required": [],
 				"properties": {
@@ -256,6 +278,19 @@
 						"description": "THe name to use for the mod. If you have the mod with the same name, this task will override it!"
 					}
 				}
+			}
+		],
+		"languages": [
+			{
+				"id": "funkignore",
+				"aliases": [
+					"Funkin gitignore",
+					"funkin gitignore"
+				],
+				"extensions": [
+					".funkignore"
+				],
+				"configuration": "./assets/gitignore.language-configuration.json"
 			}
 		],
 		"debuggers": [

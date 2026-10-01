@@ -22,7 +22,7 @@ class SetupCommand extends DisposableCommand {
 		fcpkg = context.getGlobalStore();
 		this.context = context;
 		commandOutput = Vscode.window.createOutputChannel("Funkin compiler");
-		super(context, makeCommand("setup", context, command_setup));
+		super(context, makeCommand("setup", context, HaxeHelper.activate.bind(context,command_setup)));
 	}
 
 	private function writeLine(txt:String) {
@@ -34,7 +34,7 @@ class SetupCommand extends DisposableCommand {
 		writeLine(initMsg);
 	}
 	private function command_setup() {
-		HaxeHelper.checkVshaxeHaxelib(context, () -> {
+		HaxeHelper.checkVshaxeHaxelib( () -> {
 			var taskResult = TaskChips.runChips([pickHaxelibRepo]);
 			taskResult.then(onSetupDone, onSetupFail);
 		},(reason) ->{

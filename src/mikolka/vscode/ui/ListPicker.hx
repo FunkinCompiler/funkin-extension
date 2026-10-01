@@ -67,8 +67,8 @@ class ListPicker {
 			ext.busy = true;
 			ext.totalSteps = remoteRequests.length;
 			ext.step = 0;
-	
 			remoteRequests.forEach(http -> {
+			 
 				http.onError = msg -> {
 					ext.step += 1;
 					trace('For source ${http.url}:  ${msg}');

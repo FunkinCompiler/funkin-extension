@@ -1,5 +1,6 @@
 package mikolka.vscode.ui;
 
+import vscode.ProgressLocation;
 import haxe.DynamicAccess;
 import vscode.QuickInputButton;
 import vscode.QuickPickItem;
@@ -31,7 +32,6 @@ class Interaction {
 			detail: message
 		});
 	}
-
 	// Returns the input from user (or null if canceled)
 	public static function requestInput(prompt:String,next:(input:Null<String>) -> Void) {
 		Vscode.window.showInputBox({
