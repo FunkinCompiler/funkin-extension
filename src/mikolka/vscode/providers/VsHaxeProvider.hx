@@ -37,7 +37,10 @@ class VsHaxeProvider extends DisposableProvider {
 				if (VsCodeConfig.instance.DEBUG)
 					trace(hxml_path);
 				var hxml = File.getContent(hxml_path);
-				provideArguments(haxeApi.parseHxmlToArguments(hxml).filterInto(s -> !s.contains("--macro")));
+				
+				provideArguments(haxeApi.parseHxmlToArguments(hxml)
+					.filterInto(s -> !s.contains("--macro") && !s.startsWith("include"))
+				);
 			},
 			deactivate: () -> {}
 		}));

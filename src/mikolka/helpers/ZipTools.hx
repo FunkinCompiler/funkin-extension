@@ -51,6 +51,7 @@ class ZipTools {
 			}
 			else {
 				uncompress(node);
+				FileSystem.createDirectory(Path.directory(Path.join([target,node.fileName])));
 				File.saveBytes(Path.join([target,node.fileName]),node.data);
 			}
 		}

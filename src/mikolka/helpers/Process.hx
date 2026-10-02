@@ -1,14 +1,26 @@
 package mikolka.helpers;
 
-import haxe.DynamicAccess;
+import mikolka.config.VsCodeConfig;
 import haxe.extern.EitherType;
 import js.node.Buffer;
 import js.node.ChildProcess;
 import mikolka.vscode.ui.Interaction;
 
 class Process {
+
+	public static function fetchWebResource(sourceUrl:String, onInput:String->Void, onComplete:Void->Void) {
+		runCommand('curl', ['-s','-o','-','-L' , sourceUrl], null,s -> onInput(s), onComplete);
+	}
 	public static function runCurl(sourceUrl:String, target_file:String, cwd:Null<String> = null, onInput:String->Void, onComplete:Void->Void) {
-		runCommand('curl', ['-L', '-o', target_file.shellPath(), sourceUrl], cwd, onInput, onComplete);
+		runCommand('curl', ['-L' , '-o', target_file.shellPath(), sourceUrl], cwd, s -> {
+			if(VsCodeConfig.instance.DEBUG) 
+				trace(s.toString());
+			onInput(s);
+		}, () -> {
+			if(VsCodeConfig.instance.DEBUG) 
+				trace("Done!!!");
+			onComplete();
+		});
 	}
 
 	public static function checkCommand(execName:String, cwd:Null<String> = null):Bool {
@@ -37,8 +49,9 @@ class Process {
 		return code == 0;
 	}
 
+	
 	public static function runCommand(execName:String, args:Array<String> = null, cwd:Null<String> = null, onInput:String->Void, onComplete:Void->Void) {
-		trace(cwd);
+		trace(execName);
 		var proc = ChildProcess.spawn(execName.shellPath(), args, {
 			cwd: cwd,
 			stdio: Pipe,
@@ -50,6 +63,7 @@ class Process {
 		proc.stdout.on("data", (data) -> {
 			onInput(data);
 		});
+
 		proc.stderr.on("data", (data) -> {
 			onInput(data);
 		});
