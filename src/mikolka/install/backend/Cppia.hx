@@ -30,6 +30,7 @@ class Cppia {
 						var did_compile = Process.checkCommand('$haxe_bin $hxml_path -D scriptable',VsCodeConfig.instance.HAXELIB_PATH);
 						if (did_compile) {
 							FileManager.deleteDirRecursively(Path.join([VsCodeConfig.instance.HAXELIB_PATH, "bin"]));
+							patchExportInfoPaths(Path.join([VsCodeConfig.instance.HAXELIB_PATH, "export_classes.info"]));
 							resolve(null);
 						} else
 							reject(Language.CPPIA_FAILED_TO_GENERATE);
@@ -47,6 +48,7 @@ class Cppia {
 			var hxml_path = Path.join([VsCodeConfig.instance.HAXELIB_PATH, current_manifest.cppiaHxmlFile]);
 			var class_info_path = Path.join([VsCodeConfig.instance.HAXELIB_PATH, "export_classes.info"]);
 			var hxml_temp_path = Path.join([tools.getTempPath(), "cppia-make.hxml"]);
+			var class_info_temp_path = Path.join([tools.getTempPath(), "export_classes.info"]);
 
 
             var CLASS_NAMES = args.classesToCompile.join("\n");
@@ -55,6 +57,14 @@ class Cppia {
             var CPPIA_DLL = class_info_path;
             var CPPIA_OUT = args.cppiaOutFile;
             var DEBUG_FLAG = "-debug";
+
+			var CPPIA_SDK = Path.removeTrailingSlashes(VsCodeConfig.instance.HAXELIB_PATH);
+			var HAXE_STD = Path.removeTrailingSlashes(HaxeHelper.getHaxeStd());
+
+			var class_info = File.getContent(class_info_path)
+			.replace("$CPPIA_SDK", CPPIA_SDK)
+                .replace("$HAXE_STD", HAXE_STD);
+			File.saveContent(class_info_temp_path, class_info);
 
 			var hxml = File.getContent(hxml_path)
 			.replace("$CLASS_NAMES_ARRAY", CLASS_NAMES_ARRAY)
@@ -77,4 +87,19 @@ class Cppia {
         },s -> {});
         return result;
     }
+
+	private static function patchExportInfoPaths(filePath:String) {
+		var operationalContent = File.getContent(filePath);
+		var haxe_std_regex = ~/file (.*)\/StringTools\.hx (.*)\/StringTools\.hx/;
+		var fcpkg_root_regex = ~/file funkin\/Main\.hx (.*)\/funkin\/git\/funkin\/Main.hx/;
+		if(haxe_std_regex.match(operationalContent)){
+			var haxe_std = haxe_std_regex.matched(1);
+			operationalContent = operationalContent.replace(haxe_std,"$HAXE_STD");
+		}
+		if(fcpkg_root_regex.match(operationalContent)){
+			var fcpkg_root = fcpkg_root_regex.matched(1);
+			operationalContent = operationalContent.replace(fcpkg_root,"$CPPIA_SDK");
+		}
+		File.saveContent(filePath,operationalContent);
+	}
 }

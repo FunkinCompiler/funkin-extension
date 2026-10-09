@@ -35,10 +35,16 @@ class ClassReplaceChip {
             var sourceContent = File.getContent(Path.join([haxelib_path,sourceFileName]));
             var patchContent = File.getContent(Path.join([haxelib_path,haxePatchesPath,patchFile]));
 
-            var pattern = ~/-# ([^\n]*)\n(.*)/s;
-            if(pattern.match(patchContent)){
-                var filePattern = new EReg(pattern.matched(1),"gm");
-                var replaceContent = filePattern.replace(sourceContent,pattern.matched(2));
+            var foundPatches = patchContent.split("-# ");
+            var firstLinePattern = ~/([^\n]*)\n(.*)/s;
+            if(foundPatches.length > 1){
+                foundPatches.shift();
+                var replaceContent = sourceContent;
+
+                foundPatches.forEach(s -> {
+                    var filePattern = new EReg(firstLinePattern.matched(1),"gm");
+                    replaceContent = filePattern.replace(replaceContent,firstLinePattern.matched(2));
+                });
                 File.saveContent(Path.join([haxelib_path,sourceFileName]),replaceContent);
             }
             else {
