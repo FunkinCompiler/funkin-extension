@@ -26,7 +26,7 @@
       "uniqueItems": true,
       "minItems": 1,
       "items": {
-        "required": ["position", "animType", "assetPath"],
+        "required": ["position", "assetPath"],
         "properties": {
           "zIndex": {
             "description": "Controls how high the prop is positioned over other props. Higher values will draw this prop over props with lower `zIndex`.",
@@ -94,7 +94,7 @@
             "minLength": 1
           },
           "alpha": {
-            "type": "integer",
+            "type": "number",
             "default": 1.0,
             "description": "Specifies the opacity of the prop, with `1.0` being fully opaque and `0.0` being completely transparent. "
           },
