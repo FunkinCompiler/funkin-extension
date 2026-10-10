@@ -7,7 +7,7 @@
       "required": ["assetPath", "data"],
       "properties": {
         "assetPath": {
-          "type": "string",
+          "type": ["string", "null"],
           "description": "The main asset path to use for this asset."
         },
         "scale": {

@@ -8,7 +8,7 @@
   "properties": {
     "renderType": {
       "type": "string",
-      "enum": ["sparrow", "packer", "animateatlas"],
+      "enum": ["sparrow", "packer", "animateatlas", "multianimateatlas"],
       "description": "The render type for the character asset"
     },
     "scale": {

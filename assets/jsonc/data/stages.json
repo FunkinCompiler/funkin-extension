@@ -24,7 +24,7 @@
       "type": "array",
       "description": "An array of props to add to the stage, specifying what sprites should be used and where those sprites should be positioned.",
       "uniqueItems": true,
-      "minItems": 1,
+      "minItems": 0,
       "items": {
         "required": ["position", "assetPath"],
         "properties": {
@@ -47,20 +47,28 @@
             "type": "string",
             "enum": [
               "",
-              "ADD",
-              "ALPHA",
-              "DARKEN",
-              "DIFFERENCE",
-              "ERASE",
-              "HARDLIGHT",
-              "INVERT",
-              "LAYER",
-              "LIGHTEN",
-              "MULTIPLY",
-              "NORMAL",
-              "SCREEN",
-              "SHADER",
-              "SUBTRACT"
+              "add",
+              "alpha",
+              "darken",
+              "difference",
+              "erase",
+              "hardlight",
+              "invert",
+              "layer",
+              "lighten",
+              "multiply",
+              "normal",
+              "screen",
+              "shader",
+              "subtract",
+              "colordodge",
+              "colorburn",
+              "softlight",
+              "exclusion",
+              "hue",
+              "saturation",
+              "color",
+              "luminosity"
             ],
             "description": "The blend mode of the prop. For more information about blend modes, see https://api.openfl.org/openfl/display/BlendMode.html",
             "default": ""
@@ -71,7 +79,7 @@
             "default": [0, 0]
           },
           "scale": {
-            "type": "array",
+            "type": ["number", "array"],
             "description": "Specifies the size of the prop relative to it's original size.",
             "default": 1
           },
@@ -90,7 +98,7 @@
             "type": "string",
             "description": "Type of this prop's sprite",
             "default": "sparrow",
-            "enum": ["sparrow", "packer"],
+            "enum": ["sparrow", "packer", "animateatlas"],
             "minLength": 1
           },
           "alpha": {
