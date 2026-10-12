@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler IDE",
-	"version": "0.8.4",
+	"version": "0.8.5",
 	"description": "A complete environment for making \"Friday Night Funkin'\" (V-Slice) mods!",
 	"categories": [
 		"Programming Languages",
