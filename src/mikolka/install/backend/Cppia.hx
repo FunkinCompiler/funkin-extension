@@ -17,7 +17,6 @@ typedef CppiaMake = {
 }
 
 class Cppia {
-	
 	public static function compileExportClasses() {
 		HaxeHelper.checkVshaxeHaxelib(() -> {
 			Vscode.window.withProgress({location: ProgressLocation.Notification, cancellable: false, title: Language.CPPIA_GENERATING_REFERENCE},
@@ -26,17 +25,25 @@ class Cppia {
 					var current_manifest = MetadataParser.readActiveMetadata();
 					if (current_manifest.cppiaHxmlFile != null) {
 						var hxml_path = Path.join([VsCodeConfig.instance.HAXELIB_PATH, current_manifest.hxmlFile]).shellPath();
-						@:privateAccess
-						var did_compile = Process.checkCommand('$haxe_bin $hxml_path -D scriptable',VsCodeConfig.instance.HAXELIB_PATH);
-						if (did_compile) {
-							FileManager.deleteDirRecursively(Path.join([VsCodeConfig.instance.HAXELIB_PATH, "bin"]));
-							patchExportInfoPaths(Path.join([VsCodeConfig.instance.HAXELIB_PATH, "export_classes.info"]));
-							resolve(null);
-						} else
-							reject(Language.CPPIA_FAILED_TO_GENERATE);
+						var did_set_haxelib =  Process.setHaxelibPath(VsCodeConfig.instance.HAXELIB_PATH);
+						if(did_set_haxelib){
+
+							@:privateAccess
+							var did_compile = Process.checkCommand('$haxe_bin $hxml_path -D scriptable', VsCodeConfig.instance.HAXELIB_PATH);
+							if (did_compile) {
+								FileManager.deleteDirRecursively(Path.join([VsCodeConfig.instance.HAXELIB_PATH, "bin"]));
+								patchExportInfoPaths(Path.join([VsCodeConfig.instance.HAXELIB_PATH, "export_classes.info"]));
+								resolve(null);
+							} 
+							else reject(Language.CPPIA_FAILED_TO_GENERATE);
+						}
+						else reject(Language.CPPIA_FAILED_TO_GENERATE);
 					} else
 						reject(Language.CPPIA_NOT_SUPPORTED);
-				}));
+				}))
+				.then(_ -> {}, s -> {
+					Interaction.displayError(s);
+				});
 		}, s -> {
 			Interaction.displayError(s);
 		});
@@ -50,56 +57,54 @@ class Cppia {
 			var hxml_temp_path = Path.join([tools.getTempPath(), "cppia-make.hxml"]);
 			var class_info_temp_path = Path.join([tools.getTempPath(), "export_classes.info"]);
 
-
-            var CLASS_NAMES = args.classesToCompile.join("\n");
-            var CLASS_NAMES_ARRAY = '"'+args.classesToCompile.join('","')+'"';
-            var CPPIA_SOURCE = args.sourcePath;
-            var CPPIA_DLL = class_info_path;
-            var CPPIA_OUT = args.cppiaOutFile;
-            var DEBUG_FLAG = "-debug";
+			var CLASS_NAMES = args.classesToCompile.join("\n");
+			var CLASS_NAMES_ARRAY = '"' + args.classesToCompile.join('","') + '"';
+			var CPPIA_SOURCE = args.sourcePath;
+			var CPPIA_DLL = class_info_path;
+			var CPPIA_OUT = args.cppiaOutFile;
+			var DEBUG_FLAG = "-debug";
 
 			var CPPIA_SDK = Path.removeTrailingSlashes(VsCodeConfig.instance.HAXELIB_PATH);
 			var HAXE_STD = Path.removeTrailingSlashes(HaxeHelper.getHaxeStd());
 
-			var class_info = File.getContent(class_info_path)
-			.replace("$CPPIA_SDK", CPPIA_SDK)
-                .replace("$HAXE_STD", HAXE_STD);
+			var class_info = File.getContent(class_info_path).replace("$CPPIA_SDK", CPPIA_SDK).replace("$HAXE_STD", HAXE_STD);
 			File.saveContent(class_info_temp_path, class_info);
 
 			var hxml = File.getContent(hxml_path)
-			.replace("$CLASS_NAMES_ARRAY", CLASS_NAMES_ARRAY)
-                .replace("$CLASS_NAMES", CLASS_NAMES)
-                .replace("$CPPIA_SOURCE", CPPIA_SOURCE)
-                .replace("$CPPIA_DLL", CPPIA_DLL)
-                .replace("$CPPIA_OUT", CPPIA_OUT)
-                .replace("$DEBUG_FLAG", DEBUG_FLAG);
+				.replace("$CLASS_NAMES_ARRAY", CLASS_NAMES_ARRAY)
+				.replace("$CLASS_NAMES", CLASS_NAMES)
+				.replace("$CPPIA_SOURCE", CPPIA_SOURCE)
+				.replace("$CPPIA_DLL", CPPIA_DLL)
+				.replace("$CPPIA_OUT", CPPIA_OUT)
+				.replace("$DEBUG_FLAG", DEBUG_FLAG);
 			File.saveContent(hxml_temp_path, hxml);
 			return hxml_temp_path;
-		} else{
-            return null;
-        }
+		} else {
+			return null;
+		}
 	}
-    public static function buildClassNames(source:String):Array<String> {
-        var result = new Array<String>();
-        FileManager.scanDirectory(source,s -> {
+
+	public static function buildClassNames(source:String):Array<String> {
+		var result = new Array<String>();
+		FileManager.scanDirectory(source, s -> {
 			var file = s.charAt(0) == "/" ? s.substring(1) : s;
-            result.push(Path.withoutExtension(file).replace("/","."));
-        },s -> {});
-        return result;
-    }
+			result.push(Path.withoutExtension(file).replace("/", "."));
+		}, s -> {});
+		return result;
+	}
 
 	private static function patchExportInfoPaths(filePath:String) {
 		var operationalContent = File.getContent(filePath);
 		var haxe_std_regex = ~/file (.*)\/StringTools\.hx (.*)\/StringTools\.hx/;
 		var fcpkg_root_regex = ~/file funkin\/Main\.hx (.*)\/funkin\/git\/funkin\/Main.hx/;
-		if(haxe_std_regex.match(operationalContent)){
+		if (haxe_std_regex.match(operationalContent)) {
 			var haxe_std = haxe_std_regex.matched(1);
-			operationalContent = operationalContent.replace(haxe_std,"$HAXE_STD");
+			operationalContent = operationalContent.replace(haxe_std, "$HAXE_STD");
 		}
-		if(fcpkg_root_regex.match(operationalContent)){
+		if (fcpkg_root_regex.match(operationalContent)) {
 			var fcpkg_root = fcpkg_root_regex.matched(1);
-			operationalContent = operationalContent.replace(fcpkg_root,"$CPPIA_SDK");
+			operationalContent = operationalContent.replace(fcpkg_root, "$CPPIA_SDK");
 		}
-		File.saveContent(filePath,operationalContent);
+		File.saveContent(filePath, operationalContent);
 	}
 }

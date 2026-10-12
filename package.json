@@ -97,6 +97,11 @@
 				"title": "Set haxelib"
 			},
 			{
+				"command": "mikolka.cppia.compilesdk",
+				"category": "Funkin CPPIA",
+				"title": "Compile CPPIA SDK for current haxelib"
+			},
+			{
 				"command": "mikolka.haxelib.inspect",
 				"category": "Funkin FCPKG",
 				"title": "Open Installed haxelibs"

@@ -59,6 +59,7 @@ class Main {
 			new CppiaMakeTask(context),
 			new SetHaxelibCommand(context),
 			new SetupCommand(context),
+			new CPPIACompile(context)
 			
 		];
 		startup.runStartupChecks();

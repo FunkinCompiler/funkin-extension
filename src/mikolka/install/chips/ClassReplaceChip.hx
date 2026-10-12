@@ -42,6 +42,7 @@ class ClassReplaceChip {
                 var replaceContent = sourceContent;
 
                 foundPatches.forEach(s -> {
+                    if(!firstLinePattern.match(s)) return;
                     var filePattern = new EReg(firstLinePattern.matched(1),"gm");
                     replaceContent = filePattern.replace(replaceContent,firstLinePattern.matched(2));
                 });

@@ -64,7 +64,7 @@ class VsHaxeProvider extends DisposableProvider {
 
 	private function checkCurrentHaxelib() {
 		var haxelib_repo = Path.removeTrailingSlashes(Process.resolveCommand(
-			'${HaxeHelper.getHaxeExecutable().shellPath()} config').replace("\n", ""));
+			'${HaxeHelper.getHaxelibExecutable().shellPath()} config').replace("\n", ""));
 		var user_repo = Path.removeTrailingSlashes(VsCodeConfig.instance.HAXELIB_PATH);
 
 		if (haxelib_repo != user_repo) {

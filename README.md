@@ -122,6 +122,32 @@ If you want to use an application other than "me.funkin.fnf", you'll also need t
   ],
 }
 ```
+### CPPIA Compiler
+
+As CPPIA scripts are gaining on popularity, Funkin Compiler has a dedicated task for compiling CPPIA scripts:
+
+```jsonc
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile CPPIA script",
+            "type": "funk-cppia-make",
+            // Path to the source code of your cppia script (in the project's root directory)
+            "sourcePath": "cppia-src",
+            // Path to the output file to generate.
+            "cppiaOutFile": "code.cppia",
+            // List of classes to compile. Unless you have a specific list don't add this field
+            // By default, Funkin Compiler will simply compile all classes 
+            //"classesToCompile": [],
+            "problemMatcher": []
+        }
+    ]
+}
+
+```
+For ".fcpkg" developers, you can run ``Funkin CPPIA: Compile CPPIA SDK for current haxelib`` to recompile CPPIA SDK for currently selected haxelib
+(make sure to set it before running a task).
 
 ### Schema hints for .json files
 <img src="./readme-images/jsonc.png" alt="Schema validation for JSON files and auto-completion of fields (like how settings.json `knows` what each field is called)" width="600"/>
@@ -141,55 +167,17 @@ Many `.json` files in your mod will get additional type hints, letting you check
     You can click with Ctr key on a field to go to it's definition.
     Works for both Haxe and FNF classes. 
 
-  - #### Casting objects (mode 1)
-    If you know the exact type of a generic variable (like the type of state from ev.targetState) you may cast it using `cast (<field>,<type>)` eg. `cast (ev.targetState,OptionsState)`.
-    > **DO NOT USE** `cast <field>` (`cast ev.targetState`)
-
-  - #### Fixing imports (mode 1)
-
-    Attempts to fix Polymod issues with importing nested types:
-
-    This means that:
-    - *import funkin.modding.events.**ScriptEvent**.StateChangeScriptEvent;*
-     
-     turns into
-    - *import funkin.modding.events.StateChangeScriptEvent;*
-
-  - #### Module.scriptCall() fix (mode 1)
-
-    Allows you to use a documented `Module.polymodExecFunc()` function instead of the missing one.
-    It will be converted to the `Module.scriptCall()` once compiled.
-
 ### Blacklist detection
 
 <img src="./readme-images/blacklist.png" alt="Why was it added??? Like, no one asked for it." width="600"/>
 
 The extension will also warn you when importing a known blacklisted class *(Yes, ``FlxSave`` is not blacklisted anymore)*. In most scenarios, trying to import such a class will likely disable the faulty scripted class entirely. You should avoid doing that.
 
-
-
-### Automatic .fnfc extraction (mode 1)
-You can put your chars into a special ``fnfc_files`` folder and they'll be automatically included with your mod when compiled.
-
 ## How to Install
 
 1. Install [Haxe](https://haxe.org/download/)
 3. Install this extension.
 4. Run `Funkin FCPKG: Setup haxelib` command to install necessary dependencies (You will be asked to select a folder to install haxelibs into).
-
-### For mode 1 (Funkin Compiler projects)
-
-
-5. Run `Funkin compiler: Make new project` to scaffold template for your mod.
-6. Once done, you can customise some settings from ``funk.cfg`` file.
-> Note: filepaths are based on your project's root dorectory
- - ``mod_content_folder`` Points to your mod's base folder.
- All the files here will copied first when compiling your mod.
- - ``mod_hx_folder`` Point to your code managed, and then compiled by the program.
- This is where you write your code.
- - ``mod_fnfc_folder`` Points to the FNFC files of your mod.
- Those get properly integrated into your mod when compiling.
- This lets you easily edit the songs from the game itself.
 
 ### For mode 2 (V-Slice mods)
 
@@ -202,14 +190,6 @@ Don't worry, opening any ".hxc" file will prompt you to do so.
 ### For mode 3 (FNF assets folder)
 
 Same as mode 2, but instead of V-Slice mod open the "assets" folder in the FNF code repository with your IDE.
-
-## How to migrate
-#### from 0.3.0 - 0.3.2 
-
-If you get the "Startup warning" about Funkin compiler not being configured correctly:
-- Click ``Yes``
-- Select folder you chose when running the `Funkin: Setup Funkin compiler` command
-- Click ``Cancel`` when asked about non-clean haxelib folder.
 
 ### Additions for launch configuration
 
