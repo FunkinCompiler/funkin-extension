@@ -86,7 +86,7 @@
                 "default": [0, 0]
               }
             },
-            "required": ["name", "prefix", "offsets"]
+            "required": ["name", "prefix"]
           }
         }
       }

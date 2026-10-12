@@ -41,5 +41,5 @@
       "description": "Delay time after confirming a song selection, before entering PlayState."
     }
   },
-  "required": ["name", "bgAsset", "selectorAsset", "capsuleAsset","numbersAsset","capsuleTextColors","startDelay"]
+  "required": ["bgAsset", "selectorAsset", "capsuleAsset","numbersAsset","capsuleTextColors","startDelay"]
 }

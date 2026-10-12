@@ -18,7 +18,7 @@
       "type": "string",
       "description": "Format used by this character's sprite. If using 'custom' you must implement one yourself.",
       "default": "sparrow",
-      "enum": ["sparrow", "packer", "multisparrow", "animateatlas", "custom"],
+      "enum": ["sparrow", "packer", "multisparrow", "animateatlas", "multianimateatlas", "custom"],
       "minLength": 1
     },
     "assetPath": {

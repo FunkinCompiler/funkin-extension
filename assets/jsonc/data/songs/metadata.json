@@ -26,8 +26,8 @@
         "difficulties": { "type": "array", "items": { "type": "string" } },
         "stage": { "type": "string" },
         "noteStyle": { "type": "string" },
-        "previewStart": { "type": "integer", "default": 0 },
-        "previewEnd": { "type": "integer", "default": 15000 },
+        "previewStart": { "type": "number", "default": 0 },
+        "previewEnd": { "type": "number", "default": 15000 },
         "characters": {
           "type": "object",
           "properties": {
